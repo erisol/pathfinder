@@ -17,8 +17,14 @@ h1,h2,h3 {
 #topbar {
 	height: 79px;
 	border-bottom: 1px solid #000;
-	background-color: #06F;
-	vertical-align: top;
+	background-color: #09C;
+	vertical-align: bottom;
+}
+#topbar img {
+	margin-top: 30px;
+	}
+#canvas {
+	text-align: center;
 }
 </style>
 </head>
@@ -26,11 +32,29 @@ h1,h2,h3 {
 <script>
 var newWidth  = document.documentElement.clientWidth;
 var newHeight = document.documentElement.clientHeight;
-
 document.getElementById("topbar").setAttribute("style",newWidth);
 </script>
-<div id="topbar"><h1>Vis Vei UiS</h1> (early alpha)</div>
-<div id="canvas">hello</div>
+
+
+<div id="topbar">
+	<img src="img/logo.png" />
+</div>
+
+
+<div id="canvas">
+	<img id="kart" src="img/alphakart.jpg" width="1280" height="720" usemap="#bygninger" />
+  <map name="bygninger">
+<area  shape="rect" coords="148,308,458,489" alt="" title="KE" target="_self" href="#"     />
+<area  shape="rect" coords="473,326,581,415" alt="" title="bibliotek" target="_self" href="#"     />
+<area  shape="rect" coords="149,521,295,600" alt="" title="Sis trening" target="_self" href="#"     />
+<area  shape="rect" coords="671,484,812,609" alt="" title="AR" target="_self" href="#"     />
+<area  shape="rect" coords="622,398,720,467" alt="" title="HOTELL" target="_self" href="#"     />
+<area  shape="rect" coords="561,487,637,547" alt="" title="bokhandel" target="_self" href="#"     />
+<area  shape="rect" coords="994,3,1173,115" alt="" title="huldra garborg" target="_self" href="#"     />
+<area  shape="rect" coords="871,344,1062,518" alt="" title="ka1" target="_self" href="#"     />
+<area  shape="rect" coords="848,567,1088,708" alt="" title="ka2" target="_self" href="#"     />
+</map>
+</div>
 <script>
 var canvas = document.getElementById("canvas");
 	canvas.setAttribute('width',newWidth);
