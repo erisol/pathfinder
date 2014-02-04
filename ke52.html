@@ -39,14 +39,27 @@ document.getElementById("topbar").setAttribute("style",newWidth);
 
 <div id="topbar">
 	<img src="img/logo.png" />
+    Jeg skal fra: 
+<select name="fra">
+<option value="#">ARRAY OVER ROM</option>
+</select>
+ og skal til: 
+<select name="til">
+<option value="#">ARRAY OVER ROM</option>
+</select> 
+Handicapped <input name="" type="checkbox" value="Handicapped?" />
+<button>Vis Vei!</button>
 </div>
 
-<div style="clear: both; float: left; margin-left: 20px; margin-top: 10px; background: #CCC; border: 1px solid #000; width: 150px; height: 75px; position: absolute; z-index: 1;">
+<div style="float: left; margin-left: 20px; margin-top: 10px; background: #CCC; border: 1px solid #000; width: 150px; height: 100px; position: absolute; z-index: 1;">
+<center>Kjølv Egeland<br />
+5. etasje<br />
 <button id="zoomIn">Zoom in</button><br />
 <button id="zoomOut">Zoom out</button>
+</center>
 </div>
 
-<div id="container">
+<div id="container" style="background: #CCC;">
 	<!--<img id="kart" src="kart/kart_KE_5etg.jpg" width="2182" height="1092" />-->
 </div>
 
@@ -57,6 +70,7 @@ var stage = new Kinetic.Stage({
     container: 'container',
     width: newWidth,
     height: newHeight-80
+	
 });
 var layer = new Kinetic.Layer();
 stage.add(layer);
@@ -88,8 +102,8 @@ function start() {
 			  var X = pos.x;
 			  var Y = pos.y;
 			  
-			  if (Y < -1005) { Y=-805; }
-			  if (X < -500) { X=-600; }
+			  if (Y < -905) { Y=-905; }
+			  if (X < -1000) { X=-1000; }
 			  if(Y > 0) { Y=0; }
 			  if(X > 0) { X=0; }
 			  
@@ -114,7 +128,7 @@ function start() {
 	}
 	
     $("#zoomIn").click(function () {
-        parentGroup.setScale(parentGroup.getScale().x + 0.20);
+        parentGroup.setScale(parentGroup.getScale().x + 0.15);
 		zoomInButton++;
 		zoomOutButton--;
 			if (zoomOutButton < 0) zoomOutButton = 0;
@@ -128,7 +142,7 @@ function start() {
     });
 
     $("#zoomOut").click(function () {
-        parentGroup.setScale(parentGroup.getScale().x - 0.20);
+        parentGroup.setScale(parentGroup.getScale().x - 0.15);
 		zoomOutButton++;
 		zoomInButton--;
 		if (zoomInButton < 0) zoomInButton = 0;
