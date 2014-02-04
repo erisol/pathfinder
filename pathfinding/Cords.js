@@ -1,15 +1,15 @@
 // JavaScript Document
-function cords(x, y){
+function Cords(x, y){
 	this.x = x;
 	this.y = y;
 }
-cords.prototype.getXCord = function(){
+Cords.prototype.getXCord = function(){
 	return this.x;
 }
-cords.prototype.getYCords = function(){
+Cords.prototype.getYCords = function(){
 	return this.y;
 }
-cords.prototype.setCords = function(x, y){
+Cords.prototype.setCords = function(x, y){
 	this.x = x;
 	this.y = y;
 }

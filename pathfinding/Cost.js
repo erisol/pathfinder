@@ -1,10 +1,10 @@
 // JavaScript Document
-function cost(){
+function Cost(){
 	var cost = 0;
 }
-cost.prototype.add = function(add){
+Cost.prototype.add = function(add){
 	this.cost += add;	
 }
-cost.prototype.getCost = function(){
+Cost.prototype.getCost = function(){
 	return this.cost;
 }

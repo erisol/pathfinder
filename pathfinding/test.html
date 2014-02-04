@@ -1,0 +1,38 @@
+<!doctype html>
+<html>
+<head>
+
+<meta charset="utf-8">
+<title>Test</title>
+</head>
+<script src="Cords.js"></script>
+<script src="Edge.js"></script>
+<script src="Cost.js"></script>
+<script src="Node.js"></script>
+<body>
+<button type="button" onclick="createnodes()">Try it</button>
+<script>
+function createnodes(){
+	alert("MAX");
+	var nodes = new Array();
+	alert("MAX");
+	for(var x = 0; x < 4; x++){
+		nodes.push(new Node(x,x,x));
+		
+	}
+	alert("Created all nodes");
+	nodes[0].addneighbor(1,1);
+	nodes[1].addneighbor(0,1);
+	nodes[1].addneighbor(2,1);
+	nodes[2].addneighbor(1,1);
+	nodes[2].addneighbor(3,1);
+	nodes[3].addneighbor(2,1);
+	nodes[2].setCords(12, 24);
+	var list = nodes[0].getneighbors();
+	alert(list[0].getCost);
+	alert(list[0].getDestNode);
+	nodes[3].setPrevNode(2);
+}
+</script>
+</body>
+</html>

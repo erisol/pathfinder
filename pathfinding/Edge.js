@@ -1,11 +1,11 @@
 // JavaScript Document
-function edge(destinationNode, cost){
+function Edge(destinationNode, cost){
 	this.destinationNode = destinationNode;
 	this.cost = cost;
 }
-edge.prototype.getCost = function(){
+Edge.prototype.getCost = function(){
 	return this.cost;
 }
-edge.prototype.getDestNode = function(){
+Edge.prototype.getDestNode = function(){
 	return this.destinationNode;
 }
