@@ -10,7 +10,7 @@ function Node(id, x, y){
 		try{ 
 		neighbors.push(new Edge(type, id, cost));	
 		}catch(addneighborerr){
-				console.log("Could not add neighbor type: " + type + " id: " + id + "cost : " +cost + "\n" + addneighborerr);
+				console.log("(NODE)Could not add neighbor type: " + type + " id: " + id + "cost : " +cost + "\n" + addneighborerr);
 		}
 	};
 	//setter "cost" for å komme til denne noden(Denne gangen algortimen blei kjørt, vist han 
@@ -24,7 +24,7 @@ function Node(id, x, y){
 			}
 			return false;
 		}catch(setOptCostPatherr){
-			console.log(setOptCostPatherr);
+			console.log("(NODE)Error changing optiaml path: " + setOptCostPatherr);
 		}
 	};
 	//Setter kordinatene til noden, tenkt brukt i sammenheng med kartene.
@@ -48,7 +48,7 @@ function Node(id, x, y){
 				neighbors[edgenr].handicapedge();
 			}
 		}catch(nodehandicaperr){
-			console.log(nodehandicaperr);
+			console.log("(NODE)Err changing to 'handicap-mode': " + nodehandicaperr);
 		}
 	};
 	//Henter inn kordinatene til noden.
@@ -73,7 +73,7 @@ function Node(id, x, y){
 				neighedges += neighbors[len].toString() + "\n";		
 			}
 		}catch(printneighborerr){
-			console.log(printneighborerr);
+			console.log("(NODE)Error printing out the edges of the node: " + printneighborerr);
 		}
 		return neighedges;
 	};
