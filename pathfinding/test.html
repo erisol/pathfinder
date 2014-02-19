@@ -14,12 +14,13 @@
 <script>
 function createnodes(){
 	var nodes = new Array();
-	alert("Trying to create nodes");
-	for(var x = 0; x < 4; x++){
-		nodes.push(new Node(x,x,x));
-		
+	try{
+		for(var x = 0; x < 4; x++){
+			nodes.push(new Node(x,x,x));
+		}
+	}catch(createnodeerr){
+		console.log("Could not create nodes: \n" + createnodeerr);
 	}
-	alert("Created all nodes");
 	//Legger inn kanter til nodene.
 	nodes[0].addneighbor(0,1,1);
 	nodes[1].addneighbor(0,0,1);
@@ -31,15 +32,25 @@ function createnodes(){
 	nodes[3].addneighbor(0,2,1);
 	//Tester metode får å endre kordinater.
 	nodes[2].setCords(12, 24);
-	//Skriver ut alle nodene og kantene til de nodene med handicap skrudd på.
+	//Skrur på Handicap.
 	for(var s = 0; s < nodes.length; s++){
-		edges = nodes[s].getneighbors();
 		nodes[s].handicap();
-		alert(nodes[s].toString() +"\n"+ nodes[s].printneighbors());
+		//Sjekker om alle trapper er i "Handicap-mode"
+		edge = nodes[s].getneighbors()
+		for(var indx = 0; indx < edge.length; indx++){
+			if(edge[indx].getType() === 1 && edge[indx].getCost() !== 1000){
+				console.log("Error changing to handicap mode");
+			}		
+		}
+		//Skriver ut alle noder og dens edges til console.
+		/*console.log(nodes[s].toString() +"\n"+ nodes[s].printneighbors());*/
 	}
+	
 	//Tester metode får å sette optimal path får å komme til en node i grafen.
-	nodes[3].setOptimalCostPath(22, 2);
-	alert(nodes[3].getPrevNode() + " " + nodes[3].getCost());
+	check = nodes[2].setOptimalCostPath(22, 1);
+	if(check && (nodes[2].getPrevNode() !== 1 || nodes[2].getCost() !== 22)){
+			console.log("Something went wrong adding new optimal path");
+	}
 }
 </script>
 </body>
