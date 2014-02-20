@@ -27,15 +27,17 @@ h1,h2,h3 {
 #canvas {
 	text-align: center;
 }
+#wrapper {
+	margin-top: 80px;
+	min-height: 100%;
+}
 </style>
 </head>
 <body>
 <script>
 var newWidth  = document.documentElement.clientWidth;
 var newHeight = document.documentElement.clientHeight;
-document.getElementById("topbar").setAttribute("style",newWidth);
 </script>
-
 
 <div id="topbar">
 	<img src="img/logo.png" />
@@ -51,13 +53,18 @@ Handicapped <input name="" type="checkbox" value="Handicapped?" />
 <button>Vis Vei!</button>
 </div>
 
-<div style="float: left; margin-left: 20px; margin-top: 10px; background: #CCC; border: 1px solid #000; width: 150px; height: 100px; position: absolute; z-index: 1;">
+
+<div style="float: left; margin-left: 20px; margin-top: 10px; background: #CCC; border: 1px solid #000; width: 150px; height: 200px; position: absolute; z-index: 1;" id="theBar">
 <center>Kjølv Egeland<br />
 5. etasje<br />
 <button id="zoomIn">Zoom in</button><br />
 <button id="zoomOut">Zoom out</button>
+<button id="etasjeOpp">Opp en etasje</button>
+<button id="etasjeNed">Ned en etasje</button>
 </center>
 </div>
+
+<div id="wrapper">
 
 <div id="container" style="background: #CCC;">
 	<!--<img id="kart" src="kart/kart_KE_5etg.jpg" width="2182" height="1092" />-->
@@ -159,5 +166,45 @@ function start() {
 });//]]>  
 
 </script>
+
+
+</div>
+
+<script>
+
+var currentFloor = 5;
+
+var floorDownButton = 5;
+var floorUpButton = 0;
+
+
+
+    $("#etasjeNed").click(function () {
+		currentFloor--;
+		$("#wrapper").empty();
+		$("#wrapper").load("ke"+currentFloor+".html");
+		if (currentFloor < 0) {
+		document.getElementById("etasjeNed").setAttribute("disabled");
+		currentFloor = 0;
+		} else {
+	document.getElementById("etasjeOpp").removeAttribute("disabled");
+		}
+    });
+	
+	$("#etasjeOpp").click(function () {
+		$("#wrapper").empty();
+		currentFloor++;
+		$("#wrapper").load("ke"+currentFloor+".html");
+		
+		if (currentFloor > 5) {
+	document.getElementById("etasjeOpp").setAttribute("disabled");
+	currentFloor = 5;
+} else {
+	document.getElementById("etasjeOpp").removeAttribute("disabled");
+}
+    });
+
+</script>
+
   </body>
 </html>

@@ -1,0 +1,61 @@
+/* Set body to be compatible with all screen resolutions */
+body {
+	padding: 0;
+	margin: 0;
+	width: 100%;
+	font-family: Verdana, Geneva, sans-serif;
+	font-size: 12px;
+}
+
+#topBar {
+	width: 100%;
+	height: 79px;
+	border-bottom: 1px solid #000;
+	background: url(../img/siteLogo.png) no-repeat #356AA0;
+	position: relative;
+}
+
+#topMenu {
+	color: #FFF;
+	margin-left: 250px;
+	height: 45px;
+	display: table-cell;
+	vertical-align: bottom;
+	position: absolute;
+	bottom: 0;
+}
+
+#languageBar {
+	position: absolute;
+	padding-top: 10px;
+	top: 0;
+	right: 0;
+	width: 100px;
+	height: 20px;	
+}
+	
+
+.topMenuForm {
+   overflow: hidden;
+   background: #ccc;
+   border: 1px solid #fff;
+}
+
+#operateMenu {
+	float: left; 
+	margin-left: 20px; 
+	margin-top: 10px; 
+	background: url(../img/operatebackground.png);
+	border: 1px solid #000; 
+	width: 150px; 
+	height: 350px; 
+	text-align: center;
+	position: absolute; 
+	z-index: 1;
+}
+
+#operateMenu h2 {
+	font-size: 12px;
+	font-weight: bold;
+	margin-bottom: -5px;
+}

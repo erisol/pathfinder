@@ -1,0 +1,57 @@
+<?php
+// Include global variables
+include("/php/global.php");
+?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+
+<!-- Stylesheets -->
+<!-- Reset CSS -->
+<link rel="stylesheet" type="text/css" href="style/reset.css" />
+
+<!-- Website template CSS -->
+<link rel="stylesheet" type="text/css" href="style/template.css" />
+<!-- /Stylesheets -->
+
+
+<!-- Import necessary libraries -->
+
+<!-- External -->
+<!-- JQuery -->
+<script type="text/javascript" src="http://code.jquery.com/jquery-1.9.1.js"></script>
+
+<!-- KineticJS -->
+<script type="text/javascript" src="http://d3lp1msu2r81bx.cloudfront.net/kjs/js/lib/kinetic-v4.5.5.min.js"></script>
+<!-- /External -->
+
+<!-- Internal -->
+
+<!-- /Internal -->
+
+<title>$siteTitle</title>
+</head>
+
+<body>
+
+	<div id="topBar">
+    
+    	<div id="topMenu">
+            Jeg skal fra: 
+				<select name="fra">
+					<option value="#">ARRAY OVER ROM</option>
+				</select>
+			 og skal til: 
+<select name="til">
+<option value="#">ARRAY OVER ROM</option>
+</select> 
+Handicapped <input name="" type="checkbox" value="Handicapped?" />
+<button>Vis Vei!</button></div>
+        
+    </div>
+    
+    
+
+</body>
+</html>
