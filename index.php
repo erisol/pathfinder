@@ -45,6 +45,8 @@ include("php/global.php");
 
 <!-- Internal -->
 
+<script type="text/javascript" src="script/sitefunctions.js"></script>
+
 <!-- /Internal -->
 
 <title><?php echo $siteTitle; ?></title>
@@ -57,19 +59,28 @@ include("php/global.php");
 
 	<div id="topBar">
     
-    	<!-- Menu top bar begin -->
+    	<!-- Popup box for disability users -->
+        
+        <span id="disabilityImageHover">
+        <img src="img/boxLeft.png" height="22" width="5" style="float:left;" />
+		<?php echo $disabilityHover; ?>
+        <img src="img/boxRight.png" height="22" width="5" style="float:right; margin-top:-22px;" />
+        </span>
+        
+        <!-- End popup box -->
     
+    	<!-- Menu top bar begin -->
     	<div id="topMenu">
         	<form name="navigate" method="POST">
 				<?php
                 
                 echo $goingFrom;
                 echo "<select class=\"topMenuForm\" name=\"from\">\n";
-                    echo "<option value\"#\">Array comes here</option>\n";
+                echo 	"<option value\"#\">Array comes here</option>\n";
                 echo "</select>\n";
                 echo $goingTo;
                 echo "\n<select class=\"topMenuForm\" name=\"to\">\n";
-                    echo "<option value\"#\">Array comes here</option>\n";
+                echo 	"<option value\"#\">Array comes here</option>\n";
                 echo "</select>\n";
                 echo $disability;
                 echo "\n<input class=\"topMenuForm\" name=\"handicapped\" type=\"checkbox\" /> &emsp; \n";
@@ -106,6 +117,7 @@ include("php/global.php");
         <div id="operateMenu">
 			<?php
 				echo "<h2>".$youAre."</h2><br />\n";
+				
 				echo $building."<br />".$floor[4]."\n";
 				echo "<br /><br />\n\n";
 				echo $zoomIn." / ".$zoomOut;
@@ -121,9 +133,112 @@ include("php/global.php");
 		</div>
         
         <!-- Map operating menu end -->
+        
+        
+		<!-- Container begin -->
+        <div id="container">
+        <script type='text/javascript'>
+		var newWidth  = document.documentElement.clientWidth;
+var newHeight = document.documentElement.clientHeight;
+		//<![CDATA[ 
+$(window).load(function(){
+var stage = new Kinetic.Stage({
+    container: 'container',
+    width: newWidth,
+    height: newHeight-80
+	
+});
+var layer = new Kinetic.Layer();
+stage.add(layer);
+
+
+// parentGroup is used in jquery events
+// so make it global
+var parentGroup;
+var zoomInButton = 0;
+var zoomOutButton = 3;
+
+// load the image and then start the app
+var image = new Image();
+image.onload = function () {
+    start();
+}
+image.src = "kart/kart_KE_5etg.jpg";
+
+// build everything, wire events
+function start() {
+
+    parentGroup = new Kinetic.Group({
+        x: 0,
+        y: 0,
+        width: image.width,
+        height: image.height,
+        draggable: true,
+		dragBoundFunc: function(pos) {
+			  var X = pos.x;
+			  var Y = pos.y;
+			  
+			  if (Y < -905) { Y=-905; }
+			  if (X < -1000) { X=-1000; }
+			  if(Y > 0) { Y=0; }
+			  if(X > 0) { X=0; }
+			  
+			  return({y:Y,x:X});
+			  
+			  }
+    });
+    layer.add(parentGroup);
+
+    var kImage = new Kinetic.Image({
+        image: image,
+        x: 0,
+        y: 0,
+        width: image.width,
+        height: image.height
+    });
+    parentGroup.add(kImage);
+    layer.draw();
+	
+	if(zoomOutButton == 3) {
+		document.getElementById("zoomOut").setAttribute("disabled");
+	}
+	
+    $("#zoomIn").click(function () {
+        parentGroup.setScale(parentGroup.getScale().x + 0.15);
+		zoomInButton++;
+		zoomOutButton--;
+			if (zoomOutButton < 0) zoomOutButton = 0;
+		if (zoomOutButton < 3) {
+			document.getElementById("zoomOut").removeAttribute("disabled");
+		}
+		if (zoomInButton == 3) {
+			document.getElementById("zoomIn").setAttribute("disabled");
+		}
+        layer.draw();
+    });
+
+    $("#zoomOut").click(function () {
+        parentGroup.setScale(parentGroup.getScale().x - 0.15);
+		zoomOutButton++;
+		zoomInButton--;
+		if (zoomInButton < 0) zoomInButton = 0;
+		if (zoomInButton < 3) {
+			document.getElementById("zoomIn").removeAttribute("disabled");
+		}
+		if (zoomOutButton == 3) {
+			document.getElementById("zoomOut").setAttribute("disabled");
+		}
+        layer.draw();
+    });
+
+}
+});//]]>  
+
+</script>
+        </div>
+		<!-- Container end -->
     
     </div>
-    
     <!-- Wrapper end -->
     
     
