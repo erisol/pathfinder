@@ -59,3 +59,7 @@ body {
 	font-weight: bold;
 	margin-bottom: -5px;
 }
+
+#container {
+	background: url(../img/operatebackground.png);
+}

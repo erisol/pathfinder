@@ -1,4 +1,7 @@
-pathfinder
+Vis Vei UiS
 ==========
 
-UiS Pathfinder
+Bacheloroppgave 2014, Universitetet i Stavanger
+
+Oppgave:
+Innendørs navigasjon som webapplikasjon.
