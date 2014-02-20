@@ -71,9 +71,8 @@ include("php/global.php");
     
     	<!-- Menu top bar begin -->
     	<div id="topMenu">
-        	<form name="navigate" method="POST">
-				<?php
-                
+        	<?php
+            echo "<form name=\"navigate\" method=\"POST\">";
                 echo $goingFrom;
                 echo "<select class=\"topMenuForm\" name=\"from\">\n";
                 echo 	"<option value\"#\">Array comes here</option>\n";
@@ -85,11 +84,12 @@ include("php/global.php");
                 echo $disability;
                 echo "\n<input class=\"topMenuForm\" name=\"handicapped\" type=\"checkbox\" /> &emsp; \n";
                 echo "<input class=\"topMenuForm\" type=\"submit\" value=\"". $showWayButton ."\" />\n";
-                ?>
-            </form>
-       </div>    
+            	echo "</form>";
+				?>
+       </div>
        
        <!-- Top bar menu end -->
+      
        
        <!-- Language bar in top bar -->
        
@@ -128,7 +128,10 @@ include("php/global.php");
 				echo $floorUp." / ".$floorDown;
 				echo "<br /><br />\n\n";
             	echo "<img id=\"floorUpImage\" src=\"img/floorUp_icon.png\" width=\"50\" height=\"50\" alt=\"". $floorUp ."\" />\n";
-            echo "<img  id=\"floorDownImage\" src=\"img/floorDown_icon.png\" width=\"50\" height=\"50\" alt=\"". $floorDown ."\" /><br />\n";
+            	echo "<img  id=\"floorDownImage\" src=\"img/floorDown_icon.png\" width=\"50\" height=\"50\" alt=\"". $floorDown ."\" /><br />\n";
+				echo "<h2>".$yourRoute."</h2><br />\n";
+				echo $goingFrom." undefined<br />\n";
+				echo $goingTo." undefined<br />\n";
 			?>
 		</div>
         

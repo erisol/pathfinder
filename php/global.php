@@ -13,6 +13,7 @@ if($_SESSION["language"] == "english") {
 $siteDescription = "Bachelorthesis 2014: In-door navigation as a web application";
 $authors = "Adam Johannsson and Erik Solhaug";
 $creationDate = "2014";
+$useMeToNavigate = "<img src=\"img/useMeEng.png\" height=\"79\" width=\"250\" alt=\"<- Use Me To Navigate\" />";
 $floor = array( "1st. floor",
 		"2nd. floor",
 		"3rd. floor",
@@ -21,8 +22,9 @@ $floor = array( "1st. floor",
 
 // Text on the website
 $youAre = "You are here: <br />\n";
-$goingFrom = "I am goin from: \n";
-$goingTo = " to: \n";
+$yourRoute = "Your route: <br />\n";
+$goingFrom = "From: \n";
+$goingTo = "To: \n";
 $disabilityHover = "Tick the box if you are movement impaired and in need of elevators to move around the different floors.";
 $disability = "&emsp; <img src=\"img/h_icon.png\" width=\"15\" height=\"15\" alt=\"". $disabilityHover ."\" onmouseover=\"showDisabilityText()\" onmouseout=\"hideDisabilityText()\" /></a>\n";
 $showWayButton = "Show me the way!";
@@ -41,6 +43,7 @@ if ($_SESSION["language"] == "norsk") {
 $siteDescription = "Bacheloroppgave 2014: Innend&oslash;rs navigasjon som webapplikasjon";
 $authors = "Adam Johannsson og Erik Solhaug";
 $creationDate = "2014";
+$useMeToNavigate = "<img src=\"img/useMeNor.png\" height=\"79\" width=\"250\" alt=\"<- Bruk meg til &aring; navigere\" />";
 $floor = array( "1. etasje\n",
 		"2. etasje\n",
 		"3. etasje\n",
@@ -49,8 +52,9 @@ $floor = array( "1. etasje\n",
 
 // Text on the website
 $youAre = "Du er her: <br />\n";
-$goingFrom = "Jeg skal fra: \n";
-$goingTo = "til: \n";
+$yourRoute = "Din rute: <br />\n";
+$goingFrom = "Fra: \n";
+$goingTo = "Til: \n";
 $disabilityHover = "Hvis du har behov for &aring; bruke heis istedet for trapper, vennligst kryss av boksen.";
 $disability = "&emsp; <img src=\"img/h_icon.png\" width=\"15\" height=\"15\" alt=\"". $disabilityHover ."\" onmouseover=\"showDisabilityText()\"  onmouseout=\"hideDisabilityText()\" /></a>\n";
 $showWayButton = "Vis Vei!";
