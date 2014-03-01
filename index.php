@@ -105,141 +105,49 @@ include("php/global.php");
     
     <!-- Top bar end -->
     
+        	<!-- Map operating menu begin -->
+        
+        <div id="operateMenu">
+        	<div id="leftOperate">
+			<?php
+				echo "<strong>".$youAre."</strong>". $building ." ";
+			?>
+            </div>
+            <div id="rightOperate">
+            <?php
+				echo "<img id=\"zoomInImage\" src=\"img/zoomIn_icon.png\" width=\"30\" height=\"30\" alt=\"". $zoomIn ."\" />";
+				echo "<img id=\"zoomOutImage\" src=\"img/zoomOut_icon.png\" width=\"30\" height=\"30\" alt=\"". $zoomOut ."\" />";
+				echo "<img id=\"floorUpImage\" src=\"img/floorUp_icon.png\" width=\"30\" height=\"30\" alt=\"". $floorUp ."\" onclick=\"floorUp()\" />";
+				echo "<img  id=\"floorDownImage\" src=\"img/floorDown_icon.png\" width=\"30\" height=\"30\" alt=\"". $floorDown ."\" onclick=\"floorDown()\" /><br />";
+			?>
+            </div>
+		</div>
+        
+        <!-- Map operating menu end -->
+    
     <!-- Wrapper begin -->
     
     <div id="wrapper">
     
     
-    
-    
-    	<!-- Map operating menu begin -->
-        
-        <div id="operateMenu">
-			<?php
-				echo "<h2>".$youAre."</h2><br />\n";
-				
-				echo $building."<br />".$floor[4]."\n";
-				echo "<br /><br />\n\n";
-				echo $zoomIn." / ".$zoomOut;
-				echo "<br /><br />\n\n";
-            	echo "<img id=\"zoomInImage\" src=\"img/zoomIn_icon.png\" width=\"50\" height=\"50\" alt=\"". $zoomIn ."\" />\n";
-           		echo "<img id=\"zoomOutImage\" src=\"img/zoomOut_icon.png\" width=\"50\" height=\"50\" alt=\"". $zoomOut ."\" />\n";
-				echo "<br /><br />\n\n";
-				echo $floorUp." / ".$floorDown;
-				echo "<br /><br />\n\n";
-            	echo "<img id=\"floorUpImage\" src=\"img/floorUp_icon.png\" width=\"50\" height=\"50\" alt=\"". $floorUp ."\" />\n";
-            	echo "<img  id=\"floorDownImage\" src=\"img/floorDown_icon.png\" width=\"50\" height=\"50\" alt=\"". $floorDown ."\" /><br />\n";
-				echo "<h2>".$yourRoute."</h2><br />\n";
-				echo $goingFrom." undefined<br />\n";
-				echo $goingTo." undefined<br />\n";
-			?>
-		</div>
-        
-        <!-- Map operating menu end -->
         
         
 		<!-- Container begin -->
-        <div id="container">
-        <script type='text/javascript'>
-		var newWidth  = document.documentElement.clientWidth;
-var newHeight = document.documentElement.clientHeight;
-		//<![CDATA[ 
-$(window).load(function(){
-var stage = new Kinetic.Stage({
-    container: 'container',
-    width: newWidth,
-    height: newHeight-80
-	
-});
-var layer = new Kinetic.Layer();
-stage.add(layer);
-
-
-// parentGroup is used in jquery events
-// so make it global
-var parentGroup;
-var zoomInButton = 0;
-var zoomOutButton = 3;
-
-// load the image and then start the app
-var image = new Image();
-image.onload = function () {
-    start();
-}
-image.src = "kart/kart_KE_5etg.jpg";
-
-// build everything, wire events
-function start() {
-
-    parentGroup = new Kinetic.Group({
-        x: 0,
-        y: 0,
-        width: image.width,
-        height: image.height,
-        draggable: true,
-		dragBoundFunc: function(pos) {
-			  var X = pos.x;
-			  var Y = pos.y;
-			  
-			  if (Y < -905) { Y=-905; }
-			  if (X < -1000) { X=-1000; }
-			  if(Y > 0) { Y=0; }
-			  if(X > 0) { X=0; }
-			  
-			  return({y:Y,x:X});
-			  
-			  }
-    });
-    layer.add(parentGroup);
-
-    var kImage = new Kinetic.Image({
-        image: image,
-        x: 0,
-        y: 0,
-        width: image.width,
-        height: image.height
-    });
-    parentGroup.add(kImage);
-    layer.draw();
-	
-	if(zoomOutButton == 3) {
-		document.getElementById("zoomOut").setAttribute("disabled");
-	}
-	
-    $("#zoomIn").click(function () {
-        parentGroup.setScale(parentGroup.getScale().x + 0.15);
-		zoomInButton++;
-		zoomOutButton--;
-			if (zoomOutButton < 0) zoomOutButton = 0;
-		if (zoomOutButton < 3) {
-			document.getElementById("zoomOut").removeAttribute("disabled");
-		}
-		if (zoomInButton == 3) {
-			document.getElementById("zoomIn").setAttribute("disabled");
-		}
-        layer.draw();
-    });
-
-    $("#zoomOut").click(function () {
-        parentGroup.setScale(parentGroup.getScale().x - 0.15);
-		zoomOutButton++;
-		zoomInButton--;
-		if (zoomInButton < 0) zoomInButton = 0;
-		if (zoomInButton < 3) {
-			document.getElementById("zoomIn").removeAttribute("disabled");
-		}
-		if (zoomOutButton == 3) {
-			document.getElementById("zoomOut").setAttribute("disabled");
-		}
-        layer.draw();
-    });
-
-}
-});//]]>  
-
-</script>
+        <div id="container" >
+        		
+                <!-- Canvas begin -->
+        		<div id="canvas"></div>
+                <!-- Canvas end -->
         </div>
 		<!-- Container end -->
+        
+        <!-- Scripts running in container -->
+        <script>
+		$(document).ready(checkFloor());
+		setWrapper();
+		setContainer();
+        </script>
+        <!-- Scripts running in container end -->
     
     </div>
     <!-- Wrapper end -->
