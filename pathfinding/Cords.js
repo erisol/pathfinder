@@ -7,7 +7,7 @@ function Cords(x, y){
 		return this.x;
 	};
 	//Henter y kordinatene til noden.
-	this.getYCords = function(){
+	this.getYCord = function(){
 		return this.y;
 	};
 	//Setter x og y kordinater til noden.

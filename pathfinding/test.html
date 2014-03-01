@@ -10,13 +10,16 @@
 </head>
 
 <body>
-<button type="button" onclick="createnodes()">Try it</button>
+<button type="button" onclick="createnodes()">Make nodes</button>
+<button type="button" onclick="drawnodetest()">Draw Lines between nodes</button>
+<canvas id="drawtestcanvas" width="1000" height="600" style="border:2px solid #d3d3d3;">
+Your browser does not support the HTML5 canvas tag.</canvas>
 <script>
 function createnodes(){
-	var nodes = new Array();
+	nodes = new Array();
 	try{
 		for(var x = 0; x < 4; x++){
-			nodes.push(new Node(x,x,x));
+			nodes.push(new Node(x,10+150*x,10+150*x));
 		}
 	}catch(createnodeerr){
 		console.log("(TEST)Could not create nodes: \n" + createnodeerr);
@@ -35,7 +38,7 @@ function createnodes(){
 	}catch(adderr){
 		console.log("(TEST)Could not add neighbors to nodes: \n" + adderr);
 	}
-	nodes[2].setCords(12, 24);
+	nodes[2].setCords(120, 343);
 	//Skrur på Handicap.
 	for(var s = 0; s < nodes.length; s++){
 		nodes[s].handicap();
@@ -64,6 +67,24 @@ function createnodes(){
 		console.log("(TEST)Something went wrong when adding cost");
 	}
 }
+function drawnodetest(){
+var c=document.getElementById("drawtestcanvas");
+var ctx=c.getContext("2d");
+ctx.beginPath();
+ctx.lineWidth = 2;
+ctx.fillStyle = "#FF0000";
+nodesize = 15;
+ctx.fillRect(nodes[0].getCords().getXCord()-nodesize/2, nodes[0].getCords().getYCord()-nodesize/2, nodesize, nodesize);
+ctx.fillRect(nodes[1].getCords().getXCord()-nodesize/2, nodes[1].getCords().getYCord()-nodesize/2, nodesize, nodesize);
+ctx.fillRect(nodes[2].getCords().getXCord()-nodesize/2, nodes[2].getCords().getYCord()-nodesize/2, nodesize, nodesize);
+ctx.fillRect(nodes[3].getCords().getXCord()-nodesize/2, nodes[3].getCords().getYCord()-nodesize/2, nodesize, nodesize);
+ctx.moveTo(nodes[0].getCords().getXCord(), nodes[0].getCords().getYCord());
+ctx.lineTo(nodes[1].getCords().getXCord(), nodes[1].getCords().getYCord());
+ctx.lineTo(nodes[2].getCords().getXCord(), nodes[2].getCords().getYCord());
+ctx.lineTo(nodes[3].getCords().getXCord(), nodes[3].getCords().getYCord());
+ctx.stroke();
+}
 </script>
+
 </body>
 </html>
