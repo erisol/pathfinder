@@ -6,16 +6,44 @@
 <title>Create nodes</title>
 </head>
 <body>
-<div style="width: 3000px; height: 1092px;">
+<div style="width: 2486px; height: 1092px;">
 
         <div style="float:left; width: 300px; height: 1092px; border-right: 3px solid #000; text-align: center;">
         
         <strong>Create nodes</strong>
-        
+        <br /><br />
+        Click on the map to the right to add a node.
+        <br /><br />
+        Coordinates:
+        <span id="mouseCoords"></span>
         </div>
 
-        <div style="float:right;">
-        <canvas id="makeNodeCanvas" width="2182" height="1092" style="background: url(../kart/kart_KE_5etg.jpg);">
+        <div style="float:left;">
+        <canvas id="makeNodeCanvas" width="2182" height="1092" style="background: url(../kart/kart_KE_5etg.jpg); left: 0;">
+            <script>
+      function getMousePos(canvas, evt) {
+        var rect = canvas.getBoundingClientRect();
+        return {
+          x: evt.clientX - rect.left,
+          y: evt.clientY - rect.top
+        };
+      }
+      var canvas = document.getElementById('makeNodeCanvas');
+      var context = canvas.getContext('2d');
+	  
+	  function writeMessage(message) {
+		  
+		  var messageCoords = document.getElementById("mouseCoords");
+		  messageCoords.innerHTML = message;
+		  
+	  }
+	  
+      canvas.addEventListener('mousemove', function(evt) {
+        var mousePos = getMousePos(canvas, evt);
+        var message = mousePos.x + ',' + mousePos.y;
+        writeMessage(message);
+      }, false);
+    </script>
         </div>
 </div>
 </body>
