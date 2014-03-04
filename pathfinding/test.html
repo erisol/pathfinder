@@ -19,7 +19,7 @@ function createnodes(){
 	nodes = new Array();
 	try{
 		for(var x = 0; x < 4; x++){
-			nodes.push(new Node(x,10+150*x,10+150*x));
+			nodes.push(new Node(x,10+150*x,10+150*x, 1));
 		}
 	}catch(createnodeerr){
 		console.log("(TEST)Could not create nodes: \n" + createnodeerr);
@@ -38,7 +38,7 @@ function createnodes(){
 	}catch(adderr){
 		console.log("(TEST)Could not add neighbors to nodes: \n" + adderr);
 	}
-	nodes[2].setCords(120, 343);
+	nodes[2].setCords(120, 343, 1);
 	//Skrur på Handicap.
 	for(var s = 0; s < nodes.length; s++){
 		nodes[s].handicap();

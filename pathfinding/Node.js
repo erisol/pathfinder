@@ -1,7 +1,7 @@
 //Funksjonen for en node.
-function Node(id, x, y){
+function Node(id, x, y, z){
 	this.id = id;
-	var cords = new Cords(x, y);
+	var cords = new Cords(x, y, z);
 	var cost = 10000;
 	var neighbors = new Array();
 	var prevNode = id;
@@ -28,8 +28,8 @@ function Node(id, x, y){
 		}
 	};
 	//Setter kordinatene til noden, tenkt brukt i sammenheng med kartene.
-	this.setCords = function(x, y){
-		cords.setCords(x, y);
+	this.setCords = function(x, y, z){
+		cords.setCords(x, y, z);
 	};
 	//Setter hva som var den forrige noden, i følge den optimale pathen.
 	var setPrevNode = function(nodeid){
