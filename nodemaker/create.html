@@ -16,6 +16,28 @@
         <br /><br />
         Coordinates:
         <span id="mouseCoords"></span>
+        <br /><br />
+        Node information:
+        <form name="storeCoords">
+        <table width="295" border="0" cellspacing="0" cellpadding="0">
+  <tr>
+    <td>X:</td>
+    <td><input name="xVal" type="text" maxlength="4" value="" /></td>
+  </tr>
+  <tr>
+    <td>Y:</td>
+    <td><input name="yVal" type="text" maxlength="4" value="" /></td>
+  </tr>
+  <tr>
+    <td>Floor:</td>
+    <td><input name="fVal" type="text" maxlength="4" value="5" /></td>
+  </tr>
+   <tr>
+    <td>Cost:</td>
+    <td><input name="cVal" type="text" maxlength="4" value="10000" /></td>
+  </tr>
+</table>
+	</form>
         </div>
 
         <div style="float:left;">
@@ -43,6 +65,15 @@
         var message = mousePos.x + ',' + mousePos.y;
         writeMessage(message);
       }, false);
+	  
+	  canvas.addEventListener('click', function(evt) {
+		 var xvalue = document.getElementsByName("xVal");
+		 var yvalue = document.getElementsByName("yVal");
+		 var mousePos = getMousePos(canvas, evt);
+		 xvalue[0].value = mousePos.x;
+		 yvalue[0].value = mousePos.y;
+		 
+	  }, false);
     </script>
         </div>
 </div>
