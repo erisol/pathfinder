@@ -30,14 +30,20 @@
   </tr>
   <tr>
     <td>Floor:</td>
-    <td><input name="fVal" type="text" maxlength="4" value="5" /></td>
+    <td><input name="fVal" type="text" maxlength="1" value="5" /></td>
   </tr>
-   <tr>
-    <td>Cost:</td>
-    <td><input name="cVal" type="text" maxlength="4" value="10000" /></td>
+  <tr>
+    <td></td>
+    <td><input name="newNode" type="button" value="Add node" onclick="addNode()" /></td>
   </tr>
 </table>
 	</form>
+    
+    <br /><br />
+    Nodes added:
+    <span id="theNodes"><br /></span>
+    <br /><br />
+    
         </div>
 
         <div style="float:left;">
@@ -73,7 +79,34 @@
 		 xvalue[0].value = mousePos.x;
 		 yvalue[0].value = mousePos.y;
 		 
+		 var c=document.getElementById("makeNodeCanvas");
+		 var ctx=c.getContext("2d");
+		 ctx.fillStyle="#FF0000";
+		 ctx.fillRect(mousePos.x-3,mousePos.y-3,6,6);
+		 ctx.stroke();
+		 
+		 
 	  }, false);
+	  
+	  var array5Floor = [];
+	  var nextId = 0;
+	  
+	  function addNode() {
+		  var xvalue = document.getElementsByName("xVal")[0].value;
+		  var yvalue = document.getElementsByName("yVal")[0].value;
+		  var fvalue = document.getElementsByName("fVal")[0].value;
+		  array5Floor[nextId] = xvalue +","+ yvalue +","+ fvalue;
+		  displayNodes();
+		  nextId++;
+	  }
+	  
+	  var displayedNodes = [];
+	  
+	  function displayNodes() {
+		  var nodesDisplayed = document.getElementById("theNodes");
+		  var displayId = nextId+1;
+		  nodesDisplayed.innerHTML += displayId+": "+ array5Floor[nextId].toString()+" <a href='#' onclick='removeNode("+nextId+")'>Remove this</a><br />";
+	  }
     </script>
         </div>
 </div>
