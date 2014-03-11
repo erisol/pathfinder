@@ -174,44 +174,70 @@
 	  
 	  var xGridArray = [];
 	  var yGridArray = [];
-	  var xGridID = 0;
-	  var yGridID = 0;
+	  var gridArrayIndex = 0;
 	  
 	  //Store X value of the Y grid
 	  function addYGrid() {
-		  var yElementID = String("canvasGrid"+nextGrid);
-		  var getYValue = document.getElementById(yElementID).offsetLeft;
-		  getYValue = getYValue-303;
-		  yGridArray[yGridID] = getYValue;
+		  var xElementID = String("canvasGrid"+nextGrid);
+		  var getXValue = document.getElementById(xElementID).offsetLeft;
+		  getXValue -= 303;
+		  xGridArray[gridArrayIndex] = getXValue;
+		  yGridArray[gridArrayIndex] = 0;
+		  addGridToList();
+		  gridArrayIndex++;
 	  }
 	  
 	  // Store Y value of the X grid
 	  function addXGrid() {
-		  var xElementID = String("canvasGrid"+nextGrid);
-		  var getXValue = document.getElementById(xElementID).offsetTop;
-		  xGridArray[xGridID] = getXValue;
+		  
+		  var yElementID = String("canvasGrid"+nextGrid);
+		  var getYValue = document.getElementById(yElementID).offsetTop;
+		  yGridArray[gridArrayIndex] = getYValue;
+		  xGridArray[gridArrayIndex] = 0;
+		  addGridToList();
+		  gridArrayIndex++;
 	  }
 	  
 	  function addGridToList() {
 		  var parentElement = document.getElementById("createdGridsDisplay");
-		  var itemElement = String("canvasgrid"+nextGrid);
-		  var itemX = document.getElementById(itemElement).offsetTop;
-		  var itemY = document.getElementById(itemElement).offsetLeft;
-		  itemY = itemY - 303;
-		  var itemDisplayText = String("X: "+ itemX + ", Y: "+ itemY + " <a href='#' onclick='clearGrid("+nextGrid+")'>Remove this</a>");
-		  var newItem = document.createElement("li");
-		  newItem.setAttribute("class", itemElement)
-		  var itemText = newItem.textContent(itemDisplayText);
-		  parentElement.appendChild(newItem);
+		  var itemElementID = String("canvasGridList"+nextGrid);
+		  var itemElement = document.getElementById(itemElementID);
+		  var itemX = xGridArray[gridArrayIndex];
+		  var itemY = yGridArray[gridArrayIndex];
+		  var itemDisplayText = "X: " + itemX + ", Y: "+ itemY + " ";
+   		  var newList= document.createElement("li");
+    	  var newText = document.createTextNode(itemDisplayText);
+		  newList.setAttribute("id", itemElementID);
+    	  newList.appendChild(newText);
+		  newList.innerHTML += "<a href='#' onclick='clearGrid("+nextGrid+")'>Remove this</a>";
+   		  parentElement.appendChild(newList);
+   		  console.log("li created successfully");
 	  }
+	  
+	  function removeGridFromList(n) {
+		  removeItem = String("#canvasGridList"+n);
+		  $(removeItem).remove();
+		  console.log("successfully removed item "+n+" from the list");
+		  
+		}
+		
+		function removeGridsFromList() {
+			for (var i = 0; i <= nextGrid; i++) {
+		  removeItem = String("#canvasGridList"+i);
+		  $(removeItem).remove();
+			}
+		  console.log("successfully all items from the list");
+		  
+		}
 	  
 	  function addGridsToFile() {
 		  
 	  }
 	  
 	  function clearGrid(n) {
-		  removeGrid = String(".canvasGrid"+n);
+		  removeGrid = String("#canvasGrid"+n);
 		  $(removeGrid).remove();
+		  removeGridFromList(n);
 		  console.log("successfully removed grid number"+n);
 		  }
 	  
@@ -223,7 +249,11 @@
 			  removeGrids = String("#canvasGrid"+i);
 			  $(removeGrids).remove();
 		  }
+		  removeGridsFromList();
 		  nextGrid = 0;
+		  xGridArray = [];
+	      yGridArray = [];
+	      gridArrayIndex = 0;
 		  console.log("successfully removed all grids");
 	  }
 	
