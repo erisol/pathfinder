@@ -31,8 +31,10 @@ this.pathfind = function(startnode, endnode){
 	var fail = 0;
 	while(newnodes.length !== 0 && calculatednodes < nodes.length){
 			var currentnode = newnodes.shift();
-			if(currentnode.id == endnode.id){			
+			if(currentnode.id == endnode.id){	
+				if(checkpaths(newnodes, currentnode.getCost())){	
 					return;
+				}
 			}
 			if(currentnode.isdone() !== 1){
             	currentnode.setdone();
@@ -51,7 +53,14 @@ this.pathfind = function(startnode, endnode){
 		}
 	}
 };
-
+function checkpaths(nodes, currentendcost){
+	for(var indx = 0; indx <nodes.length; indx++){
+		if(nodes[indx].getCost < currentendcost){
+			return false;
+		}
+	}
+	return true;
+}
 function Dijkstranodes(node, cost){
 	this.node = node;
 	this.cost = cost;
