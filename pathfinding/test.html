@@ -6,6 +6,7 @@
 <script src="Cost.js"></script>
 <script src="Node.js"></script>
 <script src="Dijkstra.js"></script>
+<script src="drawPath.js"></script>
 <meta charset="utf-8">
 <title>Test</title>
 </head>
@@ -103,20 +104,11 @@ function drawnodetest(){
   		ctx.fillText(nodes[nrnodes].id + "  Cost: " + nodes[nrnodes].getCost(),nodes[nrnodes].getCoords().getXCoord()+nodesize, nodes[nrnodes].getCoords().getYCoord()+nodesize);
 	}
 	ctx.moveTo(goal.getCoords().getXCoord(), goal.getCoords().getYCoord());
-	drawpath(startnode, goal);/*
+	new drawPath(startnode, goal);/*
 	ctx.lineTo(nodes[nodes.length-1].getPrevNode().getPrevNode().getCoords().getXCoord(), nodes[nodes.length-1].getPrevNode().getPrevNode().getCoords().getYCoord());
 	ctx.lineTo(nodes[nodes.length-1].getPrevNode().getPrevNode().getPrevNode().getCoords().getXCoord(), nodes[nodes.length-1].getPrevNode().getPrevNode().getPrevNode().getCoords().getYCoord());
 	ctx.lineTo(nodes[nodes.length-1].getPrevNode().getPrevNode().getPrevNode().getPrevNode().getCoords().getXCoord(), nodes[nodes.length-1].getPrevNode().getPrevNode().getPrevNode().getPrevNode().getCoords().getYCoord());
-	*/ctx.stroke();
-}
-this.drawpath = function(startnode, goal){
-	var c=document.getElementById("drawtestcanvas");
-	var ctx=c.getContext("2d");
-	ctx.lineTo(goal.getPrevNode().getCoords().getXCoord(), goal.getPrevNode().getCoords().getYCoord());
-	if(startnode.id !== goal.getPrevNode().id){
-		//console.log(startnode.id + "!=="+goal.getPrevNode().id);
-		drawpath(startnode, goal.getPrevNode());
-	}
+	*/
 }
 </script>
 
