@@ -38,7 +38,7 @@ function createnodes(){
 	}catch(adderr){
 		console.log("(TEST)Could not add neighbors to nodes: \n" + adderr);
 	}
-	nodes[2].setCords(120, 343, 1);
+	nodes[2].setCoords(120, 343, 1);
 	//Skrur på Handicap.
 	for(var s = 0; s < nodes.length; s++){
 		nodes[s].handicap();
@@ -68,21 +68,21 @@ function createnodes(){
 	}
 }
 function drawnodetest(){
-var c=document.getElementById("drawtestcanvas");
-var ctx=c.getContext("2d");
-ctx.beginPath();
-ctx.lineWidth = 2;
-ctx.fillStyle = "#FF0000";
-nodesize = 15;
-ctx.fillRect(nodes[0].getCords().getXCord()-nodesize/2, nodes[0].getCords().getYCord()-nodesize/2, nodesize, nodesize);
-ctx.fillRect(nodes[1].getCords().getXCord()-nodesize/2, nodes[1].getCords().getYCord()-nodesize/2, nodesize, nodesize);
-ctx.fillRect(nodes[2].getCords().getXCord()-nodesize/2, nodes[2].getCords().getYCord()-nodesize/2, nodesize, nodesize);
-ctx.fillRect(nodes[3].getCords().getXCord()-nodesize/2, nodes[3].getCords().getYCord()-nodesize/2, nodesize, nodesize);
-ctx.moveTo(nodes[0].getCords().getXCord(), nodes[0].getCords().getYCord());
-ctx.lineTo(nodes[1].getCords().getXCord(), nodes[1].getCords().getYCord());
-ctx.lineTo(nodes[2].getCords().getXCord(), nodes[2].getCords().getYCord());
-ctx.lineTo(nodes[3].getCords().getXCord(), nodes[3].getCords().getYCord());
-ctx.stroke();
+	var c=document.getElementById("drawtestcanvas");
+	var ctx=c.getContext("2d");
+	ctx.beginPath();
+	ctx.lineWidth = 2;
+	ctx.fillStyle = "#FF0000";
+	nodesize = 15;
+	ctx.fillRect(nodes[0].getCoords().getXCoord()-nodesize/2, nodes[0].getCoords().getYCoord()-nodesize/2, nodesize, nodesize);
+	ctx.fillRect(nodes[1].getCoords().getXCoord()-nodesize/2, nodes[1].getCoords().getYCoord()-nodesize/2, nodesize, nodesize);
+	ctx.fillRect(nodes[2].getCoords().getXCoord()-nodesize/2, nodes[2].getCoords().getYCoord()-nodesize/2, nodesize, nodesize);
+	ctx.fillRect(nodes[3].getCoords().getXCoord()-nodesize/2, nodes[3].getCoords().getYCoord()-nodesize/2, nodesize, nodesize);
+	ctx.moveTo(nodes[0].getCoords().getXCoord(), nodes[0].getCoords().getYCoord());
+	ctx.lineTo(nodes[1].getCoords().getXCoord(), nodes[1].getCoords().getYCoord());
+	ctx.lineTo(nodes[2].getCoords().getXCoord(), nodes[2].getCoords().getYCoord());
+	ctx.lineTo(nodes[3].getCoords().getXCoord(), nodes[3].getCoords().getYCoord());
+	ctx.stroke();
 }
 </script>
 

@@ -1,11 +1,15 @@
 //Funksjonen for en node.
 function Node(id, x, y, z){
 	this.id = id;
-	var cords = new Cords(x, y, z);
+	var coords = new Coords(x, y, z);
 	var cost = 10000;
 	var neighbors = new Array();
 	var prevNode = id;
 	//Legger til en nabo node(En kant som man kan gå på til å komme til neste node) 
+	this.restart = function(){
+		prevnode = id;
+		cost = 10000;
+	}
 	this.addneighbor = function(type, id, cost){
 		try{ 
 		neighbors.push(new Edge(type, id, cost));	
@@ -52,8 +56,8 @@ function Node(id, x, y, z){
 		}
 	};
 	//Henter inn kordinatene til noden.
-	this.getCords = function(){
-		return cords;
+	this.getCoords = function(){
+		return coords;
 	};
 	//Henter "cost" til noden.
 	this.getCost = function(){
@@ -64,7 +68,7 @@ function Node(id, x, y, z){
 		return neighbors;
 	};
 	this.toString = function(){
-		return "This nodes id is " + id + "\n" + cords.toString() + "and the current cost to get to the node is " + cost + "\n";	
+		return "This nodes id is " + id + "\n" + coords.toString() + "and the current cost to get to the node is " + cost + "\n";	
 	};
 	this.printneighbors = function(){
 		var neighedges = "Edges:\n";

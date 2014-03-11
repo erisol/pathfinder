@@ -9,6 +9,9 @@ function Cost(){
 	this.getCost = function(){
 		return cost;	
 	};
+	this.restart = function(){
+		cost = 0;
+	};
 	//toString for testing av cost
 	this.toString = function(){
 		return "This cost: " + cost;
