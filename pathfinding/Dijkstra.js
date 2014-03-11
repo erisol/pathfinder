@@ -54,8 +54,8 @@ this.pathfind = function(startnode, endnode){
 	}
 };
 function checkpaths(nodes, currentendcost){
-	for(var indx = 0; indx <nodes.length; indx++){
-		if(nodes[indx].getCost < currentendcost){
+	for(var indx = 0; indx < nodes.length; indx++){
+		if(nodes[indx].getCost() < currentendcost){
 			return false;
 		}
 	}

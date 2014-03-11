@@ -27,7 +27,7 @@ function createnodes(){
 	}
 	//Legger inn kanter til nodene.
 	try{
-		nodes[0].addneighbor(0,nodes[1],1);0
+		nodes[0].addneighbor(0,nodes[1],1);
 		nodes[1].addneighbor(0,nodes[0],1);
 		//Heiskant
 		nodes[1].addneighbor(2,nodes[2],1);
@@ -50,6 +50,7 @@ function createnodes(){
 		
 		nodes[2].addneighbor(2,nodes[6],1);
 		nodes[6].addneighbor(2,nodes[2],1);
+		nodes[0].addneighbor(1,nodes[7],1);
 		//Tester metode får å endre kordinater.
 	}catch(addErr){
 		console.log("(TEST)Could not add neighbors to nodes: \n" + addErr);
