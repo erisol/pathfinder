@@ -5,6 +5,7 @@
 <script src="Edge.js"></script>
 <script src="Cost.js"></script>
 <script src="Node.js"></script>
+<script src="Dijkstra.js"></script>
 <meta charset="utf-8">
 <title>Test</title>
 </head>
@@ -18,46 +19,61 @@ Your browser does not support the HTML5 canvas tag.</canvas>
 function createnodes(){
 	nodes = new Array();
 	try{
-		for(var x = 0; x < 4; x++){
-			nodes.push(new Node(x,10+150*x,10+150*x, 1));
+		for(var x = 0; x < 8; x++){
+			nodes.push(new Node(x,10+70*x,10+70*x, 1));
 		}
-	}catch(createnodeerr){
-		console.log("(TEST)Could not create nodes: \n" + createnodeerr);
+	}catch(createNodeErr){
+		console.log("(TEST)Could not create nodes: \n" + createNodeErr);
 	}
 	//Legger inn kanter til nodene.
 	try{
-		nodes[0].addneighbor(0,1,1);
-		nodes[1].addneighbor(0,0,1);
+		nodes[0].addneighbor(0,nodes[1],1);0
+		nodes[1].addneighbor(0,nodes[0],1);
 		//Heiskant
-		nodes[1].addneighbor(2,2,1);
-		nodes[2].addneighbor(0,1,1);
+		nodes[1].addneighbor(2,nodes[2],1);
+		nodes[2].addneighbor(2,nodes[1],1);
 		//Trappkant
-		nodes[2].addneighbor(1,3,1);
-		nodes[3].addneighbor(0,2,1);
+		nodes[2].addneighbor(1,nodes[3],1);
+		nodes[3].addneighbor(1,nodes[2],1);
+		
+		nodes[3].addneighbor(0,nodes[4],1);
+		nodes[4].addneighbor(0,nodes[3],1);
+		
+		nodes[4].addneighbor(0,nodes[5],1);
+		nodes[5].addneighbor(0,nodes[4],1);
+		
+		nodes[5].addneighbor(1,nodes[6],1);
+		nodes[6].addneighbor(1,nodes[5],1);
+		
+		nodes[6].addneighbor(0,nodes[7],1);
+		nodes[7].addneighbor(0,nodes[6],1);
+		
+		nodes[2].addneighbor(2,nodes[6],1);
+		nodes[6].addneighbor(2,nodes[2],1);
 		//Tester metode får å endre kordinater.
-	}catch(adderr){
-		console.log("(TEST)Could not add neighbors to nodes: \n" + adderr);
+	}catch(addErr){
+		console.log("(TEST)Could not add neighbors to nodes: \n" + addErr);
 	}
 	nodes[2].setCoords(120, 343, 1);
-	//Skrur på Handicap.
+	 //Skrur på Handicap.
 	for(var s = 0; s < nodes.length; s++){
-		nodes[s].handicap();
+		//nodes[s].handicap();
 		//Sjekker om alle trapper er i "Handicap-mode"
 		edge = nodes[s].getneighbors()
 		for(var indx = 0; indx < edge.length; indx++){
 			if(edge[indx].getType() === 1 && edge[indx].getCost() !== 1000){
-				console.log("(TEST)Error changing to handicap mode");
+				//console.log("(TEST)Error changing to handicap mode");
 			}		
 		}
 		//Skriver ut alle noder og dens edges til console.
-		/*console.log(nodes[s].toString() +"\n"+ nodes[s].printneighbors());*/
+		//console.log(nodes[s].toString() +"\n"+ nodes[s].printneighbors());
 	}
 	
 	//Tester metode får å sette optimal path får å komme til en node i grafen.
-	check = nodes[2].setOptimalCostPath(22, 1);
-	if(check && (nodes[2].getPrevNode() !== 1 || nodes[2].getCost() !== 22)){
-			console.log("(TEST)Something went wrong adding new optimal path");
-	}
+	//check = nodes[2].setOptimalCostPath(22, 1);
+	//if(check && (nodes[2].getPrevNode() !== 1 || nodes[2].getCost() !== 22)){
+		//	console.log("(TEST)Something went wrong adding new optimal path");
+	//}
 	
 	
 	var cost = new Cost();
@@ -70,19 +86,35 @@ function createnodes(){
 function drawnodetest(){
 	var c=document.getElementById("drawtestcanvas");
 	var ctx=c.getContext("2d");
+	var dijkstrapath = new Dijkstra();
+	dijkstrapath.addnodes(nodes);
+	var startnode = nodes[0];
+	var goal = nodes[nodes.length-1];
+	/*var path = */dijkstrapath.pathfind(startnode, goal);
 	ctx.beginPath();
 	ctx.lineWidth = 2;
 	ctx.fillStyle = "#FF0000";
 	nodesize = 15;
-	ctx.fillRect(nodes[0].getCoords().getXCoord()-nodesize/2, nodes[0].getCoords().getYCoord()-nodesize/2, nodesize, nodesize);
-	ctx.fillRect(nodes[1].getCoords().getXCoord()-nodesize/2, nodes[1].getCoords().getYCoord()-nodesize/2, nodesize, nodesize);
-	ctx.fillRect(nodes[2].getCoords().getXCoord()-nodesize/2, nodes[2].getCoords().getYCoord()-nodesize/2, nodesize, nodesize);
-	ctx.fillRect(nodes[3].getCoords().getXCoord()-nodesize/2, nodes[3].getCoords().getYCoord()-nodesize/2, nodesize, nodesize);
-	ctx.moveTo(nodes[0].getCoords().getXCoord(), nodes[0].getCoords().getYCoord());
-	ctx.lineTo(nodes[1].getCoords().getXCoord(), nodes[1].getCoords().getYCoord());
-	ctx.lineTo(nodes[2].getCoords().getXCoord(), nodes[2].getCoords().getYCoord());
-	ctx.lineTo(nodes[3].getCoords().getXCoord(), nodes[3].getCoords().getYCoord());
-	ctx.stroke();
+	for(var nrnodes = 0; nrnodes < nodes.length; nrnodes++){
+		ctx.fillRect(nodes[nrnodes].getCoords().getXCoord()-nodesize/2, nodes[nrnodes].getCoords().getYCoord()-nodesize/2, nodesize, nodesize);
+  		ctx.font = "bold 16px Arial";
+  		ctx.fillText(nodes[nrnodes].id + "  Cost: " + nodes[nrnodes].getCost(),nodes[nrnodes].getCoords().getXCoord()+nodesize, nodes[nrnodes].getCoords().getYCoord()+nodesize);
+	}
+	ctx.moveTo(goal.getCoords().getXCoord(), goal.getCoords().getYCoord());
+	drawpath(startnode, goal);/*
+	ctx.lineTo(nodes[nodes.length-1].getPrevNode().getPrevNode().getCoords().getXCoord(), nodes[nodes.length-1].getPrevNode().getPrevNode().getCoords().getYCoord());
+	ctx.lineTo(nodes[nodes.length-1].getPrevNode().getPrevNode().getPrevNode().getCoords().getXCoord(), nodes[nodes.length-1].getPrevNode().getPrevNode().getPrevNode().getCoords().getYCoord());
+	ctx.lineTo(nodes[nodes.length-1].getPrevNode().getPrevNode().getPrevNode().getPrevNode().getCoords().getXCoord(), nodes[nodes.length-1].getPrevNode().getPrevNode().getPrevNode().getPrevNode().getCoords().getYCoord());
+	*/ctx.stroke();
+}
+this.drawpath = function(startnode, goal){
+	var c=document.getElementById("drawtestcanvas");
+	var ctx=c.getContext("2d");
+	ctx.lineTo(goal.getPrevNode().getCoords().getXCoord(), goal.getPrevNode().getCoords().getYCoord());
+	if(startnode.id !== goal.getPrevNode().id){
+		//console.log(startnode.id + "!=="+goal.getPrevNode().id);
+		drawpath(startnode, goal.getPrevNode());
+	}
 }
 </script>
 

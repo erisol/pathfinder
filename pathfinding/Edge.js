@@ -24,7 +24,13 @@ function Edge(type, destinationNode, cost){
 		return this.cost;
 	};
 	this.getType = function(){
-		return this.type;
+		if(this.type === 0){
+			return "Gang";
+		}else if(this.type === 1){
+			return "Trapp";
+		}else{
+			return "Heis";
+		}
 	};
 	//Endrer costen til stairs når man aktivere eller deaktivere "handicap mode"
 	this.handicapedge = function(){
@@ -39,6 +45,6 @@ function Edge(type, destinationNode, cost){
 	};
 	//toString metode for testing av kanten.
 	this.toString = function(){
-		return "Destionation node: " + this.destinationNode + " costs: " + this.cost;	
+		return "Destionation node: " + this.destinationNode.id + " costs: " + this.cost;	
 	};
 }

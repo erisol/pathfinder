@@ -2,14 +2,22 @@
 function Node(id, x, y, z){
 	this.id = id;
 	var coords = new Coords(x, y, z);
-	var cost = 10000;
+	var cost = 1000000;
 	var neighbors = new Array();
-	var prevNode = id;
+	var prevNode = this;
+	var allreadydone = 0;
 	//Legger til en nabo node(En kant som man kan gå på til å komme til neste node) 
-	this.restart = function(){
+	this.reboot = function(){
 		prevnode = id;
-		cost = 10000;
-	}
+		cost = 1000000;
+		allreadydone = 0;
+	};
+	this.setdone = function(){
+		allreadydone = 1;
+	};
+	this.isdone = function(){
+		return allreadydone;
+	};
 	this.addneighbor = function(type, id, cost){
 		try{ 
 		neighbors.push(new Edge(type, id, cost));	
@@ -19,21 +27,21 @@ function Node(id, x, y, z){
 	};
 	//setter "cost" for å komme til denne noden(Denne gangen algortimen blei kjørt, vist han 
 	//finner en path som var mer effektiv overskrives denne)
-	this.setOptimalCostPath = function(OptCost, nodeid){
+	this.setOptimalCostPath = function(OptCost, node){
 		try{
 			if(this.getCost() > OptCost){
 				cost = OptCost;
-				setPrevNode(nodeid);
+				setPrevNode(node);
 				return true;
 			}
 			return false;
 		}catch(setOptCostPatherr){
-			console.log("(NODE)Error changing optiaml path: " + setOptCostPatherr);
+			console.log("(NODE)Error changing optimal path: " + setOptCostPatherr);
 		}
 	};
 	//Setter kordinatene til noden, tenkt brukt i sammenheng med kartene.
-	this.setCords = function(x, y, z){
-		cords.setCords(x, y, z);
+	this.setCoords = function(x, y, z){
+		coords.setCoords(x, y, z);
 	};
 	//Setter hva som var den forrige noden, i følge den optimale pathen.
 	var setPrevNode = function(nodeid){
