@@ -132,7 +132,7 @@
 				if (runningBoolean) {
 				$mouseX = e.pageX;
 				$mouseY = e.pageY; 
-				$(yGrid).css({left:$mouseX, top: "0"});
+				$(yGrid).css({left:$mouseX});
 				} else {
 					return;
 				}
@@ -151,7 +151,7 @@
 					if (runningBoolean) {
 					$mouseX = e.pageX;
 					$mouseY = e.pageY; 
-					$(xGrid).css({top:$mouseY, left: "0"});
+					$(xGrid).css({top:$mouseY});
 					} else {
 						return;
 					}
@@ -183,7 +183,6 @@
 		  var getYValue = document.getElementById(yElementID).offsetLeft;
 		  getYValue = getYValue-303;
 		  yGridArray[yGridID] = getYValue;
-		  addGridToList();
 	  }
 	  
 	  // Store Y value of the X grid
@@ -191,7 +190,6 @@
 		  var xElementID = String("canvasGrid"+nextGrid);
 		  var getXValue = document.getElementById(xElementID).offsetTop;
 		  xGridArray[xGridID] = getXValue;
-		  addGridToList();
 	  }
 	  
 	  function addGridToList() {
@@ -202,6 +200,7 @@
 		  itemY = itemY - 303;
 		  var itemDisplayText = String("X: "+ itemX + ", Y: "+ itemY + " <a href='#' onclick='clearGrid("+nextGrid+")'>Remove this</a>");
 		  var newItem = document.createElement("li");
+		  newItem.setAttribute("class", itemElement)
 		  var itemText = newItem.textContent(itemDisplayText);
 		  parentElement.appendChild(newItem);
 	  }
@@ -211,7 +210,7 @@
 	  }
 	  
 	  function clearGrid(n) {
-		  removeGrid = String("#canvasGrid"+n);
+		  removeGrid = String(".canvasGrid"+n);
 		  $(removeGrid).remove();
 		  console.log("successfully removed grid number"+n);
 		  }
