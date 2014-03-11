@@ -36,19 +36,18 @@
           <label>
             <input type="radio" name="floors" value="5" id="floor5" onclick="checkSelectedFloor();" checked="checked" />
             (5)</label>
-          <br />
-          <br />
+          <br /><br />
+          <input type="button" name="cGrids" id="cGrids" value="Clear all grids" onclick="clearGrids();"/>
+          <br /><br /><br />
           Choose grid</p>
         <p>&nbsp;</p>
         <p>
           <input type="button" name="xGrid" id="xGrid" value="X grid" onclick="createXgrid();" /> 
           <input type="button" name="yGrid" id="yGrid" value="Y grid" onclick="createYgrid();"/><br /><br /><br />
-          <input type="button" name="cGrids" id="cGrids" value="Clear all grids" onclick="clearGrids();"/>
-          <br />
-          <br />
+  
           Coordinates:
           <span id="mouseCoords"></span>
-          <br /><br />
+          <br /><br /><br /><br />
           Created grids:
          <ol id="createdGridsDisplay">
          </ol>
@@ -61,11 +60,10 @@
         </p>
         </div>
         <div id="canvasFloat" style="float:left;" width="2200" height="1110">
-        <canvas id="makeGridCanvas" width="2182" height="1092" style="background: url(../kart/kart_KE_5etg.jpg); left: 0;">
+        <canvas id="makeGridCanvas" width="2182" height="1092">
             <script>
-			
 			var selectedFloor = $('input[name="floors"]:checked').val();
-			var floorListArray = ["ke/grids/1.txt", "ke/grids/2.txt", "ke/grids/3.txt", "ke/grids/4.txt", "ke/grids/5.txt"];
+			var floorListArray = ["","ke/grids/1.txt", "ke/grids/2.txt", "ke/grids/3.txt", "ke/grids/4.txt", "ke/grids/5.txt"];
 			
 			var nextGrid = 0;
 			
@@ -257,29 +255,31 @@
 		  console.log("successfully removed all grids");
 	  }
 	
-	  
 	  // Check the selected floor, change map and clear grid
 	  function checkSelectedFloor() {
+		var theCanvas = document.getElementById("makeGridCanvas");
+		selectedFloor = parseInt($('input[name="floors"]:checked').val());
 		switch (selectedFloor) {
 			case 1:
-				//clearGrids();
+				theCanvas.setAttribute("style", "background: url(../kart/kart_KE_1etg.jpg)");
 				break;
 			case 2:
-				//clearGrids();
+				theCanvas.setAttribute("style", "background: url(../kart/kart_KE_2etg.jpg)");
 				break;
 			case 3:
-				//clearGrids();
+				theCanvas.setAttribute("style", "background: url(../kart/kart_KE_3etg.jpg)");
 				break;
 			case 4:
-				//clearGrids();
+				theCanvas.setAttribute("style", "background: url(../kart/kart_KE_4etg.jpg)");
 				break;
-				//clearGrids();
 			case 5:
+				theCanvas.setAttribute("style", "background: url(../kart/kart_KE_5etg.jpg)");
 				break;	
 		}
 		  
 	  }
 	  
+	  $(document).ready(checkSelectedFloor());
     </script>
         </div>
 </div>
