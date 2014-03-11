@@ -3,6 +3,7 @@
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
 <link rel="stylesheet" type="text/css" href="../style/reset.css" />
+<script type="text/javascript" src="http://code.jquery.com/jquery-1.9.1.js"></script>
 <title>Create nodes</title>
 </head>
 <body>
@@ -10,14 +11,17 @@
 
         <div style="float:left; width: 300px; height: 1092px; border-right: 3px solid #000; text-align: center;">
         
-        <strong>Create nodes</strong>
-        <br /><br />
+        <p><strong>Create nodes</strong>
+        <br />
+        </p>
+        <p><br />
         Click on the map to the right to add a node.
         <br /><br />
         Coordinates:
         <span id="mouseCoords"></span>
         <br /><br />
         Node information:
+        </p>
         <form name="storeCoords">
         <table width="295" border="0" cellspacing="0" cellpadding="0">
   <tr>
@@ -65,6 +69,7 @@
 		  messageCoords.innerHTML = message;
 		  
 	  }
+	
 	  
       canvas.addEventListener('mousemove', function(evt) {
         var mousePos = getMousePos(canvas, evt);
@@ -87,6 +92,7 @@
 		 
 		 
 	  }, false);
+	  
 	  
 	  var array5Floor = [];
 	  var nextId = 0;

@@ -1,0 +1,258 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<link rel="stylesheet" type="text/css" href="../style/reset.css" />
+<script type="text/javascript" src="http://code.jquery.com/jquery-1.9.1.js"></script>
+<title>Create grid</title>
+</head>
+<body>
+<div style="width: 2486px; height: 1092px;">
+
+        <div style="float:left; width: 300px; height: 1092px; border-right: 3px solid #000; text-align: center;">
+        
+        <p><strong>Create grid (Kjølv Egeland)</strong>        </p>
+        <p><br />
+        </p>
+        <p>Choose floor:</p>
+        <p>&nbsp;</p>
+        <p>
+          <label>
+            <input type="radio" name="floors" value="1" id="floor1" onclick="checkSelectedFloor();"/>
+            (1)</label>
+          <br />
+          <label>
+            <input type="radio" name="floors" value="2" id="floor2" onclick="checkSelectedFloor();" />
+            (2)</label>
+          <br />
+          <label>
+            <input type="radio" name="floors" value="3" id="floor3" onclick="checkSelectedFloor();" />
+            (3)</label>
+          <br />
+          <label>
+            <input type="radio" name="floors" value="4" id="floor4" onclick="checkSelectedFloor();" />
+            (4)</label>
+          <br />
+          <label>
+            <input type="radio" name="floors" value="5" id="floor5" onclick="checkSelectedFloor();" checked="checked" />
+            (5)</label>
+          <br />
+          <br />
+          Choose grid</p>
+        <p>&nbsp;</p>
+        <p>
+          <input type="button" name="xGrid" id="xGrid" value="X grid" onclick="createXgrid();" /> 
+          <input type="button" name="yGrid" id="yGrid" value="Y grid" onclick="createYgrid();"/><br /><br /><br />
+          <input type="button" name="cGrids" id="cGrids" value="Clear all grids" onclick="clearGrids();"/>
+          <br />
+          <br />
+          Coordinates:
+          <span id="mouseCoords"></span>
+          <br /><br />
+          Created grids:
+         <ol id="createdGridsDisplay">
+         </ol>
+          <br />
+        </p>
+        <p>
+          <input type="button" name="addTheGrids" id="addTheGrids" value="Save grids to the selected floor" onclick="saveGrids();"/>
+          <br />
+          <br />
+        </p>
+        </div>
+        <div id="canvasFloat" style="float:left;" width="2200" height="1110">
+        <canvas id="makeGridCanvas" width="2182" height="1092" style="background: url(../kart/kart_KE_5etg.jpg); left: 0;">
+            <script>
+			
+			var selectedFloor = $('input[name="floors"]:checked').val();
+			var floorListArray = ["ke/grids/1.txt", "ke/grids/2.txt", "ke/grids/3.txt", "ke/grids/4.txt", "ke/grids/5.txt"];
+			
+			var nextGrid = 0;
+			
+      function getMousePos(canvas, evt) {
+        var rect = canvas.getBoundingClientRect();
+        return {
+          x: evt.clientX - rect.left,
+          y: evt.clientY - rect.top
+        };
+      }
+      var canvas = document.getElementById('makeGridCanvas');
+      var context = canvas.getContext('2d');
+	  
+	  function writeMessage(message) {
+		  
+		  var messageCoords = document.getElementById("mouseCoords");
+		  messageCoords.innerHTML = message;
+		  
+	  }
+	
+	  
+      canvas.addEventListener('mousemove', function(evt) {
+        var mousePos = getMousePos(canvas, evt);
+        var message = mousePos.x + ',' + mousePos.y;
+        writeMessage(message);
+      }, false);
+	  
+	  
+	  function createXgrid() {
+		  var getCanvas = document.getElementById("canvasFloat");
+		  var newXgrid = document.createElement("div");
+		  var gridId = String("canvasGrid"+nextGrid);
+		  newXgrid.setAttribute("id", gridId);
+		  newXgrid.style.height = "1px";
+		  newXgrid.style.width = "2192px";
+		  newXgrid.style.cssFloat ="left";
+		  newXgrid.style.backgroundColor = "#FF0000";
+		  newXgrid.style.left ="300";
+		  newXgrid.style.top = "0";
+		  newXgrid.style.position = "absolute";
+		  getCanvas.appendChild(newXgrid);
+		  moveXGrid();
+	  }
+	  
+	  function createYgrid() {
+		  var getCanvas = document.getElementById("canvasFloat");
+		  var newYgrid = document.createElement("div");
+		  var gridId = String("canvasGrid"+nextGrid);
+		  newYgrid.setAttribute("id", gridId);
+		  newYgrid.style.height = "1091px";
+		  newYgrid.style.width = "1px";
+		  newYgrid.style.cssFloat ="left";
+		  newYgrid.style.backgroundColor = "#FF0000";
+		  newYgrid.style.left ="300";
+		  newYgrid.style.top = "0";
+		  newYgrid.style.position = "absolute";
+		  getCanvas.appendChild(newYgrid);
+		  moveYGrid();
+	  }
+	  function moveYGrid() {
+		var yGrid = String("#canvasGrid"+nextGrid)
+		var runningBoolean = true;
+			$("#makeGridCanvas").mousemove(function(e){
+				if (runningBoolean) {
+				$mouseX = e.pageX;
+				$mouseY = e.pageY; 
+				$(yGrid).css({left:$mouseX, top: "0"});
+				} else {
+					return;
+				}
+		});
+		$(yGrid).click(function() {
+					snapYGrid();
+					runningBoolean = false;
+				});
+		
+	  }
+	  function moveXGrid() {
+		var xGrid = String("#canvasGrid"+nextGrid)
+		var runningBoolean = true;
+		
+				$("#makeGridCanvas").mousemove(function(e){
+					if (runningBoolean) {
+					$mouseX = e.pageX;
+					$mouseY = e.pageY; 
+					$(xGrid).css({top:$mouseY, left: "0"});
+					} else {
+						return;
+					}
+				});
+				$(xGrid).click(function() {
+					snapXGrid();
+					runningBoolean = false;
+				});
+	  }
+	  
+	  function snapXGrid() {
+		  addXGrid();
+		  nextGrid++;
+		  }
+	  
+	  function snapYGrid() {
+		  addYGrid();
+		  nextGrid++;
+	  }
+	  
+	  var xGridArray = [];
+	  var yGridArray = [];
+	  var xGridID = 0;
+	  var yGridID = 0;
+	  
+	  //Store X value of the Y grid
+	  function addYGrid() {
+		  var yElementID = String("canvasGrid"+nextGrid);
+		  var getYValue = document.getElementById(yElementID).offsetLeft;
+		  getYValue = getYValue-303;
+		  yGridArray[yGridID] = getYValue;
+		  addGridToList();
+	  }
+	  
+	  // Store Y value of the X grid
+	  function addXGrid() {
+		  var xElementID = String("canvasGrid"+nextGrid);
+		  var getXValue = document.getElementById(xElementID).offsetTop;
+		  xGridArray[xGridID] = getXValue;
+		  addGridToList();
+	  }
+	  
+	  function addGridToList() {
+		  var parentElement = document.getElementById("createdGridsDisplay");
+		  var itemElement = String("canvasgrid"+nextGrid);
+		  var itemX = document.getElementById(itemElement).offsetTop;
+		  var itemY = document.getElementById(itemElement).offsetLeft;
+		  itemY = itemY - 303;
+		  var itemDisplayText = String("X: "+ itemX + ", Y: "+ itemY + " <a href='#' onclick='clearGrid("+nextGrid+")'>Remove this</a>");
+		  var newItem = document.createElement("li");
+		  var itemText = newItem.textContent(itemDisplayText);
+		  parentElement.appendChild(newItem);
+	  }
+	  
+	  function addGridsToFile() {
+		  
+	  }
+	  
+	  function clearGrid(n) {
+		  removeGrid = String("#canvasGrid"+n);
+		  $(removeGrid).remove();
+		  console.log("successfully removed grid number"+n);
+		  }
+	  
+	  function clearGrids() {
+		  var removeGridId;
+		  var removeGridElement;
+		  var parentElement = document.getElementById("canvasFloat");
+		  for (var i = 0; i <= nextGrid; i++) {
+			  removeGrids = String("#canvasGrid"+i);
+			  $(removeGrids).remove();
+		  }
+		  nextGrid = 0;
+		  console.log("successfully removed all grids");
+	  }
+	
+	  
+	  // Check the selected floor, change map and clear grid
+	  function checkSelectedFloor() {
+		switch (selectedFloor) {
+			case 1:
+				//clearGrids();
+				break;
+			case 2:
+				//clearGrids();
+				break;
+			case 3:
+				//clearGrids();
+				break;
+			case 4:
+				//clearGrids();
+				break;
+				//clearGrids();
+			case 5:
+				break;	
+		}
+		  
+	  }
+	  
+    </script>
+        </div>
+</div>
+</body>
+</html>
