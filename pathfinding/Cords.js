@@ -11,6 +11,7 @@ function Coords(x, y, z){
 	this.getYCoord = function(){
 		return this.y;
 	};
+	//Henter ut etasjen til noden.
 	this.getZCoord = function(){
 		return this.z;
 	}

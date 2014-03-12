@@ -23,15 +23,14 @@ function edge(type, destinationNode, cost){
 	this.getCost = function(){
 		return this.cost;
 	};
+	//returnere om det er en trapp, heis eller gang edge
 	this.getType = function(){
-		if(this.type === 0){
-			return "Gang";
-		}else if(this.type === 1){
-			return "Trapp";
-		}else{
-			return "Heis";
-		}
+		return type;
 	};
+	//Setter hvliken type edge det er(0=gang,1=trapp,2=heis)
+	this.setType = function(type){
+		this.type = type;
+	}
 	//Endrer costen til stairs når man aktivere eller deaktivere "handicap mode"
 	this.handicapEdge = function(){
 		if(type === 1){

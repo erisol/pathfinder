@@ -9,6 +9,7 @@ function Cost(){
 	this.getCost = function(){
 		return cost;	
 	};
+	//Setter cost til 0, blir brukt når en ny path skal kalkuleres
 	this.restart = function(){
 		cost = 0;
 	};
