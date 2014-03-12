@@ -5,32 +5,32 @@ function Node(id, x, y, z){
 	var cost = 1000000;
 	var neighbors = new Array();
 	var prevNode = this;
-	var allreadydone = 0;
+	var allReadyDone = 0;
 	//Legger til en nabo node(En kant som man kan gå på til å komme til neste node) 
 	this.reboot = function(){
-		prevnode = id;
+		prevNode = id;
 		cost = 1000000;
-		allreadydone = 0;
+		allReadyDone = 0;
 	};
-	this.setdone = function(){
-		allreadydone = 1;
+	this.setDone = function(){
+		allReadyDone = 1;
 	};
-	this.isdone = function(){
-		return allreadydone;
+	this.isDone = function(){
+		return allReadyDone;
 	};
-	this.addneighbor = function(type, id, cost){
+	this.addNeighbor = function(type, id, cost){
 		try{ 
-		neighbors.push(new Edge(type, id, cost));	
-		}catch(addneighborerr){
-				console.log("(NODE)Could not add neighbor type: " + type + " id: " + id + "cost : " +cost + "\n" + addneighborerr);
+		neighbors.push(new edge(type, id, cost));	
+		}catch(addNeighborErr){
+				console.log("(NODE)Could not add neighbor type: " + type + " id: " + id + "cost : " +cost + "\n" + addNeighborErr);
 		}
 	};
 	//setter "cost" for å komme til denne noden(Denne gangen algortimen blei kjørt, vist han 
 	//finner en path som var mer effektiv overskrives denne)
-	this.setOptimalCostPath = function(OptCost, node){
+	this.setOptimalCostPath = function(optCost, node){
 		try{
-			if(this.getCost() > OptCost){
-				cost = OptCost;
+			if(this.getCost() > optCost){
+				cost = optCost;
 				setPrevNode(node);
 				return true;
 			}
@@ -44,8 +44,8 @@ function Node(id, x, y, z){
 		coords.setCoords(x, y, z);
 	};
 	//Setter hva som var den forrige noden, i følge den optimale pathen.
-	var setPrevNode = function(nodeid){
-		prevNode=nodeid;
+	var setPrevNode = function(nodeId){
+		prevNode=nodeId;
 	};
 	//Henter inn hva den forrige noden var
 	this.getPrevNode = function(){
@@ -56,11 +56,11 @@ function Node(id, x, y, z){
 	//Metode som endrer alle kantene til noden til enten å være i "handicap mode" eller omvendt.
 	this.handicap = function(){
 		try{
-			for(var edgenr = 0; edgenr<neighbors.length; edgenr++){
-				neighbors[edgenr].handicapedge();
+			for(var edgeNr = 0; edgeNr<neighbors.length; edgeNr++){
+				neighbors[edgeNr].handicapEdge();
 			}
-		}catch(nodehandicaperr){
-			console.log("(NODE)Err changing to 'handicap-mode': " + nodehandicaperr);
+		}catch(nodeHandicapErr){
+			console.log("(NODE)Err changing to 'handicap-mode': " + nodeHandicapErr);
 		}
 	};
 	//Henter inn kordinatene til noden.
@@ -72,21 +72,21 @@ function Node(id, x, y, z){
 		return cost;
 	};
 	//Henter alle nabonoder(Kanter som man kan bruke til å gå til andre noder).
-	this.getneighbors = function(){
+	this.getNeighbors = function(){
 		return neighbors;
 	};
 	this.toString = function(){
 		return "This nodes id is " + id + "\n" + coords.toString() + "and the current cost to get to the node is " + cost + "\n";	
 	};
-	this.printneighbors = function(){
-		var neighedges = "Edges:\n";
+	this.printNeighbors = function(){
+		var neighEdges = "Edges:\n";
 		try{
 			for(var len = 0; len < neighbors.length; len++){
-				neighedges += neighbors[len].toString() + "\n";		
+				neighEdges += neighbors[len].toString() + "\n";		
 			}
-		}catch(printneighborerr){
+		}catch(printNeighborErr){
 			console.log("(NODE)Error printing out the edges of the node: " + printneighborerr);
 		}
-		return neighedges;
+		return neighEdges;
 	};
 }

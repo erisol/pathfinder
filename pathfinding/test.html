@@ -12,12 +12,12 @@
 </head>
 
 <body>
-<button type="button" onclick="createnodes()">Make nodes</button>
-<button type="button" onclick="drawnodetest()">Draw Lines between nodes</button>
+<button type="button" onclick="createNodes()">Make nodes</button>
+<button type="button" onclick="drawNodeTest()">Draw Lines between nodes</button>
 <canvas id="drawtestcanvas" width="1000" height="600" style="border:2px solid #d3d3d3;">
 Your browser does not support the HTML5 canvas tag.</canvas>
 <script>
-function createnodes(){
+function createNodes(){
 	nodes = new Array();
 	try{
 		for(var x = 0; x < 8; x++){
@@ -28,30 +28,30 @@ function createnodes(){
 	}
 	//Legger inn kanter til nodene.
 	try{
-		nodes[0].addneighbor(0,nodes[1],1);
-		nodes[1].addneighbor(0,nodes[0],1);
+		nodes[0].addNeighbor(0,nodes[1],1);
+		nodes[1].addNeighbor(0,nodes[0],1);
 		//Heiskant
-		nodes[1].addneighbor(2,nodes[2],1);
-		nodes[2].addneighbor(2,nodes[1],1);
+		nodes[1].addNeighbor(2,nodes[2],1);
+		nodes[2].addNeighbor(2,nodes[1],1);
 		//Trappkant
-		nodes[2].addneighbor(1,nodes[3],1);
-		nodes[3].addneighbor(1,nodes[2],1);
+		nodes[2].addNeighbor(1,nodes[3],1);
+		nodes[3].addNeighbor(1,nodes[2],1);
 		
-		nodes[3].addneighbor(0,nodes[4],1);
-		nodes[4].addneighbor(0,nodes[3],1);
+		nodes[3].addNeighbor(0,nodes[4],1);
+		nodes[4].addNeighbor(0,nodes[3],1);
 		
-		nodes[4].addneighbor(0,nodes[5],1);
-		nodes[5].addneighbor(0,nodes[4],1);
+		nodes[4].addNeighbor(0,nodes[5],1);
+		nodes[5].addNeighbor(0,nodes[4],1);
 		
-		nodes[5].addneighbor(1,nodes[6],1);
-		nodes[6].addneighbor(1,nodes[5],1);
+		nodes[5].addNeighbor(1,nodes[6],1);
+		nodes[6].addNeighbor(1,nodes[5],1);
 		
-		nodes[6].addneighbor(0,nodes[7],1);
-		nodes[7].addneighbor(0,nodes[6],1);
+		nodes[6].addNeighbor(0,nodes[7],1);
+		nodes[7].addNeighbor(0,nodes[6],1);
 		
-		nodes[2].addneighbor(2,nodes[6],1);
-		nodes[6].addneighbor(2,nodes[2],1);
-		nodes[0].addneighbor(1,nodes[7],1);
+		nodes[2].addNeighbor(2,nodes[6],1);
+		nodes[6].addNeighbor(2,nodes[2],1);
+		nodes[0].addNeighbor(1,nodes[7],1);
 		//Tester metode får å endre kordinater.
 	}catch(addErr){
 		console.log("(TEST)Could not add neighbors to nodes: \n" + addErr);
@@ -62,7 +62,7 @@ function createnodes(){
 	for(var s = 0; s < nodes.length; s++){
 		nodes[s].handicap();
 		//Sjekker om alle trapper er i "Handicap-mode"
-		edge = nodes[s].getneighbors()
+		edge = nodes[s].getNeighbors()
 		for(var indx = 0; indx < edge.length; indx++){
 			if(edge[indx].getType() === 1 && edge[indx].getCost() !== 1000){
 				//console.log("(TEST)Error changing to handicap mode");
@@ -86,29 +86,25 @@ function createnodes(){
 		console.log("(TEST)Something went wrong when adding cost");
 	}
 }
-function drawnodetest(){
+function drawNodeTest(){
 	var c=document.getElementById("drawtestcanvas");
 	var ctx=c.getContext("2d");
-	var dijkstrapath = new Dijkstra();
-	dijkstrapath.addnodes(nodes);
-	var startnode = nodes[0];
+	var dijkstraPath = new dijkstra();
+	dijkstraPath.addNodes(nodes);
+	var startNode = nodes[0];
 	var goal = nodes[nodes.length-1];
-	/*var path = */dijkstrapath.pathfind(startnode, goal);
+	/*var path = */dijkstraPath.pathFind(startNode, goal);
 	ctx.beginPath();
 	ctx.lineWidth = 2;
 	ctx.fillStyle = "#FF0000";
-	nodesize = 15;
-	for(var nrnodes = 0; nrnodes < nodes.length; nrnodes++){
-		ctx.fillRect(nodes[nrnodes].getCoords().getXCoord()-nodesize/2, nodes[nrnodes].getCoords().getYCoord()-nodesize/2, nodesize, nodesize);
+	nodeSize = 15;
+	for(var nrNodes = 0; nrNodes < nodes.length; nrNodes++){
+		ctx.fillRect(nodes[nrNodes].getCoords().getXCoord()-nodeSize/2, nodes[nrNodes].getCoords().getYCoord()-nodeSize/2, nodeSize, nodeSize);
   		ctx.font = "bold 16px Arial";
-  		ctx.fillText(nodes[nrnodes].id + "  Cost: " + nodes[nrnodes].getCost(),nodes[nrnodes].getCoords().getXCoord()+nodesize, nodes[nrnodes].getCoords().getYCoord()+nodesize);
+  		ctx.fillText(nodes[nrNodes].id + "  Cost: " + nodes[nrNodes].getCost(),nodes[nrNodes].getCoords().getXCoord()+nodeSize, nodes[nrNodes].getCoords().getYCoord()+nodeSize);
 	}
 	ctx.moveTo(goal.getCoords().getXCoord(), goal.getCoords().getYCoord());
-	new drawPath(startnode, goal);/*
-	ctx.lineTo(nodes[nodes.length-1].getPrevNode().getPrevNode().getCoords().getXCoord(), nodes[nodes.length-1].getPrevNode().getPrevNode().getCoords().getYCoord());
-	ctx.lineTo(nodes[nodes.length-1].getPrevNode().getPrevNode().getPrevNode().getCoords().getXCoord(), nodes[nodes.length-1].getPrevNode().getPrevNode().getPrevNode().getCoords().getYCoord());
-	ctx.lineTo(nodes[nodes.length-1].getPrevNode().getPrevNode().getPrevNode().getPrevNode().getCoords().getXCoord(), nodes[nodes.length-1].getPrevNode().getPrevNode().getPrevNode().getPrevNode().getCoords().getYCoord());
-	*/
+	new drawPath(startNode, goal);
 }
 </script>
 

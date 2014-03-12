@@ -1,67 +1,70 @@
 // JavaScript Document
-function Dijkstra(){
+function dijkstra(){
 	var nodes = new Array();
 	var cost = new Cost();
 	
-this.getnodes = function(){
+this.getNodes = function(){
 	return nodes;	
 };
 
-this.addnodes = function(newnodes){
-	for(var idx = 0; idx < newnodes.length; idx++){
-		nodes.push(newnodes[idx]);
+this.addNodes = function(newNodes){
+	for(var idx = 0; idx < newNodes.length; idx++){
+		nodes.push(newNodes[idx]);
 	}
 };
 
-this.restartnodes = function(){
+this.restartNodes = function(){
 	for(var idx = 0; idx < nodes.length; idx++){
 		nodes[idx].reboot();
 	}
 };
 
-this.pathfind = function(startnode, endnode){
+this.checkPaths = function(nodes, currentEndCost){
+	for(var indx = 0; indx < nodes.length; indx++){
+		if(nodes[indx].getCost() < currentEndCost){
+			return false;
+		}
+	}
+	return true;
+};
+
+this.pathFind = function(startNode, endNode){
 	cost.restart();
-	this.restartnodes();
+	this.restartNodes();
 	var path = new Array();
-	path.push(new Dijkstranodes(startnode, 0));
-	startnode.setOptimalCostPath(0);
-	var calculatednodes = 0;
-	var newnodes = new Array();
-	newnodes.push(startnode);
-	var fail = 0;
-	while(newnodes.length !== 0 && calculatednodes < nodes.length){
-			var currentnode = newnodes.shift();
-			if(currentnode.id == endnode.id){	
-				if(checkpaths(newnodes, currentnode.getCost())){	
-					return;
-				}
+	path.push(new dijkstraNodes(startNode, 0));
+	startNode.setOptimalCostPath(0);
+	var calculatedNodes = 0;
+	var newNodes = new Array();
+	newNodes.push(startNode);
+	while(newNodes.length !== 0 && calculatedNodes < nodes.length){
+		var currentNode = newNodes.shift();
+		if(currentNode.id == endNode.id){	
+			if(this.checkPaths(newNodes, currentNode.getCost())){	
+				return;
 			}
-			if(currentnode.isdone() !== 1){
-            	currentnode.setdone();
-				calculatednodes++;
-				var currentneighbors = currentnode.getneighbors();
-				for(var idx = 0; idx < currentneighbors.length; idx++){
-					var destnode = currentneighbors[idx].getDestNode();
-					var edgecost = currentneighbors[idx].getCost();
-					if(destnode.getCost() > currentnode.getCost() + edgecost){
-						destnode.setOptimalCostPath(edgecost + currentnode.getCost(), currentnode);
-						newnodes.push(destnode);
-						path.push(new Dijkstranodes(destnode, destnode.getCost()));
-					}else{fail++;}
+		}
+		if(currentNode.getCost() < endNode.getCost() && currentNode.isDone() !== 1){
+           	currentNode.setDone();
+			calculatedNodes++;
+			var currentNeighbors = currentNode.getNeighbors();
+			for(var idx = 0; idx < currentNeighbors.length; idx++){
+				var destNode = currentNeighbors[idx].getDestNode();
+				var edgeCost = currentNeighbors[idx].getCost();
+				if(destNode.getCost() > currentNode.getCost() + edgeCost){
+					destNode.setOptimalCostPath(edgeCost + currentNode.getCost(), currentNode);
+					newNodes.push(destNode);
+					path.push(new dijkstraNodes(destNode, destNode.getCost()));
 				}
 			}
 		}
 	}
 };
-function checkpaths(nodes, currentendcost){
-	for(var indx = 0; indx < nodes.length; indx++){
-		if(nodes[indx].getCost() < currentendcost){
-			return false;
-		}
-	}
-	return true;
+
 }
-function Dijkstranodes(node, cost){
+
+
+function dijkstraNodes(node, cost){
 	this.node = node;
 	this.cost = cost;
 };

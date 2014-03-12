@@ -1,5 +1,5 @@
 //Funksjon for kantene mellom nodene, legger inn her og om det er en trap eller heis.
-function Edge(type, destinationNode, cost){
+function edge(type, destinationNode, cost){
 	//type=1 er trapp og cost blir 3
 	this.type = type;
 	this.destinationNode = destinationNode;
@@ -33,7 +33,7 @@ function Edge(type, destinationNode, cost){
 		}
 	};
 	//Endrer costen til stairs når man aktivere eller deaktivere "handicap mode"
-	this.handicapedge = function(){
+	this.handicapEdge = function(){
 		if(type === 1){
 			if(this.cost === 1000){
 				this.cost = 3;
