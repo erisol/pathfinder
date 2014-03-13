@@ -51,9 +51,10 @@
           Created grids:
          <ol id="createdGridsDisplay">
          </ol>
+         <input type="button" name="addTheGrids2" id="addTheGrids2" value="Load grid" onclick="loadSelectedFloorGrid(5);"/>
          <br />
-          <input type="button" name="addTheGrids" id="addTheGrids" value="Save current grids to the selected floor" onclick="saveGrids();"/>
-        </p>
+         <input type="button" name="addTheGrids" id="addTheGrids" value="Save current grids to the selected floor" onclick="saveGrids();"/>
+         </p>
         </div>
         <div id="canvasFloat" style="float:left;" width="2200" height="1110">
         <canvas id="makeGridCanvas" width="2182" height="1092">
@@ -106,6 +107,22 @@
 		  moveXGrid();
 	  }
 	  
+	  	  function createExistingXgrid(topVal) {
+		  var getCanvas = document.getElementById("canvasFloat");
+		  var newXgrid = document.createElement("div");
+		  var gridId = String("canvasGrid"+nextGrid);
+		  newXgrid.setAttribute("id", gridId);
+		  newXgrid.style.height = "1px";
+		  newXgrid.style.width = "2192px";
+		  newXgrid.style.cssFloat ="left";
+		  newXgrid.style.backgroundColor = "#FF0000";
+		  newXgrid.style.left = "303";
+		  newXgrid.style.top = String(topVal);
+		  newXgrid.style.position = "absolute";
+		  getCanvas.appendChild(newXgrid);
+		  nextGrid++;
+	  }
+	  
 	  function createYgrid() {
 		  var getCanvas = document.getElementById("canvasFloat");
 		  var newYgrid = document.createElement("div");
@@ -121,6 +138,24 @@
 		  getCanvas.appendChild(newYgrid);
 		  moveYGrid();
 	  }
+	  
+	  function createExistingYgrid(leftVal) {
+		  leftVal+=303;
+		  var getCanvas = document.getElementById("canvasFloat");
+		  var newYgrid = document.createElement("div");
+		  var gridId = String("canvasGrid"+nextGrid);
+		  newYgrid.setAttribute("id", gridId);
+		  newYgrid.style.height = "1091px";
+		  newYgrid.style.width = "1px";
+		  newYgrid.style.cssFloat ="left";
+		  newYgrid.style.backgroundColor = "#FF0000";
+		  newYgrid.style.left = String(leftVal);
+		  newYgrid.style.top = "0";
+		  newYgrid.style.position = "absolute";
+		  getCanvas.appendChild(newYgrid);
+		  nextGrid++;
+	  }
+	  
 	  function moveYGrid() {
 		var yGrid = String("#canvasGrid"+nextGrid)
 		var runningBoolean = true;
@@ -173,7 +208,7 @@
 		  var xElementID = String("canvasGrid"+nextGrid);
 		  var getXValue = document.getElementById(xElementID).offsetLeft;
 		  getXValue -= 303;
-		  var storeValue = String(getXValue+".0");
+		  var storeValue = String(getXValue+",0");
 		  gridArray[gridArrayIndex] = storeValue;
 		  addGridToList();
 		  gridArrayIndex++;
@@ -183,7 +218,7 @@
 	  function addXGrid() {
 		  var yElementID = String("canvasGrid"+nextGrid);
 		  var getYValue = document.getElementById(yElementID).offsetTop;
-		  var storeValue = String("0."+getYValue);
+		  var storeValue = String("0,"+getYValue);
 		  gridArray[gridArrayIndex] = storeValue;
 		  addGridToList();
 		  gridArrayIndex++;
@@ -245,10 +280,6 @@
             xmlhttp.send();
 
 			}
-
-            function readGridFromFile(){
-				
-            }
 	  
 	  function clearGrid(n) {
 		  removeGrid = String("#canvasGrid"+n);
@@ -273,8 +304,23 @@
 	  }
 	
 	  function loadSelectedFloorGrid(n) {
-		  
-		  }
+		  jQuery.get(floorListArray[n], function(data) {
+			var newArray = data.split(",");
+			var i = 0;
+			console.log(data);
+			while (i <= newArray.length-1) {
+				if (newArray[i] == 0 && newArray[i+1] <= 0) {
+					console.log("x0 - X: "+newArray[i]+" y>0 - Y: "+ newArray[i+1]);
+					createExistingXgrid(parseInt(newArray[i+1]));
+				} else {
+					console.log("x>0 - X: "+newArray[i]+" y0 - Y: "+ newArray[i+1]);
+					createExistingYgrid(parseInt(newArray[i]));
+				}
+				i += 2;
+				
+			}
+		  });
+	  }
 		  
 	
 	  // Check the selected floor, change map and clear grid
