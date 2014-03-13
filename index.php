@@ -46,7 +46,12 @@ include("php/global.php");
 <!-- Internal -->
 
 <script type="text/javascript" src="script/sitefunctions.js"></script>
-
+<script type="text/javascript" src="pathfinding/Cords.js"></script>
+<script type="text/javascript" src="pathfinding/Edge.js"></script>
+<script type="text/javascript" src="pathfinding/Cost.js"></script>
+<script type="text/javascript" src="pathfinding/Node.js"></script>
+<script type="text/javascript" src="pathfinding/Dijkstra.js"></script>
+<script type="text/javascript" src="pathfinding/drawPath.js"></script>
 <!-- /Internal -->
 
 <title><?php echo $siteTitle; ?></title>

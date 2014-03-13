@@ -17,6 +17,14 @@
 <canvas id="drawtestcanvas" width="1000" height="600" style="border:2px solid #d3d3d3;">
 Your browser does not support the HTML5 canvas tag.</canvas>
 <script>
+Array.prototype.indexofvarinobject = function(variabel, value){
+	for(var indx = 0; indx < this.length; indx++){
+		if(eval("this[indx]."+variabel) === value){
+			return indx;
+		}
+	}
+	return -1;
+}
 //Test av nodene
 function createNodes(){
 	nodes = new Array();
@@ -72,13 +80,13 @@ function createNodes(){
 		//Skriver ut alle noder og dens edges til console.
 		//console.log(nodes[s].toString() +"\n"+ nodes[s].printneighbors());
 	}
+	console.log(nodes.indexofvarinobject("id", 6));
 	
 	//Tester metode får å sette optimal path får å komme til en node i grafen.
 	//check = nodes[2].setOptimalCostPath(22, 1);
 	//if(check && (nodes[2].getPrevNode() !== 1 || nodes[2].getCost() !== 22)){
 		//	console.log("(TEST)Something went wrong adding new optimal path");
 	//}
-	
 	
 	var cost = new Cost();
 	cost.add(10);
