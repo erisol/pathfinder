@@ -42,79 +42,128 @@
   </tr>
 </table>
 	</form>
-    
     <br /><br />
+    
     Nodes added:
-    <span id="theNodes"><br /></span>
+    <ol id="theNodes"><br /></ol>
     <br /><br />
     
         </div>
 
         <div style="float:left;">
         <canvas id="makeNodeCanvas" width="2182" height="1092" style="background: url(../kart/kart_KE_5etg.jpg); left: 0;">
-            <script>
-      function getMousePos(canvas, evt) {
-        var rect = canvas.getBoundingClientRect();
+<script>
+	function getMousePos(canvas, evt) {
+    	var rect = canvas.getBoundingClientRect();
         return {
-          x: evt.clientX - rect.left,
-          y: evt.clientY - rect.top
+        	x: evt.clientX - rect.left,
+          	y: evt.clientY - rect.top
         };
-      }
-      var canvas = document.getElementById('makeNodeCanvas');
-      var context = canvas.getContext('2d');
+    }
+    var canvas = document.getElementById('makeNodeCanvas');
+    var context = canvas.getContext('2d');
 	  
-	  function writeMessage(message) {
+	function writeMessage(message) {
 		  
-		  var messageCoords = document.getElementById("mouseCoords");
-		  messageCoords.innerHTML = message;
+		var messageCoords = document.getElementById("mouseCoords");
+		messageCoords.innerHTML = message;
 		  
-	  }
+	}
 	
 	  
-      canvas.addEventListener('mousemove', function(evt) {
-        var mousePos = getMousePos(canvas, evt);
+    canvas.addEventListener('mousemove', function(evt) {
+    	var mousePos = getMousePos(canvas, evt);
         var message = mousePos.x + ',' + mousePos.y;
-        writeMessage(message);
-      }, false);
+    	writeMessage(message);
+    }, false);
 	  
-	  canvas.addEventListener('click', function(evt) {
-		 var xvalue = document.getElementsByName("xVal");
-		 var yvalue = document.getElementsByName("yVal");
-		 var mousePos = getMousePos(canvas, evt);
-		 xvalue[0].value = mousePos.x;
-		 yvalue[0].value = mousePos.y;
+	canvas.addEventListener('click', function(evt) {
+		var xvalue = document.getElementsByName("xVal");
+		var yvalue = document.getElementsByName("yVal");
+		var mousePos = getMousePos(canvas, evt);
+		xvalue[0].value = mousePos.x;
+		yvalue[0].value = mousePos.y;
 		 
-		 var c=document.getElementById("makeNodeCanvas");
-		 var ctx=c.getContext("2d");
-		 ctx.fillStyle="#FF0000";
-		 ctx.fillRect(mousePos.x-3,mousePos.y-3,6,6);
-		 ctx.stroke();
+		var c=document.getElementById("makeNodeCanvas");
+		var ctx=c.getContext("2d");
+		ctx.fillStyle="#FF0000";
+		ctx.fillRect(mousePos.x-3,mousePos.y-3,6,6);
+		ctx.stroke();
 		 
 		 
-	  }, false);
+	}, false);
 	  
 	  
-	  var array5Floor = [];
-	  var nextId = 0;
+	var array5Floor = [];
+	var nextId = 0;
 	  
-	  function addNode() {
-		  var xvalue = document.getElementsByName("xVal")[0].value;
-		  var yvalue = document.getElementsByName("yVal")[0].value;
-		  var fvalue = document.getElementsByName("fVal")[0].value;
-		  array5Floor[nextId] = xvalue +","+ yvalue +","+ fvalue;
-		  displayNodes();
-		  nextId++;
-	  }
+	function addNode() {
+		var xvalue = document.getElementsByName("xVal")[0].value;
+		var yvalue = document.getElementsByName("yVal")[0].value;
+		var fvalue = document.getElementsByName("fVal")[0].value;
+		if(xvalue !== "" || yvalue !== ""){
+			array5Floor[nextId] = xvalue +","+ yvalue +","+ fvalue;
+			displayNodes();
+			nextId++;
+		}
+	}
+	
+	function parseFileToArray(file){
+		  var parsedArray = new Array();
+		  
+		  return parseArray;
+	}
+	
+	function getFloorArray(floor){
+		var file = ReadFromfile("nodes"+floor);
+		return parseFileToArray(file); 
+	}
 	  
-	  var displayedNodes = [];
+	function findPrevId(){
+		var idVal = 0;
+		for(var idx = 0; idx < 5; idx++){
+			var list = getFloorArray();
+			for(var elems = 0; elems < list.length; elems++){
+				idVal++;
+			}
+		}
+		return idVal;
+	}
 	  
-	  function displayNodes() {
-		  var nodesDisplayed = document.getElementById("theNodes");
-		  var displayId = nextId+1;
-		  nodesDisplayed.innerHTML += displayId+": "+ array5Floor[nextId].toString()+" <a href='#' onclick='removeNode("+nextId+")'>Remove this</a><br />";
-	  }
-    </script>
-        </div>
+	function currentIdVal(){
+		if(idVal == null){
+			var idVal = findPrevId()
+		}
+		return this.idVal++;  
+	}
+	  
+	
+	function removeNode(nodeid){
+		var nodesDisplayed = document.getElementById("theNodes"+nodeid);
+		nodesDisplayed.remove(nodeid);
+		array5Floor.splice(nodeid-1,1);
+	}
+	
+	function snapToGrid(x, y){
+		
+	}
+	
+	var displayedNodes = [];
+	function displayNodes() {
+		var displayId = nextId+1;
+		var parentElement = document.getElementById("theNodes");
+		var itemElementID = String("theNodes"+displayId);
+		var itemElement = document.getElementById(itemElementID);
+		var itemDisplayText = array5Floor[nextId].toString()
+   		var newList= document.createElement("li");
+    	var newText = document.createTextNode(itemDisplayText);
+		newList.setAttribute("id", itemElementID);
+    	newList.appendChild(newText);
+		newList.innerHTML += " <a href='#' onclick='removeNode("+displayId+")'>Remove this</a>";
+   		parentElement.appendChild(newList);
+	}
+</script>
+	</div>
 </div>
 </body>
 </html>
