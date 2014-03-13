@@ -51,37 +51,35 @@
           Created grids:
          <ol id="createdGridsDisplay">
          </ol>
-          <br />
-        </p>
-        <p>
-          <input type="button" name="addTheGrids" id="addTheGrids" value="Save grids to the selected floor" onclick="saveGrids();"/>
-          <br />
-          <br />
+         <br />
+          <input type="button" name="addTheGrids" id="addTheGrids" value="Save current grids to the selected floor" onclick="saveGrids();"/>
         </p>
         </div>
         <div id="canvasFloat" style="float:left;" width="2200" height="1110">
         <canvas id="makeGridCanvas" width="2182" height="1092">
             <script>
+			
 			var selectedFloor = $('input[name="floors"]:checked').val();
-			var floorListArray = ["","ke/grids/1.txt", "ke/grids/2.txt", "ke/grids/3.txt", "ke/grids/4.txt", "ke/grids/5.txt"];
+			var floorListArray = ["","grids/ke/1.txt", "grids/ke/2.txt", "grids/ke/3.txt", "grids/ke/4.txt", "grids/ke/5.txt"];
 			
 			var nextGrid = 0;
+			var gridArray = [];
+	  		var gridArrayIndex = 0;
+			var deletedGrids = [];
 			
       function getMousePos(canvas, evt) {
         var rect = canvas.getBoundingClientRect();
         return {
-          x: evt.clientX - rect.left,
-          y: evt.clientY - rect.top
+          x: parseInt(evt.clientX - rect.left),
+          y: parseInt(evt.clientY - rect.top)
         };
       }
       var canvas = document.getElementById('makeGridCanvas');
       var context = canvas.getContext('2d');
 	  
 	  function writeMessage(message) {
-		  
 		  var messageCoords = document.getElementById("mouseCoords");
 		  messageCoords.innerHTML = message;
-		  
 	  }
 	
 	  
@@ -170,28 +168,23 @@
 		  nextGrid++;
 	  }
 	  
-	  var xGridArray = [];
-	  var yGridArray = [];
-	  var gridArrayIndex = 0;
-	  
 	  //Store X value of the Y grid
 	  function addYGrid() {
 		  var xElementID = String("canvasGrid"+nextGrid);
 		  var getXValue = document.getElementById(xElementID).offsetLeft;
 		  getXValue -= 303;
-		  xGridArray[gridArrayIndex] = getXValue;
-		  yGridArray[gridArrayIndex] = 0;
+		  var storeValue = String(getXValue+".0");
+		  gridArray[gridArrayIndex] = storeValue;
 		  addGridToList();
 		  gridArrayIndex++;
 	  }
 	  
 	  // Store Y value of the X grid
 	  function addXGrid() {
-		  
 		  var yElementID = String("canvasGrid"+nextGrid);
 		  var getYValue = document.getElementById(yElementID).offsetTop;
-		  yGridArray[gridArrayIndex] = getYValue;
-		  xGridArray[gridArrayIndex] = 0;
+		  var storeValue = String("0."+getYValue);
+		  gridArray[gridArrayIndex] = storeValue;
 		  addGridToList();
 		  gridArrayIndex++;
 	  }
@@ -200,23 +193,21 @@
 		  var parentElement = document.getElementById("createdGridsDisplay");
 		  var itemElementID = String("canvasGridList"+nextGrid);
 		  var itemElement = document.getElementById(itemElementID);
-		  var itemX = xGridArray[gridArrayIndex];
-		  var itemY = yGridArray[gridArrayIndex];
-		  var itemDisplayText = "X: " + itemX + ", Y: "+ itemY + " ";
+		  var itemDisplayText = String(gridArray[gridArrayIndex]);
    		  var newList= document.createElement("li");
     	  var newText = document.createTextNode(itemDisplayText);
 		  newList.setAttribute("id", itemElementID);
     	  newList.appendChild(newText);
-		  newList.innerHTML += "<a href='#' onclick='clearGrid("+nextGrid+")'>Remove this</a>";
+		  newList.innerHTML += " <a href='#' onclick='clearGrid("+nextGrid+")'>Remove this</a>";
    		  parentElement.appendChild(newList);
-   		  console.log("li created successfully");
+   		  console.log("element added to list succesfully");
 	  }
 	  
 	  function removeGridFromList(n) {
 		  removeItem = String("#canvasGridList"+n);
 		  $(removeItem).remove();
 		  console.log("successfully removed item "+n+" from the list");
-		  
+		  gridArray.splice(n,1);
 		}
 		
 		function removeGridsFromList() {
@@ -227,10 +218,37 @@
 		  console.log("successfully all items from the list");
 		  
 		}
+		
+		
+		
+		function saveGrids() {
+			if (gridArray.length == 0) {
+				console.log("the array is empty. nothing will be stored");
+			} else {
+				console.log(gridArray);
+				writeGridToFile(gridArray);
+			}
+			
+		}
 	  
-	  function addGridsToFile() {
-		  
-	  }
+            function writeGridToFile(data){
+				
+            var file = String(floorListArray[selectedFloor]);
+            var xmlhttp;
+            if(window.XMLHttpRequest) {
+                xmlhttp=new XMLHttpRequest();
+            } else {
+                xmlhttp=new ActiveXObject("Microsoft.XMLHTTP");
+            }
+
+            xmlhttp.open("GET","gridOperations.php?data="+data+"&file="+file,true);
+            xmlhttp.send();
+
+			}
+
+            function readGridFromFile(){
+				
+            }
 	  
 	  function clearGrid(n) {
 		  removeGrid = String("#canvasGrid"+n);
@@ -249,11 +267,15 @@
 		  }
 		  removeGridsFromList();
 		  nextGrid = 0;
-		  xGridArray = [];
-	      yGridArray = [];
-	      gridArrayIndex = 0;
+		  gridArray.splice(0,gridArray.length);
+		  gridArrayIndex = 0;
 		  console.log("successfully removed all grids");
 	  }
+	
+	  function loadSelectedFloorGrid(n) {
+		  
+		  }
+		  
 	
 	  // Check the selected floor, change map and clear grid
 	  function checkSelectedFloor() {
