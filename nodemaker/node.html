@@ -63,7 +63,7 @@
     
         </div>
 
-        <div style="float:left;">
+        <div id="canvasFloat" style="float:left;">
         <canvas id="makeNodeCanvas" width="2182" height="1092" style="background: url(../kart/kart_KE_5etg.jpg); left: 0;">
 <script>
 	function getMousePos(canvas, evt) {
@@ -123,16 +123,19 @@
     	xmlhttp.send();
 	}
 	function drawnode(x, y){
-		var getCanvas = document.getElementById("makeNodeCanvas");
+		x = parseInt(x)+303;
+		var getCanvas = document.getElementById("canvasFloat");
 		var node = document.createElement("div");
 		var nodeId = String("nodediv"+nextId);
 		node.setAttribute("id", nodeId);
 		node.style.height = "5px";
 		node.style.width = "5px";
 		node.style.backgroundColor = "#FF0000";
+		node.style.cssFloat ="left";
 		node.style.left = x+"px";
 		node.style.top = y+"px";
 		node.style.position = "absolute";
+		node.style.display = "visible";
 		getCanvas.appendChild(node);
 	}
 	function addNode() {
