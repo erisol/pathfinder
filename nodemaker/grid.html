@@ -2,6 +2,11 @@
 <html xmlns="http://www.w3.org/1999/xhtml">
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+<meta http-equiv="Pragma" content="no-cache">
+<meta http-equiv="no-cache">
+<meta http-equiv="Expires" content="-1">
+<meta http-equiv="Cache-Control" content="no-cache">
 <link rel="stylesheet" type="text/css" href="../style/reset.css" />
 <script type="text/javascript" src="http://code.jquery.com/jquery-1.9.1.js"></script>
 <title>Create grid</title>
@@ -34,7 +39,7 @@
             (4)</label>
           <br />
           <label>
-            <input type="radio" name="floors" value="5" id="floor5" onclick="checkSelectedFloor();" checked="checked" />
+            <input type="radio" name="floors" value="5" id="floor5" onclick="checkSelectedFloor();" />
             (5)</label>
           <br /><br />
           <input type="button" name="cGrids" id="cGrids" value="Clear all grids" onclick="clearGrids();"/>
@@ -51,8 +56,8 @@
           Created grids:
          <ol id="createdGridsDisplay">
          </ol>
-         <input type="button" name="addTheGrids2" id="addTheGrids2" value="Load grid" onclick="loadSelectedFloorGrid(5);"/>
-         <br />
+         <!--<input type="button" name="addTheGrids2" id="addTheGrids2" value="Load grid" onclick="loadSelectedFloorGrid(5);"/>-->
+         <br /><br />
          <input type="button" name="addTheGrids" id="addTheGrids" value="Save current grids to the selected floor" onclick="saveGrids();"/>
          </p>
         </div>
@@ -116,10 +121,11 @@
 		  newXgrid.style.width = "2192px";
 		  newXgrid.style.cssFloat ="left";
 		  newXgrid.style.backgroundColor = "#FF0000";
-		  newXgrid.style.left = "303";
-		  newXgrid.style.top = String(topVal);
+		  newXgrid.style.left = "303px";
+		  newXgrid.style.top = topVal+"px";
 		  newXgrid.style.position = "absolute";
 		  getCanvas.appendChild(newXgrid);
+		  addXGrid();
 		  nextGrid++;
 	  }
 	  
@@ -140,7 +146,7 @@
 	  }
 	  
 	  function createExistingYgrid(leftVal) {
-		  leftVal+=303;
+		  leftVal = parseInt(leftVal) + 303;
 		  var getCanvas = document.getElementById("canvasFloat");
 		  var newYgrid = document.createElement("div");
 		  var gridId = String("canvasGrid"+nextGrid);
@@ -149,10 +155,11 @@
 		  newYgrid.style.width = "1px";
 		  newYgrid.style.cssFloat ="left";
 		  newYgrid.style.backgroundColor = "#FF0000";
-		  newYgrid.style.left = String(leftVal);
-		  newYgrid.style.top = "0";
 		  newYgrid.style.position = "absolute";
+		  newYgrid.style.left = leftVal+"px";
+		  newYgrid.style.top = "0px";
 		  getCanvas.appendChild(newYgrid);
+		  addYGrid();
 		  nextGrid++;
 	  }
 	  
@@ -257,13 +264,8 @@
 		
 		
 		function saveGrids() {
-			if (gridArray.length == 0) {
-				console.log("the array is empty. nothing will be stored");
-			} else {
 				console.log(gridArray);
 				writeGridToFile(gridArray);
-			}
-			
 		}
 	  
             function writeGridToFile(data){
@@ -300,26 +302,33 @@
 		  nextGrid = 0;
 		  gridArray.splice(0,gridArray.length);
 		  gridArrayIndex = 0;
+		  console.log(gridArray);
 		  console.log("successfully removed all grids");
 	  }
 	
 	  function loadSelectedFloorGrid(n) {
-		  jQuery.get(floorListArray[n], function(data) {
-			var newArray = data.split(",");
-			var i = 0;
-			console.log(data);
-			while (i <= newArray.length-1) {
-				if (newArray[i] == 0 && newArray[i+1] <= 0) {
-					console.log("x0 - X: "+newArray[i]+" y>0 - Y: "+ newArray[i+1]);
-					createExistingXgrid(parseInt(newArray[i+1]));
-				} else {
-					console.log("x>0 - X: "+newArray[i]+" y0 - Y: "+ newArray[i+1]);
-					createExistingYgrid(parseInt(newArray[i]));
-				}
-				i += 2;
-				
-			}
-		  });
+		  
+			jQuery.ajax({
+			url: floorListArray[n],
+			dataType: 'text',
+			type: "GET",
+			cache: false,
+  			success: function(data) {
+    			var newArray = data.split(",");
+				for (var i = 0; i<=newArray.length; i++) {
+					if (newArray[i] == 0 && newArray[i+1] >= 0) {
+						createExistingXgrid(newArray[i+1]);
+						console.log("created 1 x grid: "+newArray[i+1]);
+					} else if (newArray[i] >= 0 && newArray[i+1] == 0) {
+						createExistingYgrid(newArray[i]);
+						console.log("created 1 y grid: "+newArray[i]);
+					} else {
+						console.log("all grids were filled. no further grids were added");
+					}
+				i++;
+				}           
+  			}
+			});
 	  }
 		  
 	
@@ -329,19 +338,29 @@
 		selectedFloor = parseInt($('input[name="floors"]:checked').val());
 		switch (selectedFloor) {
 			case 1:
+				clearGrids();
 				theCanvas.setAttribute("style", "background: url(../kart/kart_KE_1etg.jpg)");
+				loadSelectedFloorGrid(selectedFloor);
 				break;
 			case 2:
+				clearGrids();
 				theCanvas.setAttribute("style", "background: url(../kart/kart_KE_2etg.jpg)");
+				loadSelectedFloorGrid(selectedFloor);
 				break;
 			case 3:
+				clearGrids();
 				theCanvas.setAttribute("style", "background: url(../kart/kart_KE_3etg.jpg)");
+				loadSelectedFloorGrid(selectedFloor);
 				break;
 			case 4:
+				clearGrids();
 				theCanvas.setAttribute("style", "background: url(../kart/kart_KE_4etg.jpg)");
+				loadSelectedFloorGrid(selectedFloor);
 				break;
 			case 5:
+				clearGrids();
 				theCanvas.setAttribute("style", "background: url(../kart/kart_KE_5etg.jpg)");
+				loadSelectedFloorGrid(selectedFloor);
 				break;	
 		}
 		  
