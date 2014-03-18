@@ -128,12 +128,12 @@
 		var node = document.createElement("div");
 		var nodeId = String("nodediv"+nextId);
 		node.setAttribute("id", nodeId);
-		node.style.height = "5px";
-		node.style.width = "5px";
+		node.style.height = "6px";
+		node.style.width = "6px";
 		node.style.backgroundColor = "#FF0000";
 		node.style.cssFloat ="left";
-		node.style.left = x+"px";
-		node.style.top = y+"px";
+		node.style.left = (x-3)+"px";
+		node.style.top = (y-3)+"px";
 		node.style.position = "absolute";
 		node.style.display = "visible";
 		getCanvas.appendChild(node);
