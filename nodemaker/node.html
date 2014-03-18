@@ -37,8 +37,20 @@
     <td><input name="fVal" type="text" maxlength="1" value="5" /></td>
   </tr>
   <tr>
+    <td>Room:</td>
+    <td><select id="roomnr" name="roomnr" style="width: 153px">
+  <option value="gang">Gang</option>
+	<script> 
+ 		$(document).ready(function(){
+ 	 		addrooms();
+  		});
+	</script>
+</select>
+    </td>
+  </tr>
+  <tr>
     <td></td>
-    <td><input name="newNode" type="button" value="Add node" onclick="addNode()" /></td>
+    <td><input name="newNode" type="button" value=" Add node " onclick="addNode()" /></td>
   </tr>
 </table>
 	</form>
@@ -47,6 +59,7 @@
     Nodes added:
     <ol id="theNodes"><br /></ol>
     <br /><br />
+     <input type="button" name="SaveNodes" id="SaveNodes" value=" Save nodes to file " onclick="saveNodes();"/>
     
         </div>
 
@@ -82,30 +95,58 @@
 		var yvalue = document.getElementsByName("yVal");
 		var mousePos = getMousePos(canvas, evt);
 		xvalue[0].value = mousePos.x;
-		yvalue[0].value = mousePos.y;
-		 
-		var c=document.getElementById("makeNodeCanvas");
-		var ctx=c.getContext("2d");
-		ctx.fillStyle="#FF0000";
-		ctx.fillRect(mousePos.x-3,mousePos.y-3,6,6);
-		ctx.stroke();
-		 
-		 
+		yvalue[0].value = mousePos.y;		 
 	}, false);
 	  
 	  
 	var array5Floor = [];
 	var nextId = 0;
+	
+	function saveNodes(){
+		if (gridArray.length == 0) {
+			console.log("the array is empty. nothing will be stored");
+		} else {
+			console.log(gridArray);
+			writeGridToFile(gridArray);
+		}	
+	}
 	  
+    function writeGridToFile(data){
+		var file = String(floorNodeListArray[selectedFloor]);
+    	var xmlhttp;
+    	if(window.XMLHttpRequest) {
+    		xmlhttp=new XMLHttpRequest();
+		}else {
+    		xmlhttp=new ActiveXObject("Microsoft.XMLHTTP");
+		}
+    	xmlhttp.open("GET","gridOperations.php?data="+data+"&file="+file,true);
+    	xmlhttp.send();
+	}
+	function drawnode(x, y){
+		var getCanvas = document.getElementById("makeNodeCanvas");
+		var node = document.createElement("div");
+		var nodeId = String("nodediv"+nextId);
+		node.setAttribute("id", nodeId);
+		node.style.height = "5px";
+		node.style.width = "5px";
+		node.style.backgroundColor = "#FF0000";
+		node.style.left = x+"px";
+		node.style.top = y+"px";
+		node.style.position = "absolute";
+		getCanvas.appendChild(node);
+	}
 	function addNode() {
 		var xvalue = document.getElementsByName("xVal")[0].value;
 		var yvalue = document.getElementsByName("yVal")[0].value;
 		var fvalue = document.getElementsByName("fVal")[0].value;
+		var roomid = document.getElementById("roomnr").value;
 		if(xvalue !== "" || yvalue !== ""){
-			array5Floor[nextId] = xvalue +","+ yvalue +","+ fvalue;
+			array5Floor[nextId] = roomid + "," + xvalue +","+ yvalue +","+ fvalue;
 			displayNodes();
 			nextId++;
+			drawnode(xvalue,yvalue);
 		}
+		 document.getElementById("roomnr").selectedIndex = 0;
 	}
 	
 	function parseFileToArray(file){
@@ -118,7 +159,20 @@
 		var file = ReadFromfile("nodes"+floor);
 		return parseFileToArray(file); 
 	}
-	  
+	function getrooms(){
+		var strins = "E202,E404,E503,E501";
+		return strins.split(",");
+	}
+	function addrooms(){
+		var listofrooms = getrooms();
+		var currentrooms = document.getElementById("roomnr");
+		for(var indx = 0; indx < listofrooms.length; indx++){
+			var newroom = document.createElement('option');
+    		newroom.value = listofrooms[indx];
+    		newroom.innerHTML = listofrooms[indx];
+    		currentrooms.appendChild(newroom);
+		}
+	}
 	function findPrevId(){
 		var idVal = 0;
 		for(var idx = 0; idx < 5; idx++){
@@ -137,8 +191,13 @@
 		return this.idVal++;  
 	}
 	  
+	function removedraw(nodeid){
+		removeNode = String("#nodediv"+nodeid);
+		$(removeNode).remove();
+	}
 	
 	function removeNode(nodeid){
+		removedraw(nodeid);
 		var nodesDisplayed = document.getElementById("theNodes"+nodeid);
 		nodesDisplayed.remove(nodeid);
 		array5Floor.splice(nodeid-1,1);
@@ -154,7 +213,7 @@
 		var parentElement = document.getElementById("theNodes");
 		var itemElementID = String("theNodes"+displayId);
 		var itemElement = document.getElementById(itemElementID);
-		var itemDisplayText = array5Floor[nextId].toString()
+		var itemDisplayText = array5Floor[nextId].toString();
    		var newList= document.createElement("li");
     	var newText = document.createTextNode(itemDisplayText);
 		newList.setAttribute("id", itemElementID);
