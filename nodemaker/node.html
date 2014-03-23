@@ -181,21 +181,30 @@
 		});
 	}
 	
+	var placing = false;
+	var oldsaved = true;
 	function drawNode(){
-		var getCanvas = document.getElementById("canvasFloat");
-		var node = document.createElement("div");
-		var nodeId = String("nodediv"+nextId);
-		node.setAttribute("id", nodeId);
-		node.style.height = "6px";
-		node.style.width = "6px";
-		node.style.backgroundColor = "#FF0000";
-		node.style.cssFloat ="left";
-		node.style.left ="300";
-		node.style.top = "0";
-		node.style.position = "absolute";
-		node.style.display = "visible";
-		getCanvas.appendChild(node);
-		moveNode();
+		if(!placing){
+			if(oldsaved){
+				console.log("Got here");
+				placing = true;
+				oldsaved = false;
+				var getCanvas = document.getElementById("canvasFloat");
+				var node = document.createElement("div");
+				var nodeId = String("nodediv"+nextId);
+				node.setAttribute("id", nodeId);
+				node.style.height = "6px";
+				node.style.width = "6px";
+				node.style.backgroundColor = "#FF0000";
+				node.style.cssFloat ="left";
+				node.style.left ="300";
+				node.style.top = "0";
+				node.style.position = "absolute";
+				node.style.display = "visible";
+				getCanvas.appendChild(node);
+			}
+			moveNode();
+		}
 	}
 	
 	function moveNode() {
@@ -218,6 +227,7 @@
 				xvalue[0].value = mousePos.x;
 				yvalue[0].value = mousePos.y;
 				runningBoolean = false;
+				placing = false;
 		});
 	}
 	
@@ -230,6 +240,7 @@
 			array5Floor[nextId] = roomid + "," + xvalue +","+ yvalue +","+ fvalue;
 			displayNodes();
 			nextId++;
+			oldsaved = true;
 		}
 		 document.getElementById("roomnr").selectedIndex = 0;
 	}
