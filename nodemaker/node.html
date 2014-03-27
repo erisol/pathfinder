@@ -10,21 +10,24 @@
 <div style="width: 2486px; height: 1092px;">
 
         <div style="float:left; width: 300px; height: 1092px; border-right: 3px solid #000; text-align: center;">
-        
-        <p><strong>Create nodes</strong>
-        <br />
-        </p>
-        <p><br />
-        Click on the map to the right to add a node.
+     
         <br /><br />
-        Coordinates:
+        <strong>Coordinates:
         <span id="mouseCoords"></span>
+        </strong><br /><br />
         <br /><br />
         <table width="295" border="0" cellspacing="0" cellpadding="0">
         	<tr>
   		 		<td></td>
   				<td><input name="createNode" type="button" value=" Make New Node " onclick="drawNode()" /></td>
   			</tr>
+            <tr>
+            <td>Snap To</td></tr>
+            <tr>
+  		 		<td>X</td>
+            <td><input type="checkbox" name="snap" value="X"></td></tr>
+  		 	<tr>	<td>Y</td>
+			<td><input type="checkbox" name="snap" value="Y"></td></tr>
         </table>
         <br /><br />
         Node information:
@@ -448,8 +451,38 @@ Array.prototype.checkId = function(value){
 			break;
 		}
 	}
-	function snapToGrid(x, y){
-		
+	function snapToYGrid(y){
+		id = 0;
+		for(var indx = 0; indx < createExistingYgrid.length; indx++){
+			oldval = createExistingYgrid[indx]-x;
+			newval = createExistingYgrid[id]-x;
+			if(oldval < 0){
+				oldval = 0 - oldval;
+			}
+			if(newval < 0){
+				newval = 0 - newval;
+			}
+			if(newval < oldval){
+				id = indx;	
+			}
+		}
+	}
+	function snapToXGrid(x){
+		id = 0;
+		for(var indx = 0; indx < createExistingXgrid.length; indx++){
+			oldval = createExistingXgrid[indx]-x;
+			newval = createExistingXgrid[id]-x;
+			if(oldval < 0){
+				oldval = 0 - oldval;
+			}
+			if(newval < 0){
+				newval = 0 - newval;
+			}
+			if(newval < oldval){
+				id = indx;	
+			}
+		}
+		//createExistingXgrid
 	}
 	
 	var displayedNodes = [];
