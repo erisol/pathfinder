@@ -79,35 +79,49 @@
         <div id="canvasFloat" style="float:left;">
         <canvas id="makeNodeCanvas" width="2182" height="1092">
 <script>
-
+Array.prototype.checkId = function(value){
+	for(var indx = 0; indx < this.length; indx++){
+		var testArray = this[indx].split(",");
+		if(testArray[0] == value){
+			console.log(testArray[0] + "= "+value);
+			return indx;
+		}
+	}
+	return -1;
+}
 	function checkSelectedFloor() {
 		var theCanvas = document.getElementById("makeNodeCanvas");
 		var selectedFloor = parseInt(document.getElementById("fVal").value);
 		switch (selectedFloor) {
 			case 1:
 				//clearGrids();
+				clearNodes();
 				theCanvas.setAttribute("style", "background: url(../kart/kart_KE_1etg.jpg)");
-				loadSelectedFloorGrid(selectedFloor);
+				//loadSelectedFloorGrid(selectedFloor);
 				break;
 			case 2:
 				//clearGrids();
+				clearNodes();
 				theCanvas.setAttribute("style", "background: url(../kart/kart_KE_2etg.jpg)");
-				loadSelectedFloorGrid(selectedFloor);
+				//loadSelectedFloorGrid(selectedFloor);
 				break;
 			case 3:
 				//clearGrids();
+				clearNodes();
 				theCanvas.setAttribute("style", "background: url(../kart/kart_KE_3etg.jpg)");
-				loadSelectedFloorGrid(selectedFloor);
+				//loadSelectedFloorGrid(selectedFloor);
 				break;
 			case 4:
 				//clearGrids();
+				clearNodes();
 				theCanvas.setAttribute("style", "background: url(../kart/kart_KE_4etg.jpg)");
-				loadSelectedFloorGrid(selectedFloor);
+				//loadSelectedFloorGrid(selectedFloor);
 				break;
 			case 5:
 				//clearGrids();
+				clearNodes();
 				theCanvas.setAttribute("style", "background: url(../kart/kart_Kjølv_Egelands_hus_5etg.jpg)");
-				loadSelectedFloorGrid(selectedFloor);
+				//loadSelectedFloorGrid(selectedFloor);
 				break;	
 		}
 	}
@@ -133,8 +147,111 @@
     	writeMessage(message);
     }, false);
 	
+	var array1Floor = [];
+	var array2Floor = [];
+	var array3Floor = [];
+	var array4Floor = [];
 	var array5Floor = [];
+	currentFloor = 1;
 	var nextId = 0;
+	
+	function getCurrentArray(){
+		switch(currentFloor){
+			case 1: 
+			return array1Floor;
+			break;
+			
+			case 2: 
+			return array2Floor;
+			break;
+			
+			case 3: 
+			return array3Floor;
+			break;
+			
+			case 4: 
+			return array4Floor;
+			break;
+			
+			case 5: 
+			return array5Floor;
+			break;
+		}
+	}
+	function clearNodes(){
+		var currentArray = getCurrentArray();
+		var selectedFloor = parseInt(document.getElementById("fVal").value);
+		switch(selectedFloor){
+			case 1: 
+			readArrayInfoAndAdd(currentArray,array1Floor);
+			currentFloor = 1;
+			break;
+			
+			case 2: 
+			readArrayInfoAndAdd(currentArray,array2Floor);
+			currentFloor = 2;
+			break;
+			
+			case 3: 
+			readArrayInfoAndAdd(currentArray,array3Floor);
+			currentFloor = 3;
+			break;
+			
+			case 4: 
+			readArrayInfoAndAdd(currentArray,array4Floor);
+			currentFloor = 4;
+			break;
+			
+			case 5: 
+			readArrayInfoAndAdd(currentArray,array5Floor);
+			currentFloor = 5;
+			break;
+		}
+	}
+	var isChangingFloor = false;
+	// nextId + "," + roomid + "," + xvalue +","+ yvalue +","+ fvalue;
+	function readArrayInfoAndAdd(currentArray, fArray){
+		isChangingFloor = true;
+		for(var idx = 0; idx < currentArray.length; idx++){
+			console.log("currenArray: "+currentFloor+ "--_"+currentArray.length);
+			var currentNode = currentArray[idx].split(",");
+			console.log(currentNode);
+			removeNode(parseInt(currentNode[0])+1);
+		}
+		
+		for(var indx = 0; indx < fArray.length; indx++){
+			var currentNode = fArray[indx].split(",");
+			drawOldNode(currentNode[2], currentNode[3], currentNode[0]);
+			addNodeToList(parseInt(currentNode[0])+1);
+		}
+		isChangingFloor = false;
+	}
+	
+	function addToCurrentFloorArray(curFloor, node){
+		var currentFloor = parseInt(curFloor);
+		switch(currentFloor){
+			case 1: 
+			array1Floor[array1Floor.length] = node;
+			break;
+			
+			case 2: 
+			array2Floor[array2Floor.length] = node;
+			break;
+			
+			case 3: 
+			array3Floor[array3Floor.length] = node;
+			break;
+			
+			case 4: 
+			array4Floor[array4Floor.length] = node;
+			break;
+			
+			case 5: 
+			array5Floor[array5Floor.length] = node;
+			break;
+		}
+	}
+	
 	function saveNodes(){
 		if (gridArray.length == 0) {
 			console.log("the array is empty. nothing will be stored");
@@ -186,7 +303,6 @@
 	function drawNode(){
 		if(!placing){
 			if(oldsaved){
-				console.log("Got here");
 				placing = true;
 				oldsaved = false;
 				var getCanvas = document.getElementById("canvasFloat");
@@ -230,14 +346,29 @@
 				placing = false;
 		});
 	}
-	
+	function drawOldNode(x, y, oldId){
+		var getCanvas = document.getElementById("canvasFloat");
+		var node = document.createElement("div");
+		var nodeId = String("nodediv"+oldId);
+		node.setAttribute("id", nodeId);
+		node.style.height = "6px";
+		node.style.width = "6px";
+		node.style.backgroundColor = "#FF0000";
+		node.style.cssFloat ="left";
+		node.style.left = (parseInt(x)+300)+"px";
+		node.style.top = parseInt(y)+"px";
+		node.style.position = "absolute";
+		node.style.display = "visible";
+		getCanvas.appendChild(node);
+	}
 	function addNode() {
 		var xvalue = document.getElementsByName("xVal")[0].value;
 		var yvalue = document.getElementsByName("yVal")[0].value;
 		var fvalue = document.getElementById("fVal").value;
 		var roomid = document.getElementById("roomnr").value;
-		if(xvalue !== "" || yvalue !== ""){
-			array5Floor[nextId] = roomid + "," + xvalue +","+ yvalue +","+ fvalue;
+		if((xvalue !== "" || yvalue !== "") && !oldsaved){
+			var node = nextId + "," + roomid + "," + xvalue +","+ yvalue +","+ fvalue;
+			addToCurrentFloorArray(fvalue, node);
 			displayNodes();
 			nextId++;
 			oldsaved = true;
@@ -282,34 +413,85 @@
 	}
 	  
 	function removedraw(nodeid){
-		console.log(nodeid);
-		removeDrawNode = "#nodediv"+nodeid;
-		$(removeDrawNode).remove();
+		removeDrawnNode = "#nodediv"+nodeid;
+		$(removeDrawnNode).remove();
 	}
 	
-	function removeNode(nodeid){
-		removedraw(nodeid-1);
-		var nodesDisplayed = document.getElementById("theNodes"+nodeid);
-		nodesDisplayed.remove(nodeid);
-		array5Floor.splice(nodeid-1,1);
+	function removeNode(nodeId){
+		var nodesDisplayed = document.getElementById("theNodes"+nodeId);
+		nodesDisplayed.remove(nodeId);
+		removedraw(nodeId-1);
+		if(!isChangingFloor){
+			spliceFromArray(currentFloor, nodeId);
+		}
+	}
+	function spliceFromArray(currentFloor, nodeId){
+		switch(currentFloor){
+			case 1:
+			array1Floor.splice(parseInt(array1Floor.checkId(nodeId-1)),1);
+			break;
+			
+			case 2:
+			array2Floor.splice(parseInt(array2Floor.checkId(nodeId-1)),1);
+			break;
+			
+			case 3:
+			array3Floor.splice(parseInt(array3Floor.checkId(nodeId-1)),1);
+			break;
+			
+			case 4:
+			array4Floor.splice(parseInt(array4Floor.checkId(nodeId-1)),1);
+			break;
+			
+			case 5:
+			array5Floor.splice(parseInt(array5Floor.checkId(nodeId-1)),1);
+			break;
+		}
 	}
 	function snapToGrid(x, y){
 		
 	}
 	
 	var displayedNodes = [];
-	function displayNodes() {
-		var displayId = nextId+1;
+	function arraynodedisplay(){
+		var selectedFloor = parseInt(document.getElementById("fVal").value);
+		switch(selectedFloor){
+			case 1:
+			return array1Floor[array1Floor.length-1].toString();  
+			break;
+			
+			case 2:
+			return array2Floor[array2Floor.length-1].toString(); 
+			break;
+			
+			case 3:
+			return array3Floor[array3Floor.length-1].toString(); 
+			break;
+			
+			case 4:
+			return array4Floor[array4Floor.length-1].toString(); 
+			break;
+			
+			case 5:
+			return array5Floor[array5Floor.length-1].toString(); 
+			break;
+		}
+	}
+	function addNodeToList(displayId){
 		var parentElement = document.getElementById("theNodes");
 		var itemElementID = String("theNodes"+displayId);
 		var itemElement = document.getElementById(itemElementID);
-		var itemDisplayText = array5Floor[nextId].toString();
+		var itemDisplayText = arraynodedisplay();
    		var newList= document.createElement("li");
     	var newText = document.createTextNode(itemDisplayText);
 		newList.setAttribute("id", itemElementID);
     	newList.appendChild(newText);
 		newList.innerHTML += " <a href='#' onclick='removeNode("+displayId+")'>Remove this</a>";
    		parentElement.appendChild(newList);
+	}
+	function displayNodes() {
+		var displayId = nextId+1;
+		addNodeToList(displayId);
 	}
 </script>
 	</div>
