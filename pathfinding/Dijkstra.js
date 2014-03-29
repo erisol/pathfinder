@@ -26,7 +26,7 @@ this.restartNodes = function(){
 //Denne funksjonen blir bare kjørt om algorithmen har funnet en veg til endNode, den vil da kjøre igjennom en liste over noder han enda ikke har sjekket pathen til, og se om det er noen andre noder som kan ha en mulig mer optimal path, vist det finnes returneres true, ellers returneres false.
 this.checkPaths = function(nodes, currentEndCost){
 	for(var indx = 0; indx < nodes.length; indx++){
-		if(nodes[indx].getCost() < currentEndCost){
+		if(nodes[indx].node.getCost() < currentEndCost){
 			return false;
 		}
 	}
@@ -42,24 +42,24 @@ this.pathFind = function(startNode, endNode){
 	startNode.setOptimalCostPath(0);
 	var calculatedNodes = 0;
 	var newNodes = new Array();
-	newNodes.push(startNode);
+	newNodes.priorityAdd(new dijkstraNodes(startNode, 0));
 	while(newNodes.length !== 0 && calculatedNodes < nodes.length){
 		var currentNode = newNodes.shift();
-		if(currentNode.id == endNode.id){	
-			if(this.checkPaths(newNodes, currentNode.getCost())){	
+		if(currentNode.node.id == endNode.id){	
+			if(this.checkPaths(newNodes, currentNode.node.getCost())){	
 				return;
 			}
 		}
-		if(currentNode.getCost() < endNode.getCost() && currentNode.isDone() !== 1){
-           	currentNode.setDone();
+		if(currentNode.node.getCost() < endNode.getCost() && currentNode.node.isDone() !== 1){
+           	currentNode.node.setDone();
 			calculatedNodes++;
-			var currentNeighbors = currentNode.getNeighbors();
+			var currentNeighbors = currentNode.node.getNeighbors();
 			for(var idx = 0; idx < currentNeighbors.length; idx++){
 				var destNode = currentNeighbors[idx].getDestNode();
 				var edgeCost = currentNeighbors[idx].getCost();
-				if(destNode.getCost() > currentNode.getCost() + edgeCost){
-					destNode.setOptimalCostPath(edgeCost + currentNode.getCost(), currentNode);
-					newNodes.push(destNode);
+				if(destNode.getCost() > currentNode.node.getCost() + edgeCost){
+					destNode.setOptimalCostPath(edgeCost + currentNode.node.getCost(), currentNode.node);
+					newNodes.priorityAdd(new dijkstraNodes(destNode, destNode.getCost()));
 					path.push(new dijkstraNodes(destNode, destNode.getCost()));
 				}
 			}
@@ -67,6 +67,15 @@ this.pathFind = function(startNode, endNode){
 	}
 };
 
+Array.prototype.priorityAdd = function(dijkstraNode){
+		for (var i = 0; i < this.length; i++) {
+			if (parseInt(dijkstraNode.cost) < parseInt(this[i].cost)) {
+                this.splice(i, 0, dijkstraNode);
+                return;
+            }
+        }
+		this.push(dijkstraNode);
+};
 }
 
 //Blir brukt til å lage objekter som blir lagret i en array i pathFind når den har funnet en ny optimalcostpath til en ny node

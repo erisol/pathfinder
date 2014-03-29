@@ -82,16 +82,20 @@
         <div id="canvasFloat" style="float:left;">
         <canvas id="makeNodeCanvas" width="2182" height="1092">
 <script>
-Array.prototype.checkId = function(value){
-	for(var indx = 0; indx < this.length; indx++){
-		var testArray = this[indx].split(",");
-		if(testArray[0] == value){
-			console.log(testArray[0] + "= "+value);
-			return indx;
+	Array.prototype.checkId = function(value){
+		for(var indx = 0; indx < this.length; indx++){
+			var testArray = this[indx].split(",");
+			if(testArray[0] == value){
+				console.log(testArray[0] + "= "+value);
+				return indx;
+			}
 		}
+		return -1;
 	}
-	return -1;
-}
+	
+	var yId = 0;
+	var xId = 0;
+	
 	function checkSelectedFloor() {
 		var theCanvas = document.getElementById("makeNodeCanvas");
 		var selectedFloor = parseInt(document.getElementById("fVal").value);
@@ -452,10 +456,10 @@ Array.prototype.checkId = function(value){
 		}
 	}
 	function snapToYGrid(y){
-		id = 0;
+		yId = 0;
 		for(var indx = 0; indx < createExistingYgrid.length; indx++){
 			oldval = createExistingYgrid[indx]-x;
-			newval = createExistingYgrid[id]-x;
+			newval = createExistingYgrid[yId]-x;
 			if(oldval < 0){
 				oldval = 0 - oldval;
 			}
@@ -463,15 +467,15 @@ Array.prototype.checkId = function(value){
 				newval = 0 - newval;
 			}
 			if(newval < oldval){
-				id = indx;	
+				yId = indx;	
 			}
 		}
 	}
 	function snapToXGrid(x){
-		id = 0;
+		xId = 0;
 		for(var indx = 0; indx < createExistingXgrid.length; indx++){
 			oldval = createExistingXgrid[indx]-x;
-			newval = createExistingXgrid[id]-x;
+			newval = createExistingXgrid[xId]-x;
 			if(oldval < 0){
 				oldval = 0 - oldval;
 			}
@@ -479,10 +483,9 @@ Array.prototype.checkId = function(value){
 				newval = 0 - newval;
 			}
 			if(newval < oldval){
-				id = indx;	
+				xId = indx;	
 			}
 		}
-		//createExistingXgrid
 	}
 	
 	var displayedNodes = [];

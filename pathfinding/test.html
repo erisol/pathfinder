@@ -103,7 +103,7 @@ function drawNodeTest(){
 	dijkstraPath.addNodes(nodes);
 	var startNode = nodes[0];
 	var goal = nodes[nodes.length-1];
-	/*var path = */dijkstraPath.pathFind(startNode, goal);
+	dijkstraPath.pathFind(startNode, goal);
 	ctx.beginPath();
 	ctx.lineWidth = 2;
 	ctx.fillStyle = "#FF0000";
