@@ -25,9 +25,9 @@
             <td>Snap To</td></tr>
             <tr>
   		 		<td>X</td>
-            <td><input type="checkbox" name="snap" value="X"></td></tr>
+            <td><input type="checkbox" name="snap" value="X" onclick="checkSelectedFloor();"></td></tr>
   		 	<tr>	<td>Y</td>
-			<td><input type="checkbox" name="snap" value="Y"></td></tr>
+			<td><input type="checkbox" name="snap" value="Y" onclick="checkSelectedFloor();"></td></tr>
         </table>
         <br /><br />
         Node information:
@@ -222,7 +222,6 @@
 		for(var idx = 0; idx < currentArray.length; idx++){
 			console.log("currenArray: "+currentFloor+ "--_"+currentArray.length);
 			var currentNode = currentArray[idx].split(",");
-			console.log(currentNode);
 			removeNode(parseInt(currentNode[0])+1);
 		}
 		
@@ -489,27 +488,27 @@
 	}
 	
 	var displayedNodes = [];
-	function arraynodedisplay(){
+	function arraynodedisplay(nodeId){
 		var selectedFloor = parseInt(document.getElementById("fVal").value);
 		switch(selectedFloor){
 			case 1:
-			return array1Floor[array1Floor.length-1].toString();  
+			return array1Floor[parseInt(array1Floor.checkId(nodeId-1))].toString();  
 			break;
 			
 			case 2:
-			return array2Floor[array2Floor.length-1].toString(); 
+			return array2Floor[parseInt(array2Floor.checkId(nodeId-1))].toString(); 
 			break;
 			
 			case 3:
-			return array3Floor[array3Floor.length-1].toString(); 
+			return array3Floor[parseInt(array3Floor.checkId(nodeId-1))].toString(); 
 			break;
 			
 			case 4:
-			return array4Floor[array4Floor.length-1].toString(); 
+			return array4Floor[parseInt(array4Floor.checkId(nodeId-1))].toString(); 
 			break;
 			
 			case 5:
-			return array5Floor[array5Floor.length-1].toString(); 
+			return array5Floor[parseInt(array5Floor.checkId(nodeId-1))].toString(); 
 			break;
 		}
 	}
@@ -517,9 +516,10 @@
 		var parentElement = document.getElementById("theNodes");
 		var itemElementID = String("theNodes"+displayId);
 		var itemElement = document.getElementById(itemElementID);
-		var itemDisplayText = arraynodedisplay();
+		var itemDisplayText = arraynodedisplay(displayId);
    		var newList= document.createElement("li");
     	var newText = document.createTextNode(itemDisplayText);
+		console.log(newText);
 		newList.setAttribute("id", itemElementID);
     	newList.appendChild(newText);
 		newList.innerHTML += " <a href='#' onclick='removeNode("+displayId+")'>Remove this</a>";
