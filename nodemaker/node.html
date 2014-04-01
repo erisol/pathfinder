@@ -364,9 +364,8 @@
 		var newNode = ("#nodediv"+nextId)
 		var runningBoolean = true;
 			$("#canvasFloat").mousemove(function(e){
-					console.log(runningBoolean);
 				if (runningBoolean) {
-					$mouseX = snapToXGrid(e.pageX-3);
+					$mouseX = snapToXGrid(e.pageX-303)+300;
 					$mouseY = snapToYGrid(e.pageY-3); 
 					$(newNode).css({top:$mouseY});
 					$(newNode).css({left:$mouseX});
@@ -374,7 +373,7 @@
 					return;
 				}
 			});
-			$(newNode).click(function(e) {
+			$("#canvasFloat").click(function(e) {
 				var xvalue = document.getElementsByName("xVal");
 				var yvalue = document.getElementsByName("yVal");
 				var mousePos = getMousePos(canvas, e);
@@ -384,6 +383,53 @@
 				placing = false;
 		});
 	}
+	
+	function snapToYGrid(y){
+		var yGrid = [0, 100, 200, 300, 400, 500, 600, 700, 800];
+		if(document.getElementById("Ysnap").checked){
+			yId = 0;
+			for(var indx = 0; indx < yGrid.length; indx++){
+				oldval = yGrid[yId]-y;
+				newval = yGrid[indx]-y;
+				if(oldval < 0){
+					oldval = 0 - oldval;
+				}
+				if(newval < 0){
+					newval = 0 - newval;
+				}
+				if(newval < oldval){
+					yId = indx;	
+				}
+			}
+			return yGrid[yId];
+		}
+		return y;
+	}
+	
+	function snapToXGrid(x){
+		var xGrid = [0, 100, 200, 300, 400, 500, 600, 700, 800];
+		if(document.getElementById("Xsnap").checked){
+			xId = 0;
+			for(var indx = 0; indx < xGrid.length; indx++){
+				oldval = xGrid[xId]-x;
+				newval = xGrid[indx]-x;
+				if(oldval < 0){
+					oldval = 0 - oldval;
+				}
+				if(newval < 0){
+					newval = 0 - newval;
+				}
+				if(newval < oldval){
+					//console.log(xGrid[indx] +"-"+x+"<"+xGrid[xId]+"-"+x);
+				//	console.log(newval + "<"+oldval);
+					xId = indx;	
+				}
+			}
+			return xGrid[xId];
+		}
+		return x;
+	}
+	
 	function drawOldNode(x, y, oldId){
 		var getCanvas = document.getElementById("canvasFloat");
 		var node = document.createElement("div");
@@ -486,49 +532,7 @@
 			break;
 		}
 	}
-	function snapToYGrid(y){
-		var yGrid = [200, 300, 400, 500, 600, 700, 800];
-		if(document.getElementById("Ysnap").checked){
-			yId = 0;
-			for(var indx = 0; indx < yGrid.length; indx++){
-				oldval = yGrid[yId]-y;
-				newval = yGrid[indx]-y;
-				if(oldval < 0){
-					oldval = 0 - oldval;
-				}
-				if(newval < 0){
-					newval = 0 - newval;
-				}
-				if(newval < oldval){
-					yId = indx;	
-				}
-			}
-			return yGrid[yId];
-		}
-		return y;
-	}
-	function snapToXGrid(x){
-		var xGrid = [200, 300, 400, 500, 600, 700, 800];
-		if(document.getElementById("Xsnap").checked){
-			xId = 0;
-			for(var indx = 0; indx < xGrid.length; indx++){
-				oldval = xGrid[xId]-(x-300);
-				newval = xGrid[indx]-(x-300);
-				if(oldval < 0){
-					oldval = 0 - oldval;
-				}
-				if(newval < 0){
-					newval = 0 - newval;
-				}
-				if(newval < oldval){
-					xId = indx;	
-				}
-			}
-			return xGrid[xId]+300;
-		}
-		return x;
-	}
-	
+		
 	var displayedNodes = [];
 	function arraynodedisplay(nodeId){
 		var selectedFloor = parseInt(document.getElementById("fVal").value);
