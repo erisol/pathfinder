@@ -25,9 +25,9 @@
             <td>Snap To</td></tr>
             <tr>
   		 		<td>X</td>
-            <td><input type="checkbox" name="snap" value="X" onclick="checkSelectedFloor();"></td></tr>
+            <td><input type="checkbox" id="Xsnap" value="X"></td></tr>
   		 	<tr>	<td>Y</td>
-			<td><input type="checkbox" name="snap" value="Y" onclick="checkSelectedFloor();"></td></tr>
+			<td><input type="checkbox" id="Ysnap" value="Y"></td></tr>
         </table>
         <br /><br />
         Node information:
@@ -86,7 +86,6 @@
 		for(var indx = 0; indx < this.length; indx++){
 			var testArray = this[indx].split(",");
 			if(testArray[0] == value){
-				console.log(testArray[0] + "= "+value);
 				return indx;
 			}
 		}
@@ -220,7 +219,6 @@
 	function readArrayInfoAndAdd(currentArray, fArray){
 		isChangingFloor = true;
 		for(var idx = 0; idx < currentArray.length; idx++){
-			console.log("currenArray: "+currentFloor+ "--_"+currentArray.length);
 			var currentNode = currentArray[idx].split(",");
 			removeNode(parseInt(currentNode[0])+1);
 		}
@@ -259,10 +257,9 @@
 	}
 	
 	function saveNodes(){
-		if (gridArray.length == 0) {
+		if (array1Floor.length == 0 && array2Floor.length == 0 && array3Floor.length == 0 && array4Floor.length == 0 && array5Floor.length == 0) {
 			console.log("the array is empty. nothing will be stored");
 		} else {
-			console.log(gridArray);
 			writeGridToFile(gridArray);
 		}	
 	}
@@ -303,7 +300,41 @@
   		}
 		});
 	}
+	function createExistingYgrid(topval) {
+		var getCanvas = document.getElementById("canvasFloat");
+		var newYgrid = document.createElement("div");
+		var gridId = String("canvasGrid"+nextGrid);
+		newYgrid.setAttribute("id", gridId);
+		newYgrid.style.height = "1091px";
+		newYgrid.style.width = "1px";
+		newYgrid.style.cssFloat ="left";
+		newYgrid.style.backgroundColor = "#FF0000";
+		newYgrid.style.position = "absolute";
+		newYgrid.style.left = "300px";
+		newYgrid.style.top = topval;
+		getCanvas.appendChild(newYgrid);
+		addYGrid();
+		nextGrid++;
+	}
 	
+	function createExistingYgrid(leftVal) {
+		leftVal = parseInt(leftVal) + 303;
+		var getCanvas = document.getElementById("canvasFloat");
+		var newYgrid = document.createElement("div");
+		var gridId = String("canvasGrid"+nextGrid);
+		newYgrid.setAttribute("id", gridId);
+		newYgrid.style.height = "1091px";
+		newYgrid.style.width = "1px";
+		newYgrid.style.cssFloat ="left";
+		newYgrid.style.backgroundColor = "#FF0000";
+		newYgrid.style.position = "absolute";
+		newYgrid.style.left = leftVal+"px";
+		newYgrid.style.top = "0px";
+		getCanvas.appendChild(newYgrid);
+		addYGrid();
+		nextGrid++;
+	}
+	  
 	var placing = false;
 	var oldsaved = true;
 	function drawNode(){
@@ -333,11 +364,12 @@
 		var newNode = ("#nodediv"+nextId)
 		var runningBoolean = true;
 			$("#canvasFloat").mousemove(function(e){
+					console.log(runningBoolean);
 				if (runningBoolean) {
-				$mouseX = e.pageX-3;
-				$mouseY = e.pageY-3; 
-				$(newNode).css({top:$mouseY});
-				$(newNode).css({left:$mouseX});
+					$mouseX = snapToXGrid(e.pageX-3);
+					$mouseY = snapToYGrid(e.pageY-3); 
+					$(newNode).css({top:$mouseY});
+					$(newNode).css({left:$mouseX});
 				} else {
 					return;
 				}
@@ -346,9 +378,10 @@
 				var xvalue = document.getElementsByName("xVal");
 				var yvalue = document.getElementsByName("yVal");
 				var mousePos = getMousePos(canvas, e);
-				xvalue[0].value = mousePos.x;
-				yvalue[0].value = mousePos.y;
+				xvalue[0].value = snapToXGrid(mousePos.x);
+				yvalue[0].value = snapToYGrid(mousePos.y);
 				runningBoolean = false;
+					console.log(runningBoolean);
 				placing = false;
 		});
 	}
@@ -455,36 +488,46 @@
 		}
 	}
 	function snapToYGrid(y){
-		yId = 0;
-		for(var indx = 0; indx < createExistingYgrid.length; indx++){
-			oldval = createExistingYgrid[indx]-x;
-			newval = createExistingYgrid[yId]-x;
-			if(oldval < 0){
-				oldval = 0 - oldval;
+		var yGrid = [200, 300, 400, 500, 600, 700, 800];
+		if(document.getElementById("Ysnap").checked){
+			yId = 0;
+			for(var indx = 0; indx < yGrid.length; indx++){
+				oldval = yGrid[yId]-y;
+				newval = yGrid[indx]-y;
+				if(oldval < 0){
+					oldval = 0 - oldval;
+				}
+				if(newval < 0){
+					newval = 0 - newval;
+				}
+				if(newval < oldval){
+					yId = indx;	
+				}
 			}
-			if(newval < 0){
-				newval = 0 - newval;
-			}
-			if(newval < oldval){
-				yId = indx;	
-			}
+			return yGrid[yId];
 		}
+		return y;
 	}
 	function snapToXGrid(x){
-		xId = 0;
-		for(var indx = 0; indx < createExistingXgrid.length; indx++){
-			oldval = createExistingXgrid[indx]-x;
-			newval = createExistingXgrid[xId]-x;
-			if(oldval < 0){
-				oldval = 0 - oldval;
+		var xGrid = [200, 300, 400, 500, 600, 700, 800];
+		if(document.getElementById("Xsnap").checked){
+			xId = 0;
+			for(var indx = 0; indx < xGrid.length; indx++){
+				oldval = xGrid[xId]-x;
+				newval = xGrid[indx]-x;
+				if(oldval < 0){
+					oldval = 0 - oldval;
+				}
+				if(newval < 0){
+					newval = 0 - newval;
+				}
+				if(newval < oldval){
+					xId = indx;	
+				}
 			}
-			if(newval < 0){
-				newval = 0 - newval;
-			}
-			if(newval < oldval){
-				xId = indx;	
-			}
+			return xGrid[xId];
 		}
+		return x;
 	}
 	
 	var displayedNodes = [];
@@ -519,7 +562,6 @@
 		var itemDisplayText = arraynodedisplay(displayId);
    		var newList= document.createElement("li");
     	var newText = document.createTextNode(itemDisplayText);
-		console.log(newText);
 		newList.setAttribute("id", itemElementID);
     	newList.appendChild(newText);
 		newList.innerHTML += " <a href='#' onclick='removeNode("+displayId+")'>Remove this</a>";
