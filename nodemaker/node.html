@@ -381,7 +381,6 @@
 				xvalue[0].value = snapToXGrid(mousePos.x);
 				yvalue[0].value = snapToYGrid(mousePos.y);
 				runningBoolean = false;
-					console.log(runningBoolean);
 				placing = false;
 		});
 	}
@@ -513,8 +512,8 @@
 		if(document.getElementById("Xsnap").checked){
 			xId = 0;
 			for(var indx = 0; indx < xGrid.length; indx++){
-				oldval = xGrid[xId]-x;
-				newval = xGrid[indx]-x;
+				oldval = xGrid[xId]-(x-300);
+				newval = xGrid[indx]-(x-300);
 				if(oldval < 0){
 					oldval = 0 - oldval;
 				}
@@ -525,7 +524,7 @@
 					xId = indx;	
 				}
 			}
-			return xGrid[xId];
+			return xGrid[xId]+300;
 		}
 		return x;
 	}
