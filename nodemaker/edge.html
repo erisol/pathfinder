@@ -1,0 +1,215 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<link rel="stylesheet" type="text/css" href="../style/reset.css" />
+<script type="text/javascript" src="http://code.jquery.com/jquery-1.9.1.js"></script>
+<title>Edge Maker</title>
+</head>
+
+<body>
+<div style="width: 4666px; height: 2184px;">
+	<div style="float:left; width: 300px; height: 2184px;">
+    	<div style="float:left;position:fixed; width: 300px; height: 2184px; border-right: 3px solid #000; text-align: center; background-color: white">
+        	<br></br>
+        	Current Node Information
+        	<span id="curNodeInfo"></span>
+        	<br></br><br></br>
+        	<table width="295" border="0" cellspacing="0" cellpadding="0">
+        		<tr>
+  		 			<td></td>
+  					<td><input name="createEdge" type="button" value=" Make New Edge " onclick="makeNewEdge()" /></td>
+  				</tr>
+            	<tr>
+    				<td>Floor:</td>
+    				<td><select id="fVal" name="fval" style="Width:153px" onchange="checkSelectedFloor()">
+    					<option value="1" selected>1</option>
+    					<option value="2">2</option>
+                        <option value="3">3</option>
+                        <option value="4">4</option>
+                        <option value="5">5</option>
+					</td>
+  				</tr>
+        	</table>
+        	<br></br>
+        	Edge information:
+        	<form name="edgeStore">
+        		<table width="295" border="0" cellspacing="0" cellpadding="0">
+  					<tr>
+    					<td>1 node</td>
+    					<td><input name="node1" type="text" maxlength="4" value="" readonly/></td>
+  					</tr>
+  					<tr><td></td><td><input type="button" value=" Change Node 1" onclick="activate1()" /></td></tr>
+					<tr>
+    					<td>2 node</td>
+    					<td><input name="node2" type="text" maxlength="4" value="" readonly/></td>
+  					</tr>
+   					<tr><td></td><td><input type="button" value=" Change Node 2" onclick="activate2()" /></td></tr>
+   					<tr>
+    					<td>Type:</td>
+                        <td><select id="edgeType" name="edgeType" style="width: 153px">
+                            <option value="gang">Gang</option>
+                            <option value="trapp">Trapp</option>
+                            <option value="heis">Heis</option>
+							</select>
+    					</td>
+  					</tr>
+  					<tr>
+                        <td></td>
+                        <td><input name="newEdge" type="button" value=" Add Edge " onclick="addEdge()" /></td>
+                    </tr>
+                </table>
+			</form>
+			<br /><br />
+            Edges added:
+            <ol id="theNodes"><br /></ol>
+            <br /><br />
+			<input type="button" name="saveEdges" id="saveEdges" value=" Save edges to file " onclick="saveEdges()"/>
+		</div>
+	</div>
+	<div id="canvasFloat" style="float:left;">
+	<canvas id="makeEdgeCanvas" width="4363" height="2184">
+    <script> 
+ 		$(document).ready(function(){
+			checkSelectedFloor();
+			makedummynode();
+  		});
+	</script>
+</div>  
+<script>
+	Array.prototype.checkId = function(value){
+		for(var indx = 0; indx < this.length; indx++){
+			var testArray = this[indx].split(",");
+			if(testArray[0] == value){
+				return indx;
+			}
+		}
+		return -1;
+	}
+	
+	var change1 = false;
+	var change2 = false;
+	
+	function makedummynode(){
+		array1Floor = ["0,gang,81,189,1", "1,gang,67,217,1", "2,gang,232,252,1", "3,gang,169,308,1"]
+		for(var x = 0; x < array1Floor.length; x++){
+			node = array1Floor[x].split(",");
+			drawOldNode(node[2],node[3],node[0]);
+		}
+	}
+	
+	function drawOldNode(x, y, oldId){
+		console.log(y);
+		var getCanvas = document.getElementById("canvasFloat");
+		var node = document.createElement("div");
+		var nodeId = oldId;
+		node.setAttribute("id", nodeId);
+		node.style.height = "8px";
+		node.style.width = "8px";
+		node.style.backgroundColor = "#FF0000";
+		node.style.cssFloat ="left";
+		node.style.left = (parseInt(x)+296)+"px";
+		node.style.top = parseInt(y)-4+"px";
+		node.style.position = "absolute";
+		node.style.display = "visible";
+		node.onclick = function(){
+			changeText(nodeId);
+		}
+		getCanvas.appendChild(node);
+	}
+	function changeText(nodeId){
+		var nodeArray = getCurrentArray();
+		if(change1){
+			var node = document.getElementsByName("node1");
+			node[0].value = nodeArray[nodeArray.checkId(nodeId)];
+			change1 = false;
+		}else if(change2){
+			var node = document.getElementsByName("node2");
+			node[0].value = nodeArray[nodeArray.checkId(nodeId)];
+			change2 = false;
+		}else{
+		}
+		console.log(nodeId);
+		console.log(nodeArray);
+		console.log(nodeArray.checkId(nodeId));
+	}
+	function makeNewEdge(){
+		activate1();
+		activate2();
+	}
+	
+	function activate1(){
+		change1 = true;
+	}
+	
+	function activate2(){
+		change2 = true;
+	
+	}
+	
+	function addEdge(){
+		
+	}
+	function getCurrentArray(){
+		var selectedFloor = parseInt(document.getElementById("fVal").value);
+		switch (selectedFloor) {
+			case 1:
+				return array1Floor;
+				break;
+			case 2:
+				return array2Floor;
+				break;
+			case 3:
+				return array3Floor;
+				break;
+			case 4:
+				return array4Floor;
+				break;
+			case 5:
+				return array5Floor;
+				break;	
+		}
+	}
+	function checkSelectedFloor() {
+		var theCanvas = document.getElementById("makeEdgeCanvas");
+		var selectedFloor = parseInt(document.getElementById("fVal").value);
+		switch (selectedFloor) {
+			case 1:
+				//clearGrids();
+				//clearNodes();
+				theCanvas.setAttribute("style", "background: url(../kart/kart_KE_1etg.jpg)");
+				//loadSelectedFloorGrid(selectedFloor);
+				break;
+			case 2:
+				//clearGrids();
+				//clearNodes();
+				theCanvas.setAttribute("style", "background: url(../kart/kart_KE_2etg.jpg)");
+				//loadSelectedFloorGrid(selectedFloor);
+				break;
+			case 3:
+				//clearGrids();
+				//clearNodes();
+				theCanvas.setAttribute("style", "background: url(../kart/kart_KE_3etg.jpg)");
+				//loadSelectedFloorGrid(selectedFloor);
+				break;
+			case 4:
+				//clearGrids();
+				//clearNodes();
+				theCanvas.setAttribute("style", "background: url(../kart/kart_KE_4etg.jpg)");
+				//loadSelectedFloorGrid(selectedFloor);
+				break;
+			case 5:
+				//clearGrids();
+				//clearNodes();
+				theCanvas.setAttribute("style", "background: url(../kart/kart_Kjølv_Egelands_hus_5etg.jpg)");
+				//loadSelectedFloorGrid(selectedFloor);
+				break;	
+		}
+	}
+	
+	function saveEdge(){
+		
+	}
+</script>
+</body>
+</html>
