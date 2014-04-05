@@ -274,13 +274,11 @@
 	}
 	
 	function removeDraw(nodeid){
-		console.log(nodeid);
 		removeDrawnNode = "#"+nodeid;
 		$(removeDrawnNode).remove();
 	}
 	
 	function changeNodes(){
-		console.log("old"+oldFloor);
 		var oldArray = getOldArray();
 		var newArray = getCurrentArray();
 		for(var idx = 0; idx < oldArray.length; idx++){
