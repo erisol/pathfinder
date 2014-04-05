@@ -10,41 +10,84 @@
 <body>
 <div style="width: 4666px; height: 2184px;">
 	<div style="float:left; width: 300px; height: 2184px;">
-    	<div style="float:left;position:fixed; width: 300px; height: 2184px; border-right: 3px solid #000; text-align: center; background-color: white">
-        	<br></br>
-        	Current Node Information
-        	<span id="curNodeInfo"></span>
-        	<br></br><br></br>
+    	<div style="float:left;position:fixed; width: 300px; overflow: auto; height: 100%; border-right: 3px solid #000; text-align: center; background-color: white">
+        	<br />
+        	<strong>Current Node Information:</strong><br />
+        	<table width="295" border="0" cellspacing="0" cellpadding="0">
+            	<tr>
+                	<td>Room:</td>
+                    <td><span id="curNodeRoom"> </span></td>
+                </tr>
+        		<tr>
+                	<td>X-Coords:</td>
+                	<td><span id="curNodeX"> </span></td>
+                </tr>
+        		<tr>
+                	<td>Y-Coords:</td>
+                	<td><span id="curNodeY"> </span></td>
+                </tr>
+        		<tr>
+                	<td>Floor:</td>
+                	<td><span id="curNodeFloor"> </span></td>
+                </tr>
+            </table>
+            <br />
         	<table width="295" border="0" cellspacing="0" cellpadding="0">
         		<tr>
   		 			<td></td>
   					<td><input name="createEdge" type="button" value=" Make New Edge " onclick="makeNewEdge()" /></td>
   				</tr>
-            	<tr>
-    				<td>Floor:</td>
-    				<td><select id="fVal" name="fval" style="Width:153px" onchange="checkSelectedFloor()">
-    					<option value="1" selected>1</option>
-    					<option value="2">2</option>
-                        <option value="3">3</option>
-                        <option value="4">4</option>
-                        <option value="5">5</option>
-					</td>
-  				</tr>
         	</table>
-        	<br></br>
-        	Edge information:
+        	<br />
+        	Create Edge Between:
         	<form name="edgeStore">
         		<table width="295" border="0" cellspacing="0" cellpadding="0">
   					<tr>
-    					<td>1 node</td>
-    					<td><input name="node1" type="text" maxlength="4" value="" readonly/></td>
+    					<td><Strong>Node 1</Strong></td>
+    					<td><input name="node1Id" type="hidden" value=""></td>
+  					</tr>
+                    <tr>
+    					<td>Room</td>
+    					<td><input name="node1Room" type="text" maxlength="8" value="" readonly/></td>
+  					</tr>
+                    <tr>
+    					<td>X-Coords</td>
+    					<td><input name="node1X" type="text" maxlength="5" value="" readonly/></td>
+  					</tr>
+                    <tr>
+    					<td>Y-Coords:</td>
+    					<td><input name="node1Y" type="text" maxlength="5" value="" readonly/></td>
+  					</tr>
+                    <tr>
+    					<td>Floor</td>
+    					<td><input name="node1Floor" type="text" maxlength="4" value="" readonly/></td>
   					</tr>
   					<tr><td></td><td><input type="button" value=" Change Node 1" onclick="activate1()" /></td></tr>
-					<tr>
-    					<td>2 node</td>
-    					<td><input name="node2" type="text" maxlength="4" value="" readonly/></td>
+				</table><br />
+                <table width="295" border="0" cellspacing="0" cellpadding="0">
+                    <tr>
+    					<td><strong>Node 2</strong></td>
+    					<td><input name="node2Id" type="hidden" value=""></td>
+  					</tr>
+                    <tr>
+    					<td>Room</td>
+    					<td><input name="node2Room" type="text" maxlength="8" value="" readonly/></td>
+  					</tr>
+                    <tr>
+    					<td>X-Coords</td>
+    					<td><input name="node2X" type="text" maxlength="5" value="" readonly/></td>
+  					</tr>
+                    <tr>
+    					<td>Y-Coords</td>
+    					<td><input name="node2Y" type="text" maxlength="5" value="" readonly/></td>
+  					</tr>
+                    <tr>
+    					<td>Floor</td>
+    					<td><input name="node2Floor" type="text" maxlength="4" value="" readonly/></td>
   					</tr>
    					<tr><td></td><td><input type="button" value=" Change Node 2" onclick="activate2()" /></td></tr>
+                    </table><br />
+                    <table width="295" border="0" cellspacing="0" cellpadding="0">
    					<tr>
     					<td>Type:</td>
                         <td><select id="edgeType" name="edgeType" style="width: 153px">
@@ -54,15 +97,22 @@
 							</select>
     					</td>
   					</tr>
-  					<tr>
-                        <td></td>
-                        <td><input name="newEdge" type="button" value=" Add Edge " onclick="addEdge()" /></td>
-                    </tr>
-                </table>
+            		<tr>
+    					<td>Change Floor:</td>
+    					<td><select id="fVal" name="fval" style="Width:153px" onchange="checkSelectedFloor()">
+    						<option value="1" selected>1</option>
+    						<option value="2">2</option>
+                       		<option value="3">3</option>
+                       	 	<option value="4">4</option>
+                       		<option value="5">5</option>
+						</td>
+  					</tr>
+                </table><br />
+                <input name="newEdge" type="button" value=" Add Edge " onclick="addEdge()" />
 			</form>
-			<br /><br />
+			<br />
             Edges added:
-            <ol id="theNodes"><br /></ol>
+            <ol id="theEdges"><br /></ol>
             <br /><br />
 			<input type="button" name="saveEdges" id="saveEdges" value=" Save edges to file " onclick="saveEdges()"/>
 		</div>
@@ -72,7 +122,6 @@
     <script> 
  		$(document).ready(function(){
 			checkSelectedFloor();
-			makedummynode();
   		});
 	</script>
 </div>  
@@ -86,20 +135,19 @@
 		}
 		return -1;
 	}
-	
+	var oldFloor = 1;
+	nextId = 0;
+	oldSaved = true;
+	var edges = new Array();
 	var change1 = false;
 	var change2 = false;
-	
-	function makedummynode(){
-		array1Floor = ["0,gang,81,189,1", "1,gang,67,217,1", "2,gang,232,252,1", "3,gang,169,308,1"]
-		for(var x = 0; x < array1Floor.length; x++){
-			node = array1Floor[x].split(",");
-			drawOldNode(node[2],node[3],node[0]);
-		}
-	}
+	array1Floor = ["0,gang,81,189,1", "1,gang,67,217,1", "2,gang,232,252,1", "3,gang,169,308,1"];
+	array2Floor = ["4,gang,281,189,2", "5,gang,267,217,2", "6,gang,432,252,2", "7,gang,369,308,2"];
+	array3Floor = ["8,gang,381,189,3", "9,gang,367,217,3", "10,gang,532,252,3", "11,gang,469,308,3"];
+	array4Floor = ["12,gang,481,189,4", "13,gang,467,217,4", "14,gang,632,252,4", "15,gang,569,308,4"];
+	array5Floor = ["16,gang,581,189,5", "17,gang,567,217,5", "18,gang,732,252,5", "19,gang,669,308,5"];
 	
 	function drawOldNode(x, y, oldId){
-		console.log(y);
 		var getCanvas = document.getElementById("canvasFloat");
 		var node = document.createElement("div");
 		var nodeId = oldId;
@@ -112,26 +160,53 @@
 		node.style.top = parseInt(y)-4+"px";
 		node.style.position = "absolute";
 		node.style.display = "visible";
+		node.onmouseover = function(){
+			showtext(nodeId);
+			document.getElementById(nodeId).style.backgroundColor = "yellow";
+		}
+		node.onmouseout = function(){
+			document.getElementById(nodeId).style.backgroundColor = "red";	
+		}
 		node.onclick = function(){
 			changeText(nodeId);
 		}
 		getCanvas.appendChild(node);
 	}
+	
+	function showtext(nodeId){
+		var messageRoom = document.getElementById("curNodeRoom");
+		var messageX = document.getElementById("curNodeX");
+		var messageY = document.getElementById("curNodeY");
+		var messageFloor = document.getElementById("curNodeFloor");
+		var nodeArray = getCurrentArray()[getCurrentArray().checkId(nodeId)].split(",");
+		messageX.innerHTML = nodeArray[2];
+		messageY.innerHTML = nodeArray[3];
+		messageFloor.innerHTML = nodeArray[4];
+		messageRoom.innerHTML = nodeArray[1];
+	}
+	
 	function changeText(nodeId){
-		var nodeArray = getCurrentArray();
-		if(change1){
-			var node = document.getElementsByName("node1");
-			node[0].value = nodeArray[nodeArray.checkId(nodeId)];
+		var nodeArray = getCurrentArray()[getCurrentArray().checkId(nodeId)].split(",");
+		if(change1 && document.getElementsByName("node2Id")[0].value !== nodeArray[0]){
+			document.getElementsByName("node1Id")[0].value = nodeArray[0];
+			document.getElementsByName("node1Room")[0].value = nodeArray[1];
+			document.getElementsByName("node1X")[0].value = nodeArray[2];
+			document.getElementsByName("node1Y")[0].value = nodeArray[3];
+			document.getElementsByName("node1Floor")[0].value = nodeArray[4];
 			change1 = false;
-		}else if(change2){
-			var node = document.getElementsByName("node2");
-			node[0].value = nodeArray[nodeArray.checkId(nodeId)];
+			oldSaved = false;
+			console.log("1");
+		}else if(change2 && document.getElementsByName("node1Id")[0].value !== nodeArray[0]){
+			document.getElementsByName("node2Id")[0].value = nodeArray[0];
+			document.getElementsByName("node2Room")[0].value = nodeArray[1];
+			document.getElementsByName("node2X")[0].value = nodeArray[2];
+			document.getElementsByName("node2Y")[0].value = nodeArray[3];
+			document.getElementsByName("node2Floor")[0].value = nodeArray[4];
 			change2 = false;
+			oldSaved = false;
+			console.log("2");
 		}else{
 		}
-		console.log(nodeId);
-		console.log(nodeArray);
-		console.log(nodeArray.checkId(nodeId));
 	}
 	function makeNewEdge(){
 		activate1();
@@ -147,8 +222,94 @@
 	
 	}
 	
+	function checkEdgeFloor(type, node1floor, node2floor){
+		if(node1floor !== node2floor && type === "gang"){
+			alert("Du må endre edge type til Trapp eller Heis");
+			return false;	
+		}
+		if(node1floor === node2floor && type !== "gang"){
+			alert("Du må endre edge type til Gang");
+			return false;	
+		}
+		return true;
+	}
+	
 	function addEdge(){
-		
+		var id1 = document.getElementsByName("node1Id")[0].value;
+		var floorVal1 = document.getElementsByName("node1Floor")[0].value;
+		var id2 = document.getElementsByName("node2Id")[0].value;
+		var floorVal2 = document.getElementsByName("node2Floor")[0].value;
+		var edgeType = document.getElementById("edgeType").value;
+		if((id1 !== "") && (id2 !== "") && !oldSaved && checkEdgeFloor(edgeType, floorVal1, floorVal2)){
+			var edge = id1 + "," + id2 + "," + edgeType;
+			edges[edges.length] = edge;
+			displayEdges();
+			nextId++;
+			oldSaved = true;
+		}
+	}
+	
+	function displayEdges() {
+		var displayId = nextId+1;
+		addEdgeToList(displayId);
+	}
+	
+	function addEdgeToList(displayId){
+		var parentElement = document.getElementById("theEdges");
+		var itemElementID = String("theEdges"+displayId);
+		var itemElement = document.getElementById(itemElementID);
+		var itemDisplayText = edges[displayId-1].toString();
+   		var newList= document.createElement("li");
+    	var newText = document.createTextNode(itemDisplayText);
+		newList.setAttribute("id", itemElementID);
+    	newList.appendChild(newText);
+		newList.innerHTML += " <a href='#' onclick='removeEdge("+displayId+")'>Remove this</a>";
+   		parentElement.appendChild(newList);
+	}
+	
+	function removeEdge(id){
+		var nodesDisplayed = document.getElementById("theEdges"+id);
+		nodesDisplayed.remove(id);
+		edges.splice(id, 1);
+	}
+	
+	function removeDraw(nodeid){
+		console.log(nodeid);
+		removeDrawnNode = "#"+nodeid;
+		$(removeDrawnNode).remove();
+	}
+	
+	function changeNodes(){
+		console.log("old"+oldFloor);
+		var oldArray = getOldArray();
+		var newArray = getCurrentArray();
+		for(var idx = 0; idx < oldArray.length; idx++){
+			var currentNode = oldArray[idx].split(",");
+			removeDraw(parseInt(currentNode[0]));	
+		}
+		for(var idx = 0; idx < newArray.length; idx++){
+			node = newArray[idx].split(",");
+			drawOldNode(node[2],node[3],node[0]);
+		}
+	}
+	function getOldArray(){
+		switch (oldFloor) {
+			case 1:
+				return array1Floor;
+				break;
+			case 2:
+				return array2Floor;
+				break;
+			case 3:
+				return array3Floor;
+				break;
+			case 4:
+				return array4Floor;
+				break;
+			case 5:
+				return array5Floor;
+				break;	
+		}
 	}
 	function getCurrentArray(){
 		var selectedFloor = parseInt(document.getElementById("fVal").value);
@@ -175,34 +336,29 @@
 		var selectedFloor = parseInt(document.getElementById("fVal").value);
 		switch (selectedFloor) {
 			case 1:
-				//clearGrids();
-				//clearNodes();
+				changeNodes();
 				theCanvas.setAttribute("style", "background: url(../kart/kart_KE_1etg.jpg)");
-				//loadSelectedFloorGrid(selectedFloor);
+				oldFloor = 1;
 				break;
 			case 2:
-				//clearGrids();
-				//clearNodes();
+				changeNodes();
 				theCanvas.setAttribute("style", "background: url(../kart/kart_KE_2etg.jpg)");
-				//loadSelectedFloorGrid(selectedFloor);
+				oldFloor = 2;
 				break;
 			case 3:
-				//clearGrids();
-				//clearNodes();
+				changeNodes();
 				theCanvas.setAttribute("style", "background: url(../kart/kart_KE_3etg.jpg)");
-				//loadSelectedFloorGrid(selectedFloor);
+				oldFloor = 3;
 				break;
 			case 4:
-				//clearGrids();
-				//clearNodes();
+				changeNodes();
 				theCanvas.setAttribute("style", "background: url(../kart/kart_KE_4etg.jpg)");
-				//loadSelectedFloorGrid(selectedFloor);
+				oldFloor = 4;
 				break;
 			case 5:
-				//clearGrids();
-				//clearNodes();
+				changeNodes();
 				theCanvas.setAttribute("style", "background: url(../kart/kart_Kjølv_Egelands_hus_5etg.jpg)");
-				//loadSelectedFloorGrid(selectedFloor);
+				oldFloor = 5;
 				break;	
 		}
 	}
