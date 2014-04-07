@@ -144,7 +144,7 @@
 	array1Floor = ["0,gang,81,189,1", "1,gang,67,217,1", "2,gang,232,252,1", "3,gang,169,308,1"];
 	array2Floor = ["4,gang,281,189,2", "5,gang,267,217,2", "6,gang,432,252,2", "7,gang,369,308,2"];
 	array3Floor = ["8,gang,381,189,3", "9,gang,367,217,3", "10,gang,532,252,3", "11,gang,469,308,3"];
-	array4Floor = ["12,gang,482,189,4", "13,gang,482,217,4", "14,gang,632,308,4", "15,gang,544,308,4"];
+	array4Floor = ["12,gang,300,189,4", "13,gang,300,217,4", "14,gang,632,308,4", "15,gang,544,308,4"];
 	array5Floor = ["16,gang,581,189,5", "17,gang,567,217,5", "18,gang,732,252,5", "19,gang,669,308,5"];
 	
 	function drawOldNode(x, y, oldId){
@@ -232,7 +232,8 @@
 		return true;
 	}
 	function drawLine(x1, y1, x2, y2, id){
-		var degree = finddegrees(x1,y1,x2,y2);
+		var drawinfo = finddegrees(x1,y1,x2,y2);
+		var degree = drawinfo[0];
 		var getCanvas = document.getElementById("canvasFloat");
 		var node = document.createElement("div");
 		var nodeId = id;
@@ -243,13 +244,9 @@
 		node.style.top = parseInt(y1)+"px";
 		node.style.position = "absolute";
 		node.style.display = "visible";
-		if(degree !== 0){
-			node.style.left = parseInt(x1)+parseInt(300)+"px";
-		}else{
 		node.style.left = parseInt(x1)+parseInt(300)+"px";
-		}
-		var y= parseInt((y2-y1)/2);
-		var x = parseInt((x2-x1)/2)-4;
+		var x = (parseInt((Math.sqrt(Math.pow((x2-x1),2)+Math.pow((y2-y1),2)))/2)-drawinfo[1]);
+		var y = drawinfo[2]*Math.sin((Math.PI/180)*degree);
 		node.style.webkitTransform = "translateY("+y+"px) translateX("+x+"px) rotate("+degree+"deg)";
 		node.style.msTransform = "rotate("+degree+"deg)"; /* IE 9 */
 		node.style.transform = "rotate("+degree+"deg)"; /* Standard syntax */
@@ -262,39 +259,44 @@
 		y1= -parseInt(y1);
 		y2= -parseInt(y2);
 		if(x1 < x2 && y1 < y2){
-			return -(Math.atan(((y2-y1)/(x2-x1))))*(180/Math.PI);
+			console.log("1");
+			return [-(Math.atan(((y2-y1)/(x2-x1))))*(180/Math.PI),Math.sqrt(Math.pow((parseInt(y2-y1)/2),2) + Math.pow((Math.sqrt(Math.pow(parseInt(x2-x1),2)+Math.pow(parseInt(y2-y1),2)))/2,2)),0.5*Math.sqrt(Math.pow(x2-x1,2) + Math.pow(y2-y1,2))];
 		}
 		
 		else if(x1 < x2 && y1 > y2){
-			return (Math.atan(((y1-y2)/(x2-x1))))*(180/Math.PI);
+			console.log("2");
+			return [(Math.atan(((y1-y2)/(x2-x1))))*(180/Math.PI),Math.sqrt(Math.pow((parseInt(y2-y1)/2),2) + Math.pow((Math.sqrt(Math.pow(parseInt(x2-x1),2)+Math.pow(parseInt(y2-y1),2)))/2,2)),0.5*Math.sqrt(Math.pow(x2-x1,2) + Math.pow(y1-y2,2))];
 		}
 		
 		else if(x1 > x2 && y1 < y2){
-			return -180+(Math.atan(((y1-y2)/(x2-x1))))*(180/Math.PI);
+			console.log("3");
+			return [-180+(Math.atan(((y2-y1)/(x1-x2))))*(180/Math.PI),Math.sqrt(Math.pow((parseInt(y2-y1)/2),2) + Math.pow((Math.sqrt(Math.pow(parseInt(x2-x1),2)+Math.pow(parseInt(y2-y1),2)))/2,2))+(x1-x2),0.5*Math.sqrt(Math.pow(x1-x2,2) + Math.pow(y2-y1,2))];
 		}
 		
 		else if(x1 > x2 && y1 > y2){
-			return 180-(Math.atan(((y1-y2)/(x1-x2))))*(180/Math.PI);
+			console.log("4");
+			return [180-(Math.atan(((y1-y2)/(x1-x2))))*(180/Math.PI),Math.sqrt(Math.pow((parseInt(y2-y1)/2),2) + Math.pow((Math.sqrt(Math.pow(parseInt(x2-x1),2)+Math.pow(parseInt(y2-y1),2)))/2,2))+(x1-x2),0.5*Math.sqrt(Math.pow(x1-x2,2) + Math.pow(y2-y1,2))];
 		}
 		
 		else if(x1===x2){
 			if(y1 < y2){
-				return -90;	
+				console.log("5");
+				return [-90,y2-y1, (y2-y1)/2];	
 			}
 			
 			else if(y1 > y2){
-				return 90;
+				return [90,y1-y2,(y1-y2)/2];
 			}
 			
 		}
 		
 		else if(y1===y2){
 			if(x1 < x2){
-				return 0;
+				return [0,(x2-x1)/2,0];
 			}
 			
 			else if(x1 > x2){
-				return 180;
+				return [0,-(x2-x1)*1.5,0];
 			}
 		}
 	}
