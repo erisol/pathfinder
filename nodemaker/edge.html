@@ -233,21 +233,22 @@
 	}
 	function drawLine(x1, y1, x2, y2, id){
 		var drawinfo = finddegrees(x1,y1,x2,y2);
-		var degree = drawinfo[0];
+		var degree = Math.round(drawinfo[0]);
 		var getCanvas = document.getElementById("canvasFloat");
 		var node = document.createElement("div");
 		var nodeId = id;
+		width = parseInt(Math.round(Math.sqrt(Math.pow((x2-x1),2)+Math.pow((y2-y1),2))));
 		node.setAttribute("id", "line"+id);
 		node.style.backgroundColor = "black";
 		node.style.height = "1px";
-		node.style.width = parseInt(Math.sqrt(Math.pow((x2-x1),2)+Math.pow((y2-y1),2)))+"px";
-		node.style.top = parseInt(y1)+"px";
+		node.style.width = width+"px";
+		node.style.top = Math.round(y1)+"px";
 		node.style.position = "absolute";
 		node.style.display = "visible";
 		node.style.left = parseInt(x1)+parseInt(300)+"px";
-		console.log(((Math.sqrt(Math.pow((x2-x1),2)+Math.pow((y2-y1),2))))*Math.abs(Math.sin(degree*Math.PI/180))-((Math.sqrt(Math.pow((x2-x1),2)+Math.pow((y2-y1),2)))));
-		var x = ((Math.sqrt(Math.pow((x2-x1),2)+Math.pow((y2-y1),2)))/2)-(drawinfo[1]);
-		var y = drawinfo[2]*Math.sin((Math.PI/180)*degree);
+		console.log(((Math.sqrt(Math.pow((x2-x1),2)+Math.pow((y2-y1),2))))*Math.abs(Math.sin(degree*Math.PI/180)));
+		var x = -Math.round(width/2 - Math.sqrt(Math.pow((width/2),2) - Math.pow(((y2-y1)/2),2))+drawinfo[1]);
+		var y = Math.round(drawinfo[2]*Math.sin((Math.PI/180)*degree));
 		node.style.webkitTransform = "translateY("+y+"px) translateX("+x+"px) rotate("+degree+"deg)";
 		node.style.msTransform = "rotate("+degree+"deg)"; /* IE 9 */
 		node.style.transform = "rotate("+degree+"deg)"; /* Standard syntax */
@@ -261,33 +262,33 @@
 		y2= -parseInt(y2);
 		if(x1 < x2 && y1 < y2){
 			console.log("1");
-			return [-(Math.atan(((y2-y1)/(x2-x1))))*(180/Math.PI),Math.sqrt(Math.pow(((y2-y1)/2),2) + Math.pow((Math.sqrt(Math.pow(parseInt(x2-x1),2)+Math.pow((y2-y1),2)))/2,2)),0.5*Math.sqrt(Math.pow(x2-x1,2) + Math.pow(y2-y1,2))];
+			return [-(Math.atan(((y2-y1)/(x2-x1))))*(180/Math.PI),0,0.5*Math.sqrt(Math.pow(x2-x1,2) + Math.pow(y2-y1,2))];
 		}
 		
 		else if(x1 < x2 && y1 > y2){
 			console.log("2");
-			return [(Math.atan(((y1-y2)/(x2-x1))))*(180/Math.PI),Math.sqrt(Math.pow(((y2-y1)/2),2) + Math.pow((Math.sqrt(Math.pow((x2-x1),2)+Math.pow((y2-y1),2)))/2,2)),0.5*Math.sqrt(Math.pow(x2-x1,2) + Math.pow(y1-y2,2))];
+			return [(Math.atan(((y1-y2)/(x2-x1))))*(180/Math.PI),0,0.5*Math.sqrt(Math.pow(x2-x1,2) + Math.pow(y1-y2,2))];
 		}
 		
 		else if(x1 > x2 && y1 < y2){
 			console.log("3");
-			return [-180+(Math.atan(((y2-y1)/(x1-x2))))*(180/Math.PI),Math.sqrt(Math.pow(((y2-y1)/2),2) + Math.pow((Math.sqrt(Math.pow((x2-x1),2)+Math.pow((y2-y1),2)))/2,2))+(x1-x2),0.5*Math.sqrt(Math.pow(x1-x2,2) + Math.pow(y2-y1,2))];
+			return [-180+(Math.atan(((y2-y1)/(x1-x2))))*(180/Math.PI),(x1-x2),0.5*Math.sqrt(Math.pow(x1-x2,2) + Math.pow(y2-y1,2))];
 		}
 		
 		else if(x1 > x2 && y1 > y2){
 			console.log("4");
-			return [180-(Math.atan(((y1-y2)/(x1-x2))))*(180/Math.PI),Math.sqrt(Math.pow(((y2-y1)/2),2) + Math.pow((Math.sqrt(Math.pow((x2-x1),2)+Math.pow((y2-y1),2)))/2,2))+(x1-x2),0.5*Math.sqrt(Math.pow(x1-x2,2) + Math.pow(y2-y1,2))];
+			return [180-(Math.atan(((y1-y2)/(x1-x2))))*(180/Math.PI),(x1-x2),0.5*Math.sqrt(Math.pow(x1-x2,2) + Math.pow(y2-y1,2))];
 		}
 		
 		else if(x1===x2){
 			if(y1 < y2){
 				console.log("5.1");
-				return [-90,y2-y1, (y2-y1)/2];	
+				return [-90,0, (y2-y1)/2];	
 			}
 			
 			else if(y1 > y2){
 				console.log("5.2");
-				return [90,y1-y2,(y1-y2)/2];
+				return [90,0,(y1-y2)/2];
 			}
 			
 		}
@@ -295,12 +296,12 @@
 		else if(y1===y2){
 			if(x1 < x2){
 				console.log("6.1");
-				return [0,(x2-x1)/2,0];
+				return [0,0,0];
 			}
 			
 			else if(x1 > x2){
 				console.log("6.2");
-				return [0,-(x2-x1)*1.5,0];
+				return [0,(x1-x2),0];
 			}
 		}
 	}
