@@ -135,10 +135,15 @@
 		}
 		return -1;
 	}
+	var changeFloor = false;
 	var oldFloor = 1;
 	nextId = 0;
 	oldSaved = true;
-	var edges = new Array();
+	var edges1 = new Array();
+	var edges2 = new Array();
+	var edges3 = new Array();
+	var edges4 = new Array();
+	var edges5 = new Array();
 	var change1 = false;
 	var change2 = false;
 	array1Floor = ["0,gang,81,189,1", "1,gang,67,217,1", "2,gang,232,238,1", "3,gang,169,308,1", "20,gang,188,50,1", "21,gang,189,65,1", "22,gang,300,238,1"];
@@ -178,15 +183,16 @@
 		var messageX = document.getElementById("curNodeX");
 		var messageY = document.getElementById("curNodeY");
 		var messageFloor = document.getElementById("curNodeFloor");
-		var nodeArray = getCurrentArray()[getCurrentArray().checkId(nodeId)].split(",");
-		messageX.innerHTML = nodeArray[2];
-		messageY.innerHTML = nodeArray[3];
-		messageFloor.innerHTML = nodeArray[4];
-		messageRoom.innerHTML = nodeArray[1];
+		var nodeArray = getCurrentArray()[0];
+		var node = nodeArray[nodeArray.checkId(nodeId)].split(",");
+		messageX.innerHTML = node[2];
+		messageY.innerHTML = node[3];
+		messageFloor.innerHTML = node[4];
+		messageRoom.innerHTML = node[1];
 	}
 	
 	function changeText(nodeId){
-		var nodeArray = getCurrentArray()[getCurrentArray().checkId(nodeId)].split(",");
+		var nodeArray = getCurrentArray()[0][getCurrentArray()[0].checkId(nodeId)].split(",");
 		if(change1 && document.getElementsByName("node2Id")[0].value !== nodeArray[0]){
 			document.getElementsByName("node1Id")[0].value = nodeArray[0];
 			document.getElementsByName("node1Room")[0].value = nodeArray[1];
@@ -246,7 +252,6 @@
 		node.style.position = "absolute";
 		node.style.display = "visible";
 		node.style.left = parseInt(x1)+parseInt(300)+"px";
-		console.log(((Math.sqrt(Math.pow((x2-x1),2)+Math.pow((y2-y1),2))))*Math.abs(Math.sin(degree*Math.PI/180)));
 		var x = -Math.round(width/2 - Math.sqrt(Math.pow((width/2),2) - Math.pow(((y2-y1)/2),2))+drawinfo[1]);
 		var y = Math.round(drawinfo[2]*Math.sin((Math.PI/180)*degree));
 		node.style.webkitTransform = "translateY("+y+"px) translateX("+x+"px) rotate("+degree+"deg)";
@@ -305,6 +310,7 @@
 			}
 		}
 	}
+	
 	function addEdge(){
 		var id1 = document.getElementsByName("node1Id")[0].value;
 		var x1 = document.getElementsByName("node1X")[0].value;
@@ -316,8 +322,8 @@
 		var floorVal2 = document.getElementsByName("node2Floor")[0].value;
 		var edgeType = document.getElementById("edgeType").value;
 		if((id1 !== "") && (id2 !== "") && !oldSaved && checkEdgeFloor(edgeType, floorVal1, floorVal2)){
-			var edge = id1 + "," + id2 + "," + edgeType;
-			edges[edges.length] = edge;
+			var edge = (nextId+1)+","+id1 +","+x1+","+y1+ "," + id2 + "," +x2+","+y2 + ","+edgeType;
+			getCurrentArray()[1][getCurrentArray()[1].length] = edge;
 			displayEdges();
 			drawLine(x1,y1,x2,y2,nextId+1);
 			nextId++;
@@ -334,7 +340,7 @@
 		var parentElement = document.getElementById("theEdges");
 		var itemElementID = String("theEdges"+displayId);
 		var itemElement = document.getElementById(itemElementID);
-		var itemDisplayText = edges[displayId-1].toString();
+		var itemDisplayText = getCurrentArray()[1][getCurrentArray()[1].length-1].toString();
    		var newList= document.createElement("li");
     	var newText = document.createTextNode(itemDisplayText);
 		newList.setAttribute("id", itemElementID);
@@ -347,9 +353,11 @@
 		var nodesDisplayed = document.getElementById("theEdges"+id);
 		nodesDisplayed.remove(id);
 		removeEdgeDraw(id);
-		edges.splice(id, 1);
+		if(!changeFloor){
+			getCurrentArray()[1].splice(id-1, 1);
+		}
 	}
-	
+		
 	function removeDraw(nodeid){
 		removeDrawnNode = "#"+nodeid;
 		$(removeDrawnNode).remove();
@@ -360,48 +368,52 @@
 		$(removedEdge).remove();
 	}
 	
-	function changeNodes(){
-		var oldArray = getOldArray();
-		var newArray = getCurrentArray();
-		for(var idx = 0; idx < oldArray.length; idx++){
-			var currentNode = oldArray[idx].split(",");
+	function changeEdgesAndNodes(){
+		changeFloor = true;
+		var oldArrays = getOldArray();
+		var newArrays = getCurrentArray();
+		var oldNodeArray = oldArrays[0];
+		var oldEdgeArray = oldArrays[1];
+		var newNodeArray = newArrays[0];
+		var newEdgeArray = newArrays[1];
+		console.log(oldEdgeArray);
+		for(var idx = 0; idx < oldNodeArray.length; idx++){
+			var currentNode = oldNodeArray[idx].split(",");
 			removeDraw(parseInt(currentNode[0]));	
 		}
-		for(var idx = 0; idx < newArray.length; idx++){
-			node = newArray[idx].split(",");
+		for(var idx = 0; idx < oldEdgeArray.length; idx++){
+			var currentEdge = oldEdgeArray[idx].split(",");
+			console.log(currentEdge[0]);
+			removeEdge(parseInt(currentEdge[0]));
+		}
+		for(var idx = 0; idx < newNodeArray.length; idx++){
+			node = newNodeArray[idx].split(",");
 			drawOldNode(node[2],node[3],node[0]);
 		}
-	}
-	
-	function changeEdges(){
-		var oldArray = getOldArray();
-		var newArray = getCurrentArray();
-		for(var idx = 0; idx < oldArray.length; idx++){
-			var currentNode = oldArray[idx].split(",");
-			removeDraw(parseInt(currentNode[0]));	
+		for(var idx = 0; idx < newEdgeArray.length; idx++){
+			edge = newEdgeArray[idx].split(",");
+			addEdgeToList(edge[0]);
+			drawLine(edge[2],edge[3],edge[5],edge[6],edge[0]);
 		}
-		for(var idx = 0; idx < newArray.length; idx++){
-			node = newArray[idx].split(",");
-			drawOldNode(node[2],node[3],node[0]);
-		}
+		changeFloor = false;
 	}
 	
 	function getOldArray(){
 		switch (oldFloor) {
 			case 1:
-				return array1Floor;
+				return [array1Floor,edges1];
 				break;
 			case 2:
-				return array2Floor;
+				return [array2Floor,edges2];
 				break;
 			case 3:
-				return array3Floor;
+				return [array3Floor,edges3];
 				break;
 			case 4:
-				return array4Floor;
+				return [array4Floor,edges4];
 				break;
 			case 5:
-				return array5Floor;
+				return [array5Floor,edges5];
 				break;	
 		}
 	}
@@ -409,19 +421,19 @@
 		var selectedFloor = parseInt(document.getElementById("fVal").value);
 		switch (selectedFloor) {
 			case 1:
-				return array1Floor;
+				return [array1Floor,edges1];
 				break;
 			case 2:
-				return array2Floor;
+				return [array2Floor,edges2];
 				break;
 			case 3:
-				return array3Floor;
+				return [array3Floor,edges3];
 				break;
 			case 4:
-				return array4Floor;
+				return [array4Floor,edges4];
 				break;
 			case 5:
-				return array5Floor;
+				return [array5Floor,edges5];
 				break;	
 		}
 	}
@@ -430,32 +442,27 @@
 		var selectedFloor = parseInt(document.getElementById("fVal").value);
 		switch (selectedFloor) {
 			case 1:
-				changeNodes();
-				changeEdges();
+				changeEdgesAndNodes();
 				theCanvas.setAttribute("style", "background: url(../kart/kart_KE_1etg.jpg)");
 				oldFloor = 1;
 				break;
 			case 2:
-				changeNodes();
-				changeEdges();
+				changeEdgesAndNodes();
 				theCanvas.setAttribute("style", "background: url(../kart/kart_KE_2etg.jpg)");
 				oldFloor = 2;
 				break;
 			case 3:
-				changeNodes();
-				changeEdges();
+				changeEdgesAndNodes();
 				theCanvas.setAttribute("style", "background: url(../kart/kart_KE_3etg.jpg)");
 				oldFloor = 3;
 				break;
 			case 4:
-				changeNodes();
-				changeEdges();
+				changeEdgesAndNodes();
 				theCanvas.setAttribute("style", "background: url(../kart/kart_KE_4etg.jpg)");
 				oldFloor = 4;
 				break;
 			case 5:
-				changeNodes();
-				changeEdges();
+				changeEdgesAndNodes();
 				theCanvas.setAttribute("style", "background: url(../kart/kart_Kjølv_Egelands_hus_5etg.jpg)");
 				oldFloor = 5;
 				break;	
