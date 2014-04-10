@@ -60,6 +60,33 @@
 			checkSelectedFloor();
  	 		addrooms();
   		});
+		window.addEventListener('keypress', function (e) {
+  			if (e.keyCode == 113) {
+        		drawNode();
+    		}
+			if (e.keyCode == 119) {
+        		saveNodes();
+    		}
+			if (e.keyCode == 120) {
+				var snap = document.getElementById("Xsnap");
+				if(snap.checked){
+					snap.checked = false;
+				}else if(!snap.checked){
+					snap.checked = true;	
+				}
+    		}
+			if (e.keyCode == 121) {
+        		var snap = document.getElementById("Ysnap");
+				if(snap.checked){
+					snap.checked = false;
+				}else if(!snap.checked){
+					snap.checked = true;	
+				}
+    		}
+			if (e.keyCode == 97) {
+        		addNode();
+    		}
+		}, false);
 	</script>
 </select>
     </td>
@@ -257,25 +284,6 @@
 		}
 	}
 	
-	function saveNodes(){
-		if (array1Floor.length == 0 && array2Floor.length == 0 && array3Floor.length == 0 && array4Floor.length == 0 && array5Floor.length == 0) {
-			console.log("the array is empty. nothing will be stored");
-		} else {
-			writeGridToFile(gridArray);
-		}	
-	}
-	  
-    function writeGridToFile(data){
-		var file = String(floorNodeListArray[selectedFloor]);
-    	var xmlhttp;
-    	if(window.XMLHttpRequest) {
-    		xmlhttp=new XMLHttpRequest();
-		}else {
-    		xmlhttp=new ActiveXObject("Microsoft.XMLHTTP");
-		}
-    	xmlhttp.open("GET","gridOperations.php?data="+data+"&file="+file,true);
-    	xmlhttp.send();
-	}
 	var createExistingXgrid = new Array();
 	var createExistingYgrid = new Array();
 	var floorListArray = ["","grids/ke/1.txt", "grids/ke/2.txt", "grids/ke/3.txt", "grids/ke/4.txt", "grids/ke/5.txt"];
@@ -287,7 +295,7 @@
 		cache: false,
   		success: function(data) {
     		var newArray = data.split(",");
-			for (var i = 0; i<=newArray.length; i+2) {
+			for (var i = 0; i<=newArray.length; i+=2) {
 				if (newArray[i] == 0 && newArray[i+1] >= 0) {
 					createExistingXgrid(newArray[i+1]);
 					console.log("created 1 x grid: "+newArray[i+1]);
@@ -301,6 +309,48 @@
   		}
 		});
 	}
+	var nodes = [array1Floor, array2Floor, array3Floor, array4Floor, array5Floor];
+	var floorNodeListArray = ["","nodes/ke/1.txt", "nodes/ke/2.txt", "nodes/ke/3.txt", "nodes/ke/4.txt", "nodes/ke/5.txt"];
+	function loadNodes(){
+		for(var n = 0; n < floorNodeListArray.length-1; n++){
+			jQuery.ajax({
+			url: floorListArray[n],
+			dataType: 'text',
+			type: "GET",
+			cache: false,
+	  		success: function(data) {
+	    		var newArray = data.split(",");
+				for (var i = 0; i<=newArray.length; i+=5) {
+					nodes[n][nodes[n].length] = newArray[i]+","+newArray[i+1]+","+newArray[i+2]+","+newArray[i+3]+","+newArray[i+4];
+				}           
+	  		}
+			});
+		}
+	}
+	
+	function saveNodes(){
+		if (array1Floor.length == 0 && array2Floor.length == 0 && array3Floor.length == 0 && array4Floor.length == 0 && array5Floor.length == 0) {
+			console.log("the array is empty. nothing will be stored");
+		} else {
+			writeNodeToFile();
+		}	
+	}
+	  
+    function writeNodeToFile(){
+		for(var i = 0;  i< floorNodeListArray.length-1; i++){
+			var file = String(floorNodeListArray[i]);
+			var data = nodes[i];
+			var xmlhttp;
+			if(window.XMLHttpRequest) {
+				xmlhttp=new XMLHttpRequest();
+			}else {
+				xmlhttp=new ActiveXObject("Microsoft.XMLHTTP");
+			}
+			xmlhttp.open("GET","gridOperations.php?data="+data+"&file="+file,true);
+			xmlhttp.send();
+		}
+	}
+	
 	function createExistingYgrid(topval) {
 		var getCanvas = document.getElementById("canvasFloat");
 		var newYgrid = document.createElement("div");

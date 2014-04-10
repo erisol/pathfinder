@@ -123,6 +123,23 @@
  		$(document).ready(function(){
 			checkSelectedFloor();
   		});
+		window.addEventListener('keypress', function (e) {
+  			if (e.keyCode == 113) {
+        		makeNewEdge();
+    		}
+			if (e.keyCode == 119) {
+        		saveEdges();
+    		}
+			if (e.keyCode == 49) {
+				activate1();
+    		}
+			if (e.keyCode == 50) {
+        		activate2();
+    		}
+			if (e.keyCode == 97) {
+        		addEdge();
+    		}
+		}, false);
 	</script>
 </div>  
 <script>
@@ -351,7 +368,9 @@
 	
 	function removeEdge(id){
 		var nodesDisplayed = document.getElementById("theEdges"+id);
-		nodesDisplayed.remove(id);
+		if(nodesDisplayed !== null){
+			nodesDisplayed.remove(id);
+		}
 		removeEdgeDraw(id);
 		if(!changeFloor){
 			getCurrentArray()[1].splice(id-1, 1);
@@ -468,15 +487,65 @@
 				break;	
 		}
 	}
+	
+	var nodes = [array1Floor, array2Floor, array3Floor, array4Floor, array5Floor];
+	var floorNodeListArray = ["","nodes/ke/1.txt", "nodes/ke/2.txt", "nodes/ke/3.txt", "nodes/ke/4.txt", "nodes/ke/5.txt"];
 	function loadNodes(){
-	 //Load array1Floor, array2Floor,.....,Array5Floor	
+	 		for(var n = 1; n < floorNodeListArray.length-1; n++){
+			jQuery.ajax({
+			url: floorNodeListArray[n],
+			dataType: 'text',
+			type: "GET",
+			cache: false,
+	  		success: function(data) {
+	    		var newArray = data.split(",");
+				for (var i = 0; i<=newArray.length; i+=5) {
+					nodes[n-1][nodes[n-1].length] = newArray[i]+","+newArray[i+1]+","+","+newArray[i+2]+","+newArray[i+3]+","+newArray[i+4];
+				}           
+	  		}
+			});
+		}
 	}
+	
+	var edge = [edges1, edges2, edges3, edges4, edges5];
+	var floorEdgeListArray = ["","edges/ke/1.txt", "edges/ke/2.txt", "edges/ke/3.txt", "edges/ke/4.txt", "edges/ke/5.txt"];
 	function loadEdges(){
-		//Load edges1,edges2,edges3,edges4,edges5
+		for(var n = 1; n < floorEdgeListArray.length-1; n++){
+			jQuery.ajax({
+			url: floorEdgeListArray[n],
+			dataType: 'text',
+			type: "GET",
+			cache: false,
+	  		success: function(data) {
+	    		var newArray = data.split(",");
+				for (var i = 0; i<=newArray.length; i+=8) {
+					edge[n-1][edge[n-1].length] = newArray[i]+","+newArray[i+1]+","+newArray[i+2]+","+newArray[i+3]+","+newArray[i+4]+","+newArray[i+5]+","+newArray[i+6]+","+newArray[i+7];
+				}           
+	  		}
+			});
+		}
 	}
 	
 	function saveEdges(){
-		//Lagre edges1,edges2,edges3,edges4,edges5
+		if (edges1.length == 0 && edges2.length == 0 && edges3.length == 0 && edges4.length == 0 && edges5.length == 0) {
+			console.log("the array is empty. nothing will be stored");
+		} else {
+			writeEdgesToFile();
+		}	
+	}
+	function writeEdgesToFile(){
+		for(var i = 1;  i< floorNodeListArray.length-1; i++){
+			var file = String(floorEdgeListArray[i]);
+			var data = edge[i-1];
+			var xmlhttp;
+			if(window.XMLHttpRequest) {
+				xmlhttp=new XMLHttpRequest();
+			}else {
+				xmlhttp=new ActiveXObject("Microsoft.XMLHTTP");
+			}
+			xmlhttp.open("GET","gridOperations.php?data="+data+"&file="+file,true);
+			xmlhttp.send();
+		}	
 	}
 </script>
 </body>
