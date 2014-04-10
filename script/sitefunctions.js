@@ -1,3 +1,10 @@
+// GLOBAL VARIABLES
+
+var DEFAULT_FLOOR = 1;
+var currentFloor = DEFAULT_FLOOR;
+
+var zoomCounter = 0;
+
 var maxWidth;
 var maxHeight;
 
@@ -11,6 +18,19 @@ function getClientWidth() {
 function getClientHeight() {
 	maxHeight = document.documentElement.clientHeight;
 	return maxHeight;
+}
+
+function loadMapToCenter() {
+var windowHeight = $(window).height();
+var windowWidth = $(window).width();
+var canvasWidth = $("#canvas").width();
+var canvasHeight = $("#canvas").height();
+var combinedHeight = canvasHeight-windowHeight;
+var combinedWidth = canvasWidth-windowWidth;
+
+$("#container").scrollTop(combinedHeight/2);
+$("#container").scrollLeft(combinedWidth/2);
+
 }
 
 // Set Container Height
@@ -35,12 +55,12 @@ function setWrapper() {
 // POP UP BOX FOR DISABILITY USERS
 
 function showDisabilityText() {
-	document.getElementById('disabilityImageHover').style.display = "table-cell";
+	$("#disabilityImageHover").fadeIn("slow");
+	
 }
 
 function hideDisabilityText() {
-	document.getElementById('disabilityImageHover').style.display = "none";
-}
+	$("#disabilityImageHover").fadeOut("slow");}
 
 // ENABLE / DISABLE ZOOM IN
 
@@ -90,10 +110,8 @@ function disableFloorDown() {
 	document.getElementById("floorDownImage").onclick="";
 	document.getElementById("floorDownImage").src="img/deactivated_floorDown_icon.png";
 }
-var DEFAULT_FLOOR = 1;
-var currentFloor = DEFAULT_FLOOR;
 
-
+// FLOOR UP / FLOOR DOWN FUNCTION
 
 function floorUp() {
 	if (currentFloor == 5) {
@@ -113,29 +131,88 @@ function floorDown() {
 	checkFloor();
 }
 
+// ZOOM IN / ZOOM OUT FUNCTION
+
+function zoomIn() {
+	if (zoomCounter  > 4) {
+		zoomCounter = 4;
+	} else if (zoomCounter < 0) {
+		zoomCounter = 0;
+		zoomCounter++;
+	} else {
+		zoomCounter++;
+	}
+		switch(zoomCounter) {
+			case 1:
+				$("#container").css("zoom", "125%");
+				break;
+			case 2:
+				$("#container").css("zoom", "150%");
+				break;
+			case 3:
+				$("#container").css("zoom", "175%");
+				break;
+			case 4:
+				$("#counterin").css("zoom", "200%");
+				break;
+		}
+}
+
+function zoomOut() {
+		if (zoomCounter > 4) {
+		zoomCounter = 4;
+		zoomCounter--;
+		} else if (zoomCounter < 0) {
+			zoomCounter = 0;
+		} else {
+			zoomCounter--;
+		}
+				switch(zoomCounter) {
+			case 0:
+				$("#container").css("zoom", "100%");
+				break;
+			case 1:
+				$("#container").css("zoom", "125%");
+				break;
+			case 2:
+				$("#container").css("zoom", "150%");
+				break;
+			case 3:
+				$("#container").css("zoom", "175%");
+				break;
+
+		}
+	
+}
+
 function checkFloor() {
 	var map = document.getElementById("canvas");
 	
 	switch(currentFloor) {
 		case 1:
 			map.setAttribute("style", "background: url(kart/kart_KE_1etg.jpg) scroll;");
+			loadMapToCenter();
 			break;
 		case 2:
 			map.setAttribute("style", "background: url(kart/kart_KE_2etg.jpg) scroll;");
+			loadMapToCenter();
 			break;
 		case 3:
 			map.setAttribute("style", "background: url(kart/kart_KE_3etg.jpg) scroll;");
+			loadMapToCenter();
 			break;
 		case 4:
 			map.setAttribute("style", "background: url(kart/kart_KE_4etg.jpg) scroll;");
+			loadMapToCenter();
 			break;
 		case 5:
 			map.setAttribute("style", "background: url(kart/kart_KE_5etg.jpg) scroll;");
+			loadMapToCenter();
 			break;
 		default:
 			map.setAttribute("style", "background: url(kart/kart_KE_1etg.jpg) scroll;");
+			loadMapToCenter();
 	}
 	
 }
-	
 	

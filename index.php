@@ -93,6 +93,33 @@ include("php/global.php");
 				?>
        </div>
        
+               	<!-- Map operating menu begin -->
+        
+        <div id="operateMenu">
+        	<div id="leftOperate">
+			<?php
+				echo "<strong>".$youAre."</strong>". $building ." ";
+			?>
+            </div>
+            <div id="rightOperate">
+            <?php
+				echo "". $zoom ."";
+				echo "<img src=\"img/spacer.png\" width=\"105\" height=\"1\">";
+				echo "". $floors ."";
+				echo "<br />\n";
+				echo "<img id=\"zoomInImage\" src=\"img/zoomIn_icon.png\" width=\"30\" height=\"30\" alt=\"". $zoomIn ."\" onclick=\"zoomIn()\" />";
+				echo "<img src=\"img/spacer.png\" width=\"30\" height=\"1\">";
+				echo "<img id=\"zoomOutImage\" src=\"img/zoomOut_icon.png\" width=\"30\" height=\"30\" alt=\"". $zoomOut ."\" onclick=\"zoomOut()\" />";
+				echo "<img src=\"img/spacer.png\" width=\"50\" height=\"1\">";
+				echo "<img id=\"floorUpImage\" src=\"img/floorUp_icon.png\" width=\"30\" height=\"30\" alt=\"". $floorUp ."\" onclick=\"floorUp()\" />";
+				echo "<img src=\"img/spacer.png\" width=\"30\" height=\"1\">";
+				echo "<img  id=\"floorDownImage\" src=\"img/floorDown_icon.png\" width=\"30\" height=\"30\" alt=\"". $floorDown ."\" onclick=\"floorDown()\" /><br />";
+			?>
+            </div>
+		</div>
+        
+        <!-- Map operating menu end -->
+       
        <!-- Top bar menu end -->
       
        
@@ -110,25 +137,6 @@ include("php/global.php");
     
     <!-- Top bar end -->
     
-        	<!-- Map operating menu begin -->
-        
-        <div id="operateMenu">
-        	<div id="leftOperate">
-			<?php
-				echo "<strong>".$youAre."</strong>". $building ." ";
-			?>
-            </div>
-            <div id="rightOperate">
-            <?php
-				echo "<img id=\"zoomInImage\" src=\"img/zoomIn_icon.png\" width=\"30\" height=\"30\" alt=\"". $zoomIn ."\" />";
-				echo "<img id=\"zoomOutImage\" src=\"img/zoomOut_icon.png\" width=\"30\" height=\"30\" alt=\"". $zoomOut ."\" />";
-				echo "<img id=\"floorUpImage\" src=\"img/floorUp_icon.png\" width=\"30\" height=\"30\" alt=\"". $floorUp ."\" onclick=\"floorUp()\" />";
-				echo "<img  id=\"floorDownImage\" src=\"img/floorDown_icon.png\" width=\"30\" height=\"30\" alt=\"". $floorDown ."\" onclick=\"floorDown()\" /><br />";
-			?>
-            </div>
-		</div>
-        
-        <!-- Map operating menu end -->
     
     <!-- Wrapper begin -->
     
@@ -151,6 +159,8 @@ include("php/global.php");
 		$(document).ready(checkFloor());
 		setWrapper();
 		setContainer();
+		$(document).ready(loadMapToCenter());
+		$(document).ready(checkFloorCounter());
         </script>
         <!-- Scripts running in container end -->
     
