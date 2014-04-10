@@ -8,6 +8,8 @@
 			var nextGrid = 0;
 			var gridArray = [];
 	  		var gridArrayIndex = 0;
+			var mapHeight = 1092;
+			var mapWidth = 2182;
 	
 	  // Gets the mouse positioning of the canvas
       function getMousePos(canvas, evt) {
@@ -65,7 +67,6 @@
 		  newXgrid.style.position = "absolute";
 		  getCanvas.appendChild(newXgrid);
 		  addXGrid();
-		  nextGrid++;
 	  }
 	  
 	  // Create Y grid to the document, calls moveYGrid() to make it interact with the mouse
@@ -101,7 +102,7 @@
 		  newYgrid.style.top = "0px";
 		  getCanvas.appendChild(newYgrid);
 		  addYGrid();
-		  nextGrid++;
+
 	  }
 	  
 	  // Moves the Y grid on the canvas for positioning. When you click, it snaps it to the canvas (visible)
@@ -259,17 +260,23 @@
 			cache: false,
   			success: function(data) {
     			var newArray = data.split(",");
-				for (var i = 0; i<=newArray.length; i+2) {
-					if (newArray[i] == 0 && newArray[i+1] >= 0) {
-						createExistingXgrid(newArray[i+1]);
-						console.log("created 1 x grid: "+newArray[i+1]);
-					} else if (newArray[i] >= 0 && newArray[i+1] == 0) {
-						createExistingYgrid(newArray[i]);
-						console.log("created 1 y grid: "+newArray[i]);
-					} else {
-						console.log("all grids were filled. no further grids were added");
-					}
-				}           
+
+				for (var i = 0; i<=newArray.length-2; i+=2) {
+						if (newArray[i] == 0 && newArray[i+1] == 0) {
+						// does not add if both values are 0
+						} else if (newArray[i] >= mapWidth || newArray[i+1] >= mapHeight) {
+							// dooes not add if values exceed the map length and width
+						} else if (newArray[i] == 0 && newArray[i+1] >= 0) {
+							createExistingXgrid(newArray[i+1]);
+							console.log("created 1 x grid: "+newArray[i+1]);
+						} else if (newArray[i] >= 0 && newArray[i+1] == 0) {
+							createExistingYgrid(newArray[i]);
+							console.log("created 1 y grid: "+newArray[i]);
+						} else {
+							console.log("all grids were filled. no further grids were added");
+						}
+				}
+
   			}
 			});
 	  }
