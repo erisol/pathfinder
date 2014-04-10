@@ -340,9 +340,17 @@
 		var edgeType = document.getElementById("edgeType").value;
 		if((id1 !== "") && (id2 !== "") && !oldSaved && checkEdgeFloor(edgeType, floorVal1, floorVal2)){
 			var edge = (nextId+1)+","+id1 +","+x1+","+y1+ "," + id2 + "," +x2+","+y2 + ","+edgeType;
-			getCurrentArray()[1][getCurrentArray()[1].length] = edge;
-			displayEdges();
-			drawLine(x1,y1,x2,y2,nextId+1);
+			if(edgeType == "gang"){
+				getCurrentArray()[1][getCurrentArray()[1].length] = edge;
+				displayEdges();
+				drawLine(x1,y1,x2,y2,nextId+1);
+			}
+			else if(edgeType !== "gang"){
+				getOldArray()[1][getOldArray()[1].length] = edge;
+				getCurrentArray()[1][getCurrentArray()[1].length] = edge;
+				displayEdges();
+				drawLine(x1,y1,x2,y2,nextId+1);
+			}
 			nextId++;
 			oldSaved = true;
 		}
