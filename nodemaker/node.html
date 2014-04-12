@@ -63,10 +63,6 @@
   		});
 		window.addEventListener('keypress', function (e) {
   			if (e.keyCode == 113) {
-				
-		console.log(xGrid);
-		console.log("------");
-		console.log(yGrid);
         		drawNode();
     		}
 			if (e.keyCode == 119) {
@@ -141,7 +137,7 @@
 	}
 	
 	function checkSelectedFloor() {
-		nextId = currentIdVal();
+		nextId = parseInt(currentIdVal());
 		var theCanvas = document.getElementById("makeNodeCanvas");
 		var selectedFloor = parseInt(document.getElementById("fVal").value);
 		switch (selectedFloor) {
@@ -280,7 +276,6 @@
 		switch(currentFloor){
 			case 1: 
 			array1Floor[array1Floor.length] = node;
-			console.log(array1Floor);
 			break;
 			
 			case 2: 
@@ -301,24 +296,54 @@
 		}
 	}
 	
+	function getrooms(){
+		var loaded = loadRooms();
+		var rooms = new Array();
+		var info = new Array();
+		var loaded = loaded.split("||");
+		for(var idx = 0; idx < loaded.length; idx++){
+			var rest = loaded[idx].split(",");
+			info[info.length] = rooms.length;
+			for(var indx = 0; indx < rest.length; indx++){
+				rooms[rooms.length] = rest[indx];
+			}
+		}
+		return [rooms, info];
+	}
+	
+	function loadRooms() {
+		var rooms;
+		jQuery.ajax({
+			async: false,
+			url: "rooms.txt",
+			dataType: 'text',
+			type: "GET",
+			cache: false,
+	  		success: function(data) {
+				rooms = data;
+			}
+		});
+		return rooms;
+	}
+	
 	var floorListArray = ["","grids/ke/1.txt", "grids/ke/2.txt", "grids/ke/3.txt", "grids/ke/4.txt", "grids/ke/5.txt"];
 	function loadSelectedFloorGrid(n) {
 		jQuery.ajax({
-		url: floorListArray[n],
-		dataType: 'text',
-		type: "GET",
-		cache: false,
-  		success: function(data) {
-    		var newArray = data.split(",");
-			for (var i = 0; i<=newArray.length-2; i+=2) {
-				if (newArray[i] == 0 && newArray[i+1] >= 0) {
-					yGrid[yGrid.length] = newArray[i+1];
-				} else if (newArray[i] >= 0 && newArray[i+1] == 0) {
-					xGrid[xGrid.length] = newArray[i];
-				} else {
-				}
-			} 
-  		}
+			url: floorListArray[n],
+			dataType: 'text',
+			type: "GET",
+			cache: false,
+	  		success: function(data) {
+	    		var newArray = data.split(",");
+				for (var i = 0; i<=newArray.length-2; i+=2) {
+					if (newArray[i] == 0 && newArray[i+1] >= 0) {
+						yGrid[yGrid.length] = newArray[i+1];
+					} else if (newArray[i] >= 0 && newArray[i+1] == 0) {
+						xGrid[xGrid.length] = newArray[i];
+					} else {
+					}
+				} 
+	  		}
 		});
 	}
 	
@@ -336,9 +361,11 @@
 				cache: false,
 		  		success: function(data) {
 		    		var newArray = data.split(",");
-					for (var i = 0; i<newArray.length; i+=5) {
-						var string = newArray[i]+","+newArray[i+1]+","+newArray[i+2]+","+newArray[i+3]+","+newArray[i+4];
-						currentarr[currentarr.length] = string;
+					for (var i = 0; i<=newArray.length-5; i+=5) {
+						if(newArray[i] != undefined || newArray.length != 0){
+							var string = newArray[i]+","+newArray[i+1]+","+newArray[i+2]+","+newArray[i+3]+","+newArray[i+4];
+							currentarr[currentarr.length] = string;
+						}
 					}       
 		  		}
 			});
@@ -348,10 +375,10 @@
 	
 	function saveNodes(){
 		if (array1Floor.length == 0 && array2Floor.length == 0 && array3Floor.length == 0 && array4Floor.length == 0 && array5Floor.length == 0) {
-			console.log("the array is empty. nothing will be stored");
-		} else {
-			writeNodeToFile();
-		}	
+		var feedback = confirm("All the arrays is empty, are you sure you wanna save?");
+			if(!feedback) return;
+		}
+		writeNodeToFile();	
 	}
 	  
     function writeNodeToFile(){
@@ -361,8 +388,6 @@
 			var currentarr = getCurrentArray();
 			var file = String(floorNodeListArray[i]);
 			var data = currentarr;
-			if(data.length !== 0){
-				console.log(data);
 			var xmlhttp;
 			if(window.XMLHttpRequest) {
 				xmlhttp=new XMLHttpRequest();
@@ -371,7 +396,6 @@
 			}
 			xmlhttp.open("GET","operations.php?data="+data+"&file="+file,true);
 			xmlhttp.send();
-			}
 		}
 		currentFloor = tempfloor;
 	}
@@ -444,7 +468,6 @@
 					var mousePos = getMousePos(canvas, e);
 					$mouseX = +snapToXGrid(mousePos.x)+ +300;
 					$mouseY = parseInt(snapToYGrid(mousePos.y));
-					console.log($mouseX); 
 					$(newNode).css({top:$mouseY});
 					$(newNode).css({left:$mouseX});
 				} else {
@@ -499,7 +522,6 @@
 					xId = indx;	
 				}
 			}
-			console.log(xGrid[xId]);
 			return xGrid[xId];
 		}
 		return x;
@@ -535,21 +557,7 @@
 		 document.getElementById("roomnr").selectedIndex = 0;
 	}
 	
-	function getrooms(){
-		//load rooms
-		var loaded = "Administrasjon:,C104,A230B,A253C,C320c,C335||Andre rom:,E122C,E122,E131A,E151A,E153,E220A,E122B,E120,E151,E123,E121A,E221A,E120B,E122D,E131,D130,D136,D122A,D121B,D121D,D121,D135,D131C,D123D,D131D,D133,D136A,D131B,D130B,D130A,D123A,D123B,D131A,C161,C110B,C112A,C120,C163,C112,A143,A146A,A103,A148,A132,A135,A145,A156,A140,A142,A141,A113,A148A,A136,A147D,A147,A144,A137,A139,A146,A147F,A133A,A141B,A161,A147C,A161C,A133B,A133,A147E,A147B,A117,A102,A119,A147A,A111,A141A,A118,A115,A137B,A131,A145A,B101,A253B,A228D,A259,A228E,A228A,A261,A237,A230D,A266,A265A,A230C,A233,A233A,A251,A239,E375,D339,E358A,E377,C350G,E350B,D350B,C389A,C390,E398,E320C,C391,D335,E355A,C306,E356B,E385,C333,E330F,C389B,E352B,D353B,E320D,E451F,D442,E408B,E423F,E451D,E451E,D441,E420F,E406,E429A,E420E,Trapp,E450B,E451B,E408A,E451,E451A,E531A,E541A,E520D,E520,E543||Datarom:,E170,E168,E462,E472||Forelesningssal:,E164,E101,E102,E162,E166,D102,D102,D108,D102B,D103,C102,C185,C181,C160,A101,B104,F100,E268,E272,E262,E266,E264,E270,D207,D206,D225,D227,D201,D223,D205,D221,C285,C260,C289,C281,A205,A260,A262,A255,A252,A204,A201,A203,A252A,A257,A264,A202,D351,D302,D304B,D301,D303,E354,D304A,E464,E470B,E404A,E451C,E462B,E468,E401,E470,E466A||Grupperom:,D234,D232,D222,D238,D230,D228,D236,D226,D224,D240,C264,C270,C266,C282,C280,C276,C272,C262,C278,C284,C274,C268,C288,C286||Kafeteria:,A152,A159,Bok-kafeen,A253,A265||Kontor:C117,C124,C152,C178,C149,C151,C182,C116,C110C,C127,C113,C148,C114B,C118,C180,C123,C122,C125,C184,C189,C126,C153,C115,C121,C154,C159,C186,C119,A153D,A157,A153A,A153E,A153B,A151,A153F,A161B,A153C,A150B,B113,B114,B105,B113E,B113D,B112,B111,E241,E209,E226,E223,E212,E242,E236,E211,E202,E266B,E268C,E221,E239,E234,E224,E245,E240,E243,E268A,E272B,E237,E231,E225,E204,E228,E222,E266C,E205,E207,E210,E203,E232,E244,E235,E230,E208,E246,E233,E238,E206,E272A,C254,C258,C256,C249,C259,C211,C224,C215,C226,C251,C203,C214,C233,C201,C225,C220,C253,C230,C231,C213,C205,C212,C227,C221,C223,C237,C218,C217,C252,C229,C222,C248,C235,C232,C219,C255,C228,C207,C257,C216,A254A,A215,A217,a219,A221,A218,A254B,A222,A268,A211A,A216,A214,A211,A220,A228C,A228B,A213,A263,A256,D332,D358B,E345,E394,E370,C329,E367,D322,C362,E378,D323B,E322,C312,E356A,D333,E327,C351,E362,C366,E331,E302A,E380,C359,E303,E359B,C313,C3218,C387,E386,E321,C315,E332,E352A,E383,E357B,E372,C373,C384,D323A,C327,E357A,C379,C372,E325,C381,E326,E340,C385,E365,E323,Es65,C365,E333,E302B,C363,E330,E337,E364,E379,C316,C364,E355C,C319,C349,E343,C369,C353,D330,C357,D338,E392,D323,C321,C328,C374,D337,E381,E346,E334,E382,C367,E339,C331,C317,C322,C360c,C352,E342,C314,E390,C368,E341,C376,E388,C375,E307,D340,E328,E336,C386,E366,C356,D331,C323,C355,E384,D336,E371,D334,E324,D341,C370,C377,C326,E306,D326,E368,D327,C383,C348,E338,D328,C311,C388,E396,D325,C320,D324,E369,C330,E344,E304,C358,E329,E335,C324,C354,C382,C325,E348,C371,D440,E434,D425,D428,E424,E427,E444,E429,E470A,D423,D438,D422,E456,E430,E423D,D431,E455D,E436,E453C,E446,E438,D439,D421,D433,E403,E23G,E440,D430,E423E,D434,D427,E442,D436,E402,D437,E423B,E245B,E425A,E432,D424,E426,E431,E466,E404,D435,E459,E423C,D426,D429,E422,D432,E530,E537,E542,E524,E534,E539,E533,E546,E531,E527,E536,E528,E526,E535,E523,E531B,E529,E538,E540,E525,E544,E532,E521||Laboratorium:,E156,E154A,E154,E154B,E158,E158A,E150,D150,D151,D157,D157A,D155,D153,D157B,D150A,D159,E271,E254,E256,E252,E253,E258,D254,D252,D254A,D256,D258,D254B,D260,A235A,A241,A232,A242,A235,A238,A241A,A248,A246,A228,A243,E359,D353,D356A,D358,D356B,D358A,D355,E359C,E352,D352,E351A,D356,D350A,E356,E358,E351,E355B,E357,E359A,E353,E355,E455A,E543B,E454A,E453,E456A,E455,E458,E455C,E455B,E454,E452,E453A||WC:,E124,E126,E125,E114,E159,E115,D111,D110,D121A,D115,D137,D12C,D113,D162,D114,D123C,D123,D112,A104A,A105A,A104C,A105C,B113A,B113C,B113B,F109C,F107B,E108,F109B,E107,F107,F106C,F106B,F107C,E220E,E200E,E220D,E250B,E200B,D220B,D220A,D220E,D250C,D250D,C260A,C260B,C210A,F250B,F204B,A231,D350E,D305,D350F,WC 3. etg. nord D-blokk K,WC 3. etg. D-blokk nord M,E461B,E420C,D420E,E420D,E459B,E450D,E461A,D420D,E520E,E520F,E541||";
-		var rooms = new Array();
-		var info = new Array();
-		var loaded = loaded.split("||");
-		for(var idx = 0; idx < loaded.length; idx++){
-			var rest = loaded[idx].split(",");
-			info[info.length] = rooms.length;
-			for(var indx = 0; indx < rest.length; indx++){
-				rooms[rooms.length] = rest[indx];
-			}
-		}
-		return [rooms, info];
-	}
+	
 	function addrooms(){
 		var current = 0;
 		var optgroup;
@@ -572,7 +580,7 @@
 		}
 	}
 	function findPrevId(){
-		var idVal = 0;
+		var idVal = -1;
 		tempfloor = currentFloor;
 		for(var listIdx = 1; listIdx <= 5; listIdx++){
 			currentFloor = listIdx;
@@ -584,9 +592,9 @@
 		currentFloor = tempfloor;
 		return idVal;
 	}
+	
 	function currentIdVal(){
-		var idVal = findPrevId();
-		return this.idVal++;  
+		return parseInt(findPrevId())+1;  
 	}
 	  
 	function removedraw(nodeid){

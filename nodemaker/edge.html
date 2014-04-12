@@ -285,33 +285,27 @@
 		y1= -parseInt(y1);
 		y2= -parseInt(y2);
 		if(x1 < x2 && y1 < y2){
-			console.log("1");
 			return [-(Math.atan(((y2-y1)/(x2-x1))))*(180/Math.PI),0,0.5*Math.sqrt(Math.pow(x2-x1,2) + Math.pow(y2-y1,2))];
 		}
 		
 		else if(x1 < x2 && y1 > y2){
-			console.log("2");
 			return [(Math.atan(((y1-y2)/(x2-x1))))*(180/Math.PI),0,0.5*Math.sqrt(Math.pow(x2-x1,2) + Math.pow(y1-y2,2))];
 		}
 		
 		else if(x1 > x2 && y1 < y2){
-			console.log("3");
 			return [-180+(Math.atan(((y2-y1)/(x1-x2))))*(180/Math.PI),(x1-x2),0.5*Math.sqrt(Math.pow(x1-x2,2) + Math.pow(y2-y1,2))];
 		}
 		
 		else if(x1 > x2 && y1 > y2){
-			console.log("4");
 			return [180-(Math.atan(((y1-y2)/(x1-x2))))*(180/Math.PI),(x1-x2),0.5*Math.sqrt(Math.pow(x1-x2,2) + Math.pow(y2-y1,2))];
 		}
 		
 		else if(x1===x2){
 			if(y1 < y2){
-				console.log("5.1");
 				return [-90,0, (y2-y1)/2];	
 			}
 			
 			else if(y1 > y2){
-				console.log("5.2");
 				return [90,0,(y1-y2)/2];
 			}
 			
@@ -319,12 +313,10 @@
 		
 		else if(y1===y2){
 			if(x1 < x2){
-				console.log("6.1");
 				return [0,0,0];
 			}
 			
 			else if(x1 > x2){
-				console.log("6.2");
 				return [0,(x1-x2),0];
 			}
 		}
@@ -406,22 +398,18 @@
 		var newNodeArray = newArrays[0];
 		var newEdgeArray = newArrays[1];
 		for(var idx = 0; idx < oldNodeArray.length; idx++){
-			console.log(oldNodeArray);
 			var currentNode = oldNodeArray[idx].split(",");
 			removeDraw(parseInt(currentNode[0]));	
 		}
 		for(var idx = 0; idx < oldEdgeArray.length; idx++){
-			console.log(oldEdgeArray);
 			var currentEdge = oldEdgeArray[idx].split(",");
 			removeEdge(parseInt(currentEdge[0]));
 		}
 		for(var idx = 0; idx < newNodeArray.length; idx++){
-			console.log(newNodeArray);
 			node = newNodeArray[idx].split(",");
 			drawOldNode(node[2],node[3],node[0]);
 		}
 		for(var idx = 0; idx < newEdgeArray.length; idx++){
-			console.log(newEdgeArray);
 			edge = newEdgeArray[idx].split(",");
 			addEdgeToList(edge[0]);
 			drawLine(edge[2],edge[3],edge[5],edge[6],edge[0]);
@@ -505,7 +493,7 @@
 	var floorNodeListArray = ["","nodes/ke/1.txt", "nodes/ke/2.txt", "nodes/ke/3.txt", "nodes/ke/4.txt", "nodes/ke/5.txt"];
 	function loadNodes(){
 	 	tempFloor = oldFloor;
-		for(var n = 1; n < floorNodeListArray.length-1; n++){
+		for(var n = 1; n < floorNodeListArray.length; n++){
 			oldFloor = n;
 			currentNodes = getOldArray();
 			jQuery.ajax({
@@ -542,8 +530,8 @@
 				cache: false,
 		  		success: function(data) {
 		    		var newArray = data.split(",");
-					for (var i = 0; i<=newArray.length; i+=8) {
-						if(newArray[i] != undefined || newArray.length == 0){
+					for (var i = 0; i<=newArray.length-8; i+=8) {
+						if((newArray[i] != undefined || newArray.length != 0) && currentEdges[0].checkId(newArray[i+1]) != -1 && currentEdges[0].checkId(newArray[i+4]) != -1){
 							currentEdges[1][currentEdges[1].length] = newArray[i]+","+newArray[i+1]+","+newArray[i+2]+","+newArray[i+3]+","+newArray[i+4]+","+newArray[i+5]+","+newArray[i+6]+","+newArray[i+7];
 						}
 					}           
@@ -555,10 +543,10 @@
 	
 	function saveEdges(){
 		if (edges1.length == 0 && edges2.length == 0 && edges3.length == 0 && edges4.length == 0 && edges5.length == 0) {
-			console.log("the array is empty. nothing will be stored");
-		} else {
-			writeEdgesToFile();
-		}	
+			var feedback = confirm("All the arrays is empty, are you sure you wanna save?");
+			if(!feedback) return;
+		}
+		writeEdgesToFile();	
 	}
 	function writeEdgesToFile(){
 		tempFloor = oldFloor;
@@ -567,18 +555,16 @@
 			save = getOldArray();
 			var file = String(floorEdgeListArray[i]);
 			var data = save[1];
-			if(data.length != 0){
-				var xmlhttp;
-				if(window.XMLHttpRequest) {
-					xmlhttp=new XMLHttpRequest();
-				}else {
-					xmlhttp=new ActiveXObject("Microsoft.XMLHTTP");
-				}
-				xmlhttp.open("GET","operations.php?data="+data+"&file="+file,true);
-				xmlhttp.send();
+			var xmlhttp;
+			if(window.XMLHttpRequest) {
+				xmlhttp=new XMLHttpRequest();
+			}else {
+				xmlhttp=new ActiveXObject("Microsoft.XMLHTTP");
 			}
-		}	
-	}
+			xmlhttp.open("GET","operations.php?data="+data+"&file="+file,true);
+			xmlhttp.send();
+		}
+	}	
 </script>
 </body>
 </html>
