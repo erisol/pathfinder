@@ -28,10 +28,12 @@ $goingTo = "To: \n";
 $disabilityHover = "Tick the box if you are movement impaired and in need of elevators to move around the different floors.";
 $disability = "&emsp; <img src=\"img/h_icon.png\" width=\"15\" height=\"15\" alt=\"". $disabilityHover ."\" onmouseover=\"showDisabilityText()\" onmouseout=\"hideDisabilityText()\" /></a>\n";
 $showWayButton = "Show me the way!";
+$zoom = "Zoom";
 $zoomIn = "Zoom In";
 $zoomOut = "Zoom Out";
-$floorUp = "Up floor";
-$floorDown = "Down floor";
+$floors = "Floors";
+$floorUp = "Floor up";
+$floorDown = "Floor down";
 
 
 
@@ -58,8 +60,10 @@ $goingTo = "Til: \n";
 $disabilityHover = "Hvis du har behov for &aring; bruke heis istedet for trapper, vennligst kryss av boksen.";
 $disability = "&emsp; <img src=\"img/h_icon.png\" width=\"15\" height=\"15\" alt=\"". $disabilityHover ."\" onmouseover=\"showDisabilityText()\"  onmouseout=\"hideDisabilityText()\" /></a>\n";
 $showWayButton = "Vis Vei!";
+$zoom = "Zoom";
 $zoomIn = "Forst&oslash;rr";
 $zoomOut = "Forminsk";
+$floors = "Etasjer";
 $floorUp = "Opp etg.";
 $floorDown = "Ned etg.";
 
