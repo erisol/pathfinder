@@ -121,6 +121,8 @@
 	<canvas id="makeEdgeCanvas" width="2182" height="1092">
     <script> 
  		$(document).ready(function(){
+			loadNodes();
+			loadEdges();
 			checkSelectedFloor();
   		});
 		window.addEventListener('keypress', function (e) {
@@ -163,11 +165,11 @@
 	var edges5 = new Array();
 	var change1 = false;
 	var change2 = false;
-	array1Floor = ["0,gang,81,189,1", "1,gang,67,217,1", "2,gang,232,238,1", "3,gang,169,308,1", "20,gang,188,50,1", "21,gang,189,65,1", "22,gang,300,238,1"];
-	array2Floor = ["4,gang,281,189,2", "5,gang,267,217,2", "6,gang,432,252,2", "7,gang,369,308,2"];
-	array3Floor = ["8,gang,381,189,3", "9,gang,367,217,3", "10,gang,532,252,3", "11,gang,469,308,3"];
-	array4Floor = ["12,gang,300,189,4", "13,gang,300,217,4", "14,gang,632,308,4", "15,gang,544,308,4"];
-	array5Floor = ["16,gang,581,189,5", "17,gang,567,217,5", "18,gang,732,252,5", "19,gang,669,308,5"];
+	array1Floor = [];
+	array2Floor = [];
+	array3Floor = [];
+	array4Floor = [];
+	array5Floor = [];
 	
 	function drawOldNode(x, y, oldId){
 		var getCanvas = document.getElementById("canvasFloat");
@@ -403,21 +405,23 @@
 		var oldEdgeArray = oldArrays[1];
 		var newNodeArray = newArrays[0];
 		var newEdgeArray = newArrays[1];
-		console.log(oldEdgeArray);
 		for(var idx = 0; idx < oldNodeArray.length; idx++){
+			console.log(oldNodeArray);
 			var currentNode = oldNodeArray[idx].split(",");
 			removeDraw(parseInt(currentNode[0]));	
 		}
 		for(var idx = 0; idx < oldEdgeArray.length; idx++){
+			console.log(oldEdgeArray);
 			var currentEdge = oldEdgeArray[idx].split(",");
-			console.log(currentEdge[0]);
 			removeEdge(parseInt(currentEdge[0]));
 		}
 		for(var idx = 0; idx < newNodeArray.length; idx++){
+			console.log(newNodeArray);
 			node = newNodeArray[idx].split(",");
 			drawOldNode(node[2],node[3],node[0]);
 		}
 		for(var idx = 0; idx < newEdgeArray.length; idx++){
+			console.log(newEdgeArray);
 			edge = newEdgeArray[idx].split(",");
 			addEdgeToList(edge[0]);
 			drawLine(edge[2],edge[3],edge[5],edge[6],edge[0]);
@@ -444,6 +448,7 @@
 				break;	
 		}
 	}
+	
 	function getCurrentArray(){
 		var selectedFloor = parseInt(document.getElementById("fVal").value);
 		switch (selectedFloor) {
@@ -464,74 +469,88 @@
 				break;	
 		}
 	}
+	
 	function checkSelectedFloor() {
 		var theCanvas = document.getElementById("makeEdgeCanvas");
 		var selectedFloor = parseInt(document.getElementById("fVal").value);
 		switch (selectedFloor) {
 			case 1:
-				changeEdgesAndNodes();
 				theCanvas.setAttribute("style", "background: url(../kart/kart_KE_1etg.jpg)");
+				changeEdgesAndNodes();
 				oldFloor = 1;
 				break;
 			case 2:
-				changeEdgesAndNodes();
 				theCanvas.setAttribute("style", "background: url(../kart/kart_KE_2etg.jpg)");
+				changeEdgesAndNodes();
 				oldFloor = 2;
 				break;
 			case 3:
-				changeEdgesAndNodes();
 				theCanvas.setAttribute("style", "background: url(../kart/kart_KE_3etg.jpg)");
+				changeEdgesAndNodes();
 				oldFloor = 3;
 				break;
 			case 4:
-				changeEdgesAndNodes();
 				theCanvas.setAttribute("style", "background: url(../kart/kart_KE_4etg.jpg)");
+				changeEdgesAndNodes();
 				oldFloor = 4;
 				break;
 			case 5:
-				changeEdgesAndNodes();
 				theCanvas.setAttribute("style", "background: url(../kart/kart_Kjølv_Egelands_hus_5etg.jpg)");
+				changeEdgesAndNodes();
 				oldFloor = 5;
 				break;	
 		}
 	}
-	
-	var nodes = [array1Floor, array2Floor, array3Floor, array4Floor, array5Floor];
+
 	var floorNodeListArray = ["","nodes/ke/1.txt", "nodes/ke/2.txt", "nodes/ke/3.txt", "nodes/ke/4.txt", "nodes/ke/5.txt"];
 	function loadNodes(){
-	 		for(var n = 1; n < floorNodeListArray.length-1; n++){
+	 	tempFloor = oldFloor;
+		for(var n = 1; n < floorNodeListArray.length-1; n++){
+			oldFloor = n;
+			currentNodes = getOldArray();
 			jQuery.ajax({
-			url: floorNodeListArray[n],
-			dataType: 'text',
-			type: "GET",
-			cache: false,
-	  		success: function(data) {
-	    		var newArray = data.split(",");
-				for (var i = 0; i<=newArray.length; i+=5) {
-					nodes[n-1][nodes[n-1].length] = newArray[i]+","+newArray[i+1]+","+","+newArray[i+2]+","+newArray[i+3]+","+newArray[i+4];
-				}           
-	  		}
+				async: false,
+				url: floorNodeListArray[n],
+				dataType: 'text',
+				type: "GET",
+				cache: false,
+				success: function(data) {
+			   		var newArray = data.split(",");
+					for (var i = 0; i<=newArray.length; i+=5) {
+						if(newArray[i] != undefined){
+							currentNodes[0][currentNodes[0].length] = newArray[i]+","+newArray[i+1]+","+newArray[i+2]+","+newArray[i+3]+","+newArray[i+4];
+						}
+					}           
+				}
 			});
 		}
+		oldFloor = tempFloor;
 	}
 	
 	var edge = [edges1, edges2, edges3, edges4, edges5];
 	var floorEdgeListArray = ["","edges/ke/1.txt", "edges/ke/2.txt", "edges/ke/3.txt", "edges/ke/4.txt", "edges/ke/5.txt"];
 	function loadEdges(){
-		for(var n = 1; n < floorEdgeListArray.length-1; n++){
+		tempFloor  = oldFloor;
+		for(var n = 1; n < floorEdgeListArray.length; n++){
+			oldFloor = n;
+			currentEdges = getOldArray();
 			jQuery.ajax({
-			url: floorEdgeListArray[n],
-			dataType: 'text',
-			type: "GET",
-			cache: false,
-	  		success: function(data) {
-	    		var newArray = data.split(",");
-				for (var i = 0; i<=newArray.length; i+=8) {
-					edge[n-1][edge[n-1].length] = newArray[i]+","+newArray[i+1]+","+newArray[i+2]+","+newArray[i+3]+","+newArray[i+4]+","+newArray[i+5]+","+newArray[i+6]+","+newArray[i+7];
-				}           
-	  		}
+				async: false,
+				url: floorEdgeListArray[n],
+				dataType: 'text',
+				type: "GET",
+				cache: false,
+		  		success: function(data) {
+		    		var newArray = data.split(",");
+					for (var i = 0; i<=newArray.length; i+=8) {
+						if(newArray[i] != undefined || newArray.length == 0){
+							currentEdges[1][currentEdges[1].length] = newArray[i]+","+newArray[i+1]+","+newArray[i+2]+","+newArray[i+3]+","+newArray[i+4]+","+newArray[i+5]+","+newArray[i+6]+","+newArray[i+7];
+						}
+					}           
+		  		}
 			});
 		}
+		oldFloor = tempFloor;
 	}
 	
 	function saveEdges(){
@@ -542,17 +561,22 @@
 		}	
 	}
 	function writeEdgesToFile(){
-		for(var i = 1;  i< floorNodeListArray.length-1; i++){
+		tempFloor = oldFloor;
+		for(var i = 1;  i< floorNodeListArray.length; i++){
+			oldFloor = i;
+			save = getOldArray();
 			var file = String(floorEdgeListArray[i]);
-			var data = edge[i-1];
-			var xmlhttp;
-			if(window.XMLHttpRequest) {
-				xmlhttp=new XMLHttpRequest();
-			}else {
-				xmlhttp=new ActiveXObject("Microsoft.XMLHTTP");
+			var data = save[1];
+			if(data.length != 0){
+				var xmlhttp;
+				if(window.XMLHttpRequest) {
+					xmlhttp=new XMLHttpRequest();
+				}else {
+					xmlhttp=new ActiveXObject("Microsoft.XMLHTTP");
+				}
+				xmlhttp.open("GET","operations.php?data="+data+"&file="+file,true);
+				xmlhttp.send();
 			}
-			xmlhttp.open("GET","operations.php?data="+data+"&file="+file,true);
-			xmlhttp.send();
 		}	
 	}
 </script>
