@@ -463,6 +463,7 @@
 	function moveNode() {
 		var newNode = ("#nodediv"+nextId)
 		var runningBoolean = true;
+    	document.body.style.cursor = 'none';
 			$("#canvasFloat").mousemove(function(e){
 				if (runningBoolean) {
 					var mousePos = getMousePos(canvas, e);
@@ -482,6 +483,7 @@
 				yvalue[0].value = snapToYGrid(mousePos.y);
 				runningBoolean = false;
 				placing = false;
+    			document.body.style.cursor = 'default';
 		});
 	}
 	
@@ -586,10 +588,15 @@
 			currentFloor = listIdx;
 			var nodes = getCurrentArray();
 			for(var elems = 0; elems < nodes.length; elems++){
-				idVal++;
+				nodeSplit = nodes[elems].split(",");
+				console.log(nodeSplit[0]);
+				if(parseInt(nodeSplit[0]) > parseInt(idVal)){
+					idVal = nodeSplit[0];
+				}
 			}
 		}
 		currentFloor = tempfloor;
+		console.log(idVal);
 		return idVal;
 	}
 	

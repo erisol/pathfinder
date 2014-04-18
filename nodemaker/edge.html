@@ -123,6 +123,7 @@
  		$(document).ready(function(){
 			loadNodes();
 			loadEdges();
+			nextId = currentIdVal();
 			checkSelectedFloor();
   		});
 		window.addEventListener('keypress', function (e) {
@@ -176,12 +177,12 @@
 		var node = document.createElement("div");
 		var nodeId = oldId;
 		node.setAttribute("id", nodeId);
-		node.style.height = "8px";
-		node.style.width = "8px";
+		node.style.height = "6px";
+		node.style.width = "6px";
 		node.style.backgroundColor = "#FF0000";
 		node.style.cssFloat ="left";
-		node.style.left = (parseInt(x)+296)+"px";
-		node.style.top = parseInt(y)-4+"px";
+		node.style.left = (parseInt(x)+300)+"px";
+		node.style.top = parseInt(y)+"px";
 		node.style.position = "absolute";
 		node.style.display = "visible";
 		node.onmouseover = function(){
@@ -257,6 +258,10 @@
 		return true;
 	}
 	function drawLine(x1, y1, x2, y2, id){
+		x1 = parseInt(x1)+ +parseInt(3);
+		x2 = parseInt(x2)+ +parseInt(3);
+		y1 = parseInt(y1)+ +parseInt(3);
+		y2 = parseInt(y2)+ +parseInt(3);
 		var drawinfo = finddegrees(x1,y1,x2,y2);
 		var degree = Math.round(drawinfo[0]);
 		var getCanvas = document.getElementById("canvasFloat");
@@ -322,6 +327,11 @@
 		}
 	}
 	
+	function findCost(x1,y1,x2,y2){
+		return parseInt(Math.round(Math.sqrt(Math.pow((x2-x1),2)+Math.pow((y2-y1),2))));
+	}
+	
+	
 	function addEdge(){
 		var id1 = document.getElementsByName("node1Id")[0].value;
 		var x1 = document.getElementsByName("node1X")[0].value;
@@ -333,7 +343,8 @@
 		var floorVal2 = document.getElementsByName("node2Floor")[0].value;
 		var edgeType = document.getElementById("edgeType").value;
 		if((id1 !== "") && (id2 !== "") && !oldSaved && checkEdgeFloor(edgeType, floorVal1, floorVal2)){
-			var edge = (nextId+1)+","+id1 +","+x1+","+y1+ "," + id2 + "," +x2+","+y2 + ","+edgeType;
+			var cost = findCost(x1,y1,x2,y2);
+			var edge = (nextId+1)+","+id1 +","+x1+","+y1+ "," + id2 + "," +x2+","+y2 + ","+edgeType+","+cost;
 			if(edgeType == "gang"){
 				getCurrentArray()[1][getCurrentArray()[1].length] = edge;
 				displayEdges();
@@ -359,7 +370,7 @@
 		var parentElement = document.getElementById("theEdges");
 		var itemElementID = String("theEdges"+displayId);
 		var itemElement = document.getElementById(itemElementID);
-		var itemDisplayText = getCurrentArray()[1][getCurrentArray()[1].length-1].toString();
+		var itemDisplayText = getCurrentArray()[1][getCurrentArray()[1].checkId(displayId)].toString();
    		var newList= document.createElement("li");
     	var newText = document.createTextNode(itemDisplayText);
 		newList.setAttribute("id", itemElementID);
@@ -483,7 +494,7 @@
 				oldFloor = 4;
 				break;
 			case 5:
-				theCanvas.setAttribute("style", "background: url(../kart/kart_Kjølv_Egelands_hus_5etg.jpg)");
+				theCanvas.setAttribute("style", "background: url(../kart/kart_KE_5etg.jpg)");
 				changeEdgesAndNodes();
 				oldFloor = 5;
 				break;	
@@ -515,7 +526,6 @@
 		oldFloor = tempFloor;
 	}
 	
-	var edge = [edges1, edges2, edges3, edges4, edges5];
 	var floorEdgeListArray = ["","edges/ke/1.txt", "edges/ke/2.txt", "edges/ke/3.txt", "edges/ke/4.txt", "edges/ke/5.txt"];
 	function loadEdges(){
 		tempFloor  = oldFloor;
@@ -530,15 +540,36 @@
 				cache: false,
 		  		success: function(data) {
 		    		var newArray = data.split(",");
-					for (var i = 0; i<=newArray.length-8; i+=8) {
+					for (var i = 0; i<=newArray.length-9; i+=9) {
 						if((newArray[i] != undefined || newArray.length != 0) && currentEdges[0].checkId(newArray[i+1]) != -1 && currentEdges[0].checkId(newArray[i+4]) != -1){
-							currentEdges[1][currentEdges[1].length] = newArray[i]+","+newArray[i+1]+","+newArray[i+2]+","+newArray[i+3]+","+newArray[i+4]+","+newArray[i+5]+","+newArray[i+6]+","+newArray[i+7];
+							currentEdges[1][currentEdges[1].length] = newArray[i]+","+newArray[i+1]+","+newArray[i+2]+","+newArray[i+3]+","+newArray[i+4]+","+newArray[i+5]+","+newArray[i+6]+","+newArray[i+7]+","+newArray[i+8];
 						}
-					}           
+					}
 		  		}
 			});
 		}
 		oldFloor = tempFloor;
+	}
+	
+	function findPrevId(){
+		var idVal = -1;
+		tempfloor = oldFloor;
+		for(var listIdx = 1; listIdx <= 5; listIdx++){
+			oldFloor = listIdx;
+			var nodes = getOldArray()[1];
+			for(var elems = 0; elems < nodes.length; elems++){
+				nodeSplit = nodes[elems].split(",");
+				if(parseInt(nodeSplit[0]) > parseInt(idVal)){
+					idVal = nodeSplit[0];
+				}
+			}
+		}
+		oldFloor = tempfloor;
+		return idVal;
+	}
+	
+	function currentIdVal(){
+		return parseInt(findPrevId());  
 	}
 	
 	function saveEdges(){
