@@ -14,8 +14,8 @@
 </head>
 
 <body>
-<button type="button" onclick="createNodes()">Make nodes</button>
-<button type="button" onclick="drawNodeTest()">Draw Lines between nodes</button>
+<button type="button" onClick="createNodes()">Make nodes</button>
+<button type="button" onClick="drawNodeTest()">Draw Lines between nodes</button>
 <div id="canvas" style="float: left">
 <canvas id="Rcanvas" width="1000" height="600" style="border:2px solid #d3d3d3;"></canvas>
 </div>
@@ -30,7 +30,7 @@ Array.prototype.indexofvarinobject = function(variabel, value){
 }
 //Test av nodene
 function createNodes(){
-	loader = new load();
+	loader = new Load();
 	arrayNodes = loader.loadNodes();
 	arrayEdges = loader.loadEdges();
 	rooms = arrayNodes[5];

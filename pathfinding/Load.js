@@ -1,4 +1,4 @@
-function load(){
+function Load(){
 	Array.prototype.checkId = function(value){
 		for(var indx = 0; indx < this.length; indx++){
 			var testArray = this[indx].id;
@@ -38,7 +38,7 @@ function load(){
 						if(newArray.length == 0 || newArray[i] != undefined || newArray[i+1] != undefined){
 							currentNodes[0][currentNodes[0].length] = new Node(newArray[i],newArray[i+2],newArray[i+3],newArray[i+4]);
 							if(newArray[i+1] !== "gang"){
-								rooms[rooms.length] = new roomnode(newArray[i+1], newArray[i]);
+								rooms[rooms.length] = new roomNode(newArray[i+1], newArray[i]);
 							}
 						}
 					}           
@@ -90,7 +90,7 @@ function load(){
 	}
 };
 
-function roomnode(roomnr, nodeid){
-	this.roomnr = roomnr;
-	this.nodeid = nodeid;
+function roomNode(roomnr, nodeid){
+	this.roomNumber = roomnr;
+	this.nodeID = nodeid;
 };
