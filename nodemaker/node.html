@@ -52,13 +52,16 @@
   </tr>
   <tr>
     <td>Room:</td>
-    <td><select id="roomnr" name="roomnr" style="width: 153px">
-  <option value="gang">Gang</option>
+    <td> <input id="roomnr" name="roomnr" type="text" maxlength="6" value="" /></td>
+    <!--
+    <select id="roomnr" name="roomnr" style="width: 153px">
+    <option value="gang">Gang</option>
+ 	-->
  
 	<script> 
  		$(document).ready(function(){
 			loadNodes();
- 	 		addrooms();
+ 	 		//addrooms();
 			checkSelectedFloor();
   		});
 		window.addEventListener('keypress', function (e) {
@@ -192,7 +195,7 @@
 	
     canvas.addEventListener('mousemove', function(evt) {
     	var mousePos = getMousePos(canvas, evt);
-        var message = mousePos.x + ',' + mousePos.y;
+        var message = parseInt(snapToXGrid(mousePos.x)) + ',' + parseInt(snapToYGrid(mousePos.y));
     	writeMessage(message);
     }, false);
 	
@@ -394,7 +397,7 @@
 			}else {
 				xmlhttp=new ActiveXObject("Microsoft.XMLHTTP");
 			}
-			xmlhttp.open("GET","operations.php?data="+data+"&file="+file,true);
+			xmlhttp.open("POST","operations.php?data="+data+"&file="+file,true);
 			xmlhttp.send();
 		}
 		currentFloor = tempfloor;
@@ -467,8 +470,8 @@
 			$("#canvasFloat").mousemove(function(e){
 				if (runningBoolean) {
 					var mousePos = getMousePos(canvas, e);
-					$mouseX = +snapToXGrid(mousePos.x)+ +300;
-					$mouseY = parseInt(snapToYGrid(mousePos.y));
+					$mouseX = parseInt(+snapToXGrid(mousePos.x)+ +297);
+					$mouseY = parseInt(snapToYGrid(mousePos.y)-3);
 					$(newNode).css({top:$mouseY});
 					$(newNode).css({left:$mouseX});
 				} else {
@@ -479,8 +482,8 @@
 				var xvalue = document.getElementsByName("xVal");
 				var yvalue = document.getElementsByName("yVal");
 				var mousePos = getMousePos(canvas, e);
-				xvalue[0].value = snapToXGrid(mousePos.x);
-				yvalue[0].value = snapToYGrid(mousePos.y);
+				xvalue[0].value = parseInt(snapToXGrid(mousePos.x)-3);
+				yvalue[0].value = parseInt(snapToYGrid(mousePos.y)-3);
 				runningBoolean = false;
 				placing = false;
     			document.body.style.cursor = 'default';
@@ -556,7 +559,8 @@
 			nextId++;
 			oldsaved = true;
 		}
-		 document.getElementById("roomnr").selectedIndex = 0;
+		// document.getElementById("roomnr").selectedIndex = 0;
+		document.getElementById("roomnr").value = "";
 	}
 	
 	
@@ -589,14 +593,12 @@
 			var nodes = getCurrentArray();
 			for(var elems = 0; elems < nodes.length; elems++){
 				nodeSplit = nodes[elems].split(",");
-				console.log(nodeSplit[0]);
 				if(parseInt(nodeSplit[0]) > parseInt(idVal)){
 					idVal = nodeSplit[0];
 				}
 			}
 		}
 		currentFloor = tempfloor;
-		console.log(idVal);
 		return idVal;
 	}
 	
