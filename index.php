@@ -144,10 +144,10 @@ include("php/global.php");
  
         
 		<!-- Container begin -->
-        <div id="container" class="parent scrollable" >
+        <div id="container" class="parent" >
         		
                 <!-- Canvas begin -->
-        		<div id="canvas" class="panzoom scrollable"></div>
+        		<div id="canvas" class="panzoom"></div>
                 <!-- Canvas end -->
         </div>
 		<!-- Container end -->
