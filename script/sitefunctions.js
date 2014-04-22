@@ -8,23 +8,12 @@ var zoomCounter = 0;
 var maxWidth;
 var maxHeight;
 
-/*
-$('.scrollable').mouseenter(function(){
-                    $('body').css('overflow', 'hidden');
-                });
-                $('.scrollable').mouseleave(function(){
-                    $('body').css('overflow', 'auto');
-                });
-*/
 
 // Force resize of client window
 function resizeClient() {
   window.moveTo(0, 0);
   window.resizeTo(screen.width, screen.height);
 }
-
-
-maximize();
 
 // GET USER' CLIENT WIDTH AND HEIGHT
 

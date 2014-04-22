@@ -44,7 +44,6 @@ include("php/global.php");
 <!-- Internal -->
 
 <script type="text/javascript" src="script/sitefunctions.js"></script>
-<script type="text/javascript" src="script/displayNodes.js"></script>
 <script type="text/javascript" src="pathfinding/Cords.js"></script>
 <script type="text/javascript" src="pathfinding/Edge.js"></script>
 <script type="text/javascript" src="pathfinding/Cost.js"></script>
@@ -52,6 +51,7 @@ include("php/global.php");
 <script type="text/javascript" src="pathfinding/Dijkstra.js"></script>
 <script type="text/javascript" src="pathfinding/drawPath.js"></script>
 <script type="text/javascript" src="pathfinding/Load.js"></script>
+<script type="text/javascript" src="script/displayNodes.js"></script>
 <!-- /Internal -->
 
 <title><?php echo $siteTitle; ?></title>
@@ -148,7 +148,8 @@ include("php/global.php");
         <div id="container" class="parent" >
         		
                 <!-- Canvas begin -->
-        		<div id="canvas" class="panzoom"></div>
+        		<div id="canvas" class="panzoom">
+                </div>
                 <!-- Canvas end -->
         </div>
 		<!-- Container end -->
@@ -188,7 +189,7 @@ include("php/global.php");
 		setContainer();
 		resizeClient();
 		//$(document).ready(loadMapToCenter());
-		$(document).ready(checkFloorCounter());
+		//$(document).ready(checkFloorCounter());
         </script>
         <!-- Scripts running in container end -->
     

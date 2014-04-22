@@ -12,22 +12,25 @@
 	
 	var displayNodes = display.loadNodes();
 	var displayEdges = display.loadEdges();
-	rooms = arrayNodes[5];
+	rooms = displayNodes[5];
 	nodes = new Array();
 	
 	if (currentFloor == 5) {
 	
 		var testDisplayNodes = displayNodes[4];
 		var testDisplayEdges = displayEdges[4];
-	
-		checkId(testDisplayEdges);
+		
+		for (var i = 0; i < testDisplayEdges.length-1; i++) {
+			this.testDisplayNodes[checkId(testDisplayEdges[i].node1)].addNeighbor[testDisplayEdges[i].type, testDisplayNodes[checkId(testDisplayEdges[i].node2), testDisplayEdges[i].cost]];
+			this.testDisplayNodes[checkId(testDisplayEdges[i].node2)].addNeighbor[testDisplayEdges[i].type, testDisplayNodes[checkId(testDisplayEdges[i].node1), testDisplayEdges[i].cost]];
+		}
 		
 		var dijkstraPath = new dijkstra();
 		dijkstraPath.addNodes(testDisplayNodes);
 		var startNode = testDisplayNodes[0];
 		var goal = testDisplayNodes[testDisplayNodes.length-1];
 		dijkstraPath.pathFind(startNode, goal);
-		var drawtool = new draw();
+		var drawtool = new Draw();
 		drawtool.drawPath(startNode, goal,0);
 		
 

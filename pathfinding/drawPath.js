@@ -1,6 +1,6 @@
 // parameterene: startnoden er den noden som algorithemen ble startet fra(drawpath avsluttes når goal har blitt endret til startnode), goal er den noden som er den siste i pathen som ikke er blitt tegnet path til fra sluttnoden(Tegner pathen baklengs, altså fra endNode-->startNode). 
 //Denne funksjonen er rekursiv og kaller seg sjølv med samme startnode kver gang men endrer goal noden til den noden sin prevNode.
-function draw(){
+function Draw(){
 	x = 0;
 	this.drawPath = function(startnode, goal){
 		drawLine(goal.getPrevNode().getCoords().getXCoord(), goal.getPrevNode().getCoords().getYCoord(),goal.getCoords().getXCoord(), goal.getCoords().getYCoord(),x);
@@ -26,7 +26,7 @@ function draw(){
 		node.style.height = "2px";
 		node.style.width = width+"px";
 		node.style.top = Math.round(y1)+"px";
-		node.style.position = "absolute";
+		//node.style.position = "absolute";
 		node.style.display = "visible";
 		node.style.left = parseInt(x1)+"px";
 		var x = -Math.round(width/2 - Math.sqrt(Math.pow((width/2),2) - Math.pow(((y2-y1)/2),2))+drawinfo[1]);

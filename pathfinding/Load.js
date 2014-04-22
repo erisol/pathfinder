@@ -20,8 +20,8 @@ function Load(){
 	array3Floor = [];
 	array4Floor = [];
 	array5Floor = [];
-	var floorNodeListArray = ["","../nodemaker/nodes/ke/1.txt", "../nodemaker/nodes/ke/2.txt", "../nodemaker/nodes/ke/3.txt", "../nodemaker/nodes/ke/4.txt", "../nodemaker/nodes/ke/5.txt"];
-	var floorEdgeListArray = ["","../nodemaker/edges/ke/1.txt", "../nodemaker/edges/ke/2.txt", "../nodemaker/edges/ke/3.txt", "../nodemaker/edges/ke/4.txt", "../nodemaker/edges/ke/5.txt"];
+	var floorNodeListArray = ["","../test1/nodemaker/nodes/ke/1.txt", "../test1/nodemaker/nodes/ke/2.txt", "../test1/nodemaker/nodes/ke/3.txt", "../test1/nodemaker/nodes/ke/4.txt", "../test1/nodemaker/nodes/ke/5.txt"];
+	var floorEdgeListArray = ["","../test1/nodemaker/edges/ke/1.txt", "../test1/nodemaker/edges/ke/2.txt", "../test1/nodemaker/edges/ke/3.txt", "../test1/nodemaker/edges/ke/4.txt", "../test1/nodemaker/edges/ke/5.txt"];
 	
 	this.loadNodes = function(){
 		for(var n = 1; n < floorNodeListArray.length; n++){
