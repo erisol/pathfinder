@@ -14,8 +14,9 @@
 <body>
 <button type="button" onclick="createNodes()">Make nodes</button>
 <button type="button" onclick="drawNodeTest()">Draw Lines between nodes</button>
-<canvas id="drawtestcanvas" width="1000" height="600" style="border:2px solid #d3d3d3;">
-Your browser does not support the HTML5 canvas tag.</canvas>
+<div id="canvas" style="float: left">
+<canvas id="Rcanvas" width="1000" height="600" style="border:2px solid #d3d3d3;"></canvas>
+</div>
 <script>
 Array.prototype.indexofvarinobject = function(variabel, value){
 	for(var indx = 0; indx < this.length; indx++){
@@ -97,7 +98,7 @@ function createNodes(){
 }
 //Test av algorithmen
 function drawNodeTest(){
-	var c=document.getElementById("drawtestcanvas");
+	var c=document.getElementById("Rcanvas");
 	var ctx=c.getContext("2d");
 	var dijkstraPath = new dijkstra();
 	dijkstraPath.addNodes(nodes);
@@ -114,7 +115,8 @@ function drawNodeTest(){
   		ctx.fillText(nodes[nrNodes].id + "  Cost: " + nodes[nrNodes].getCost(),nodes[nrNodes].getCoords().getXCoord()+nodeSize, nodes[nrNodes].getCoords().getYCoord()+nodeSize);
 	}
 	ctx.moveTo(goal.getCoords().getXCoord(), goal.getCoords().getYCoord());
-	new drawPath(startNode, goal);
+	var drawtool = new draw();
+	drawtool.drawPath(startNode, goal,0);
 }
 </script>
 

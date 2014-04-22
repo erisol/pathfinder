@@ -1,4 +1,5 @@
 function load(){
+	var rooms = new Array();
 	var edges1 = new Array();
 	var edges2 = new Array();
 	var edges3 = new Array();
@@ -25,12 +26,13 @@ function load(){
 					for (var i = 0; i<=newArray.length; i+=5) {
 						if(newArray[i] != undefined){
 							currentNodes[0][currentNodes[0].length] = newArray[i]+","+newArray[i+1]+","+newArray[i+2]+","+newArray[i+3]+","+newArray[i+4];
+							rooms[rooms.length] = new roomnode(newArray[i+1], newArray[i]); 
 						}
 					}           
 				}
 			});
 		}
-		return [array1Floor,array2Floor,array3Floor,array4Floor,array5Floor];
+		return [array1Floor,array2Floor,array3Floor,array4Floor,array5Floor, rooms];
 	}
 	
 	this.loadEdges = function(){
@@ -73,4 +75,9 @@ function load(){
 				break;	
 		}
 	}
-}
+};
+
+function roomnode(roomnr, nodeid){
+	this.roomnr = roomnr;
+	this.nodeid = nodeid;
+};
