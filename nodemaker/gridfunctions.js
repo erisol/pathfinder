@@ -219,7 +219,7 @@
                 xmlhttp=new ActiveXObject("Microsoft.XMLHTTP");
             }
 
-            xmlhttp.open("GET","operations.php?data="+data+"&file="+file,true);
+            xmlhttp.open("POST","operations.php?data="+data+"&file="+file,true);
             xmlhttp.send();
 
 			}

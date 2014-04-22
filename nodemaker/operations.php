@@ -10,15 +10,31 @@
 </head>
 <body>
 <?php
+
 $name = $_GET['file'];
 $data = $_GET['data'];
-unlink($name);
-$handle = fopen($name, 'w+') or die ('CANT OPEN FILE');
-fwrite($handle,$data);
-fclose($handle);
-chmod($name, 0777);
 
+$allowed_directories = array("/grids/","/nodes/", "/edges/");
+$match = false;
+foreach($allowed_directories as $allowed_directory) {
+  if (strpos($allowed_directory,$name) === false) {
+    $match = true;
+    break;
+  }
+}
 
+if($match) {
+
+	unlink($name);
+	$handle = fopen($name, 'w+') or die ('CANT OPEN FILE');
+	fwrite($handle,$data);
+	fclose($handle);
+	chmod($name, 0777);
+
+} else {
+	die("Illegal file operation."); 
+}
+ 
 ?>
 </body>
 </html>
