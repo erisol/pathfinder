@@ -1,56 +1,13 @@
 /* Set body to be compatible with all screen resolutions */
+
 body {
 	padding: 0;
 	margin: 0;
 	width: 100%;
 	font-family: Verdana, Geneva, sans-serif;
 	font-size: 12px;
-	
-	
-	/*Scrollbar for IE */
-	scrollbar-base-color: #356AA0;
-	scrollbar-3dlight-color: #356AA0;
-	scrollbar-highlight-color: #356AA0;
-	scrollbar-track-color: #FFF;
-	scrollbar-arrow-color: #356AA0;
-	scrollbar-arrow-height: 10px;
-	scrollbar-shadow-color: #FFF;
-	scrollbar-dark-shadow-color: #FFF;
-	
-}
-
-/* Scrollbar for webkit */
-	::-webkit-scrollbar { width: 10px; height: 10px;}
-	::-webkit-scrollbar-button {  height:0;width:0; }
-	::-webkit-scrollbar-track {  background-color: #FFF;}
-	::-webkit-scrollbar-track-piece { background-color: #FFF;}
-	::-webkit-scrollbar-thumb { height: 50px; background-color: #356AA0; border-radius: 3px;}
-	::-webkit-scrollbar-corner { background-color: transparent;}}
-	::-webkit-resizer { background-color: #FFF;}
-	
-/* Scrollbar for Firefox */
-@-moz-document url-prefix(http://),url-prefix(https://) {
-	scrollbar {
-	   -moz-appearance: none !important;
-	   background: #356AA0 !important;
-	}
-	thumb,scrollbarbutton {
-	   -moz-appearance: none !important;
-	   background-color: #356AA0 !important;
-	}
-	
-	thumb:hover,scrollbarbutton:hover {
-	   -moz-appearance: none !important;
-	   background-color:#356AA0 !important;
-	}
-	
-	scrollbarbutton {
-	   display: none !important;
-	}
-	
-	scrollbar[orient="vertical"] {
-	  min-width: 15px !important;
-	}
+	height: 100%;
+	overflow: hidden;
 }
 
 #topBar {
@@ -98,7 +55,7 @@ body {
 }
 
 #wrapper {
-	overflow: auto;
+	overflow: hidden !important;
 }
 
 #operateMenu {
@@ -143,14 +100,22 @@ body {
 #canvas {
 	margin: 0;
 	padding: 0;
-	min-height: 1092px;
-	min-width: 2182px;
-	background: url(../kart/kart_KE_5etg.jpg) scroll;
+	height: 1092px;
+	width: 2182px;
+	background: url(../kart/kart_KE_5etg.jpg);
+	overflow: hidden !important;
+	position: relative;
 }
 
 #container {
-	min-width: 100%;
-	min-height: 100%;
+	max-width: 100%;
+	max-height: calc(100% - 80px);
+	max-height: -ms-calc(100% - 80px);
+	max-height: -webkit-calc(100% - 80px);
+	max-height: -moz-calc(100% - 80px);
+	max-height: -o-calc(100% - 80px);
+	position: absolute;
+	overflow: hidden !important;
 }
 
 #floorUpImage {

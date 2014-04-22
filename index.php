@@ -15,9 +15,6 @@ $_SESSION["language"] = "norsk";
 // Include global variables
 include("php/global.php");
 
-// Array over rooms in building
-//include("/php/roomlist.php");
-
 ?>
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
 <html xmlns="http://www.w3.org/1999/xhtml">
@@ -39,8 +36,9 @@ include("php/global.php");
 <!-- JQuery -->
 <script type="text/javascript" src="http://code.jquery.com/jquery-1.9.1.js"></script>
 
-<!-- KineticJS -->
-<script type="text/javascript" src="http://d3lp1msu2r81bx.cloudfront.net/kjs/js/lib/kinetic-v4.5.5.min.js"></script>
+<!-- Panzoom -->
+<script type="text/javascript" src="script/panzoom/jquery.panzoom.js"></script>
+
 <!-- /External -->
 
 <!-- Internal -->
@@ -52,6 +50,7 @@ include("php/global.php");
 <script type="text/javascript" src="pathfinding/Node.js"></script>
 <script type="text/javascript" src="pathfinding/Dijkstra.js"></script>
 <script type="text/javascript" src="pathfinding/drawPath.js"></script>
+<script type="text/javascript" src="pathfinding/Load.js"></script>
 <!-- /Internal -->
 
 <title><?php echo $siteTitle; ?></title>
@@ -77,19 +76,19 @@ include("php/global.php");
     	<!-- Menu top bar begin -->
     	<div id="topMenu">
         	<?php
-            echo "<form name=\"navigate\" method=\"POST\">";
+            	echo "<form name=\"navigate\" method=\"POST\">";
                 echo $goingFrom;
                 echo "<select class=\"topMenuForm\" name=\"from\">\n";
-                echo 	"<option value\"#\">Array comes here</option>\n";
+                echo 	"<option value=\"#\">Array comes here</option>\n";
                 echo "</select>\n";
                 echo $goingTo;
                 echo "\n<select class=\"topMenuForm\" name=\"to\">\n";
-                echo 	"<option value\"#\">Array comes here</option>\n";
+                echo 	"<option value=\"#\">Array comes here</option>\n";
                 echo "</select>\n";
                 echo $disability;
                 echo "\n<input class=\"topMenuForm\" name=\"handicapped\" type=\"checkbox\" /> &emsp; \n";
                 echo "<input class=\"topMenuForm\" type=\"submit\" value=\"". $showWayButton ."\" />\n";
-            	echo "</form>";
+				echo "</form>";
 				?>
        </div>
        
@@ -107,9 +106,9 @@ include("php/global.php");
 				echo "<img src=\"img/spacer.png\" width=\"105\" height=\"1\">";
 				echo "". $floors ."";
 				echo "<br />\n";
-				echo "<img id=\"zoomInImage\" src=\"img/zoomIn_icon.png\" width=\"30\" height=\"30\" alt=\"". $zoomIn ."\" onclick=\"zoomIn()\" />";
+				echo "<img id=\"zoomInImage\" class=\"zoom-in\" src=\"img/zoomIn_icon.png\" width=\"30\" height=\"30\" alt=\"". $zoomIn ."\" />";
 				echo "<img src=\"img/spacer.png\" width=\"30\" height=\"1\">";
-				echo "<img id=\"zoomOutImage\" src=\"img/zoomOut_icon.png\" width=\"30\" height=\"30\" alt=\"". $zoomOut ."\" onclick=\"zoomOut()\" />";
+				echo "<img id=\"zoomOutImage\" class=\"zoom-out\" src=\"img/zoomOut_icon.png\" width=\"30\" height=\"30\" alt=\"". $zoomOut ."\"  />";
 				echo "<img src=\"img/spacer.png\" width=\"50\" height=\"1\">";
 				echo "<img id=\"floorUpImage\" src=\"img/floorUp_icon.png\" width=\"30\" height=\"30\" alt=\"". $floorUp ."\" onclick=\"floorUp()\" />";
 				echo "<img src=\"img/spacer.png\" width=\"30\" height=\"1\">";
@@ -140,26 +139,54 @@ include("php/global.php");
     
     <!-- Wrapper begin -->
     
-    <div id="wrapper">
+    <div id="wrapper" class="scrollable">
     
-    
-        
+ 
         
 		<!-- Container begin -->
-        <div id="container" >
+        <div id="container" class="parent scrollable" >
         		
                 <!-- Canvas begin -->
-        		<div id="canvas"></div>
+        		<div id="canvas" class="panzoom scrollable"></div>
                 <!-- Canvas end -->
         </div>
 		<!-- Container end -->
         
         <!-- Scripts running in container -->
-        <script>
+              <script>
+        (function() {
+          var $section = $('#container');
+		  var $menu = $('#rightOperate');
+          $section.find('.panzoom').panzoom({
+            $zoomIn: $menu.find(".zoom-in"),
+            $zoomOut: $menu.find(".zoom-out"),
+            startTransform: 'scale(1)',
+            increment: 0.5,
+            minScale: 1,
+            contain: 'invert'
+          }).panzoom('zoom');
+        })();
+		
+        (function() {
+          var $section = $('#container');
+          var $panzoom = $section.find('.panzoom').panzoom();
+          $panzoom.parent().on('mousewheel.container', function( e ) {
+            e.preventDefault();
+            var delta = e.delta || e.originalEvent.wheelDelta;
+            var zoomOut = delta ? delta < 0 : e.originalEvent.deltaY > 0;
+            $panzoom.panzoom('zoom', zoomOut, {
+              increment: 0.5,
+              animate: false,
+              focal: e
+            });
+          });
+        })();
+      
 		$(document).ready(checkFloor());
 		setWrapper();
 		setContainer();
-		$(document).ready(loadMapToCenter());
+		resizeClient();
+		//$(document).ready(loadMapToCenter());
 		$(document).ready(checkFloorCounter());
         </script>
         <!-- Scripts running in container end -->

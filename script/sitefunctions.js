@@ -8,6 +8,24 @@ var zoomCounter = 0;
 var maxWidth;
 var maxHeight;
 
+/*
+$('.scrollable').mouseenter(function(){
+                    $('body').css('overflow', 'hidden');
+                });
+                $('.scrollable').mouseleave(function(){
+                    $('body').css('overflow', 'auto');
+                });
+*/
+
+// Force resize of client window
+function resizeClient() {
+  window.moveTo(0, 0);
+  window.resizeTo(screen.width, screen.height);
+}
+
+
+maximize();
+
 // GET USER' CLIENT WIDTH AND HEIGHT
 
 function getClientWidth() {
@@ -144,16 +162,16 @@ function zoomIn() {
 	}
 		switch(zoomCounter) {
 			case 1:
-				$("#container").css("zoom", "125%");
+				$("#container").zoomTarget();
 				break;
 			case 2:
-				$("#container").css("zoom", "150%");
+				$("#container").zoomTarget();
 				break;
 			case 3:
-				$("#container").css("zoom", "175%");
+				$("#container").zoomTarget();
 				break;
 			case 4:
-				$("#counterin").css("zoom", "200%");
+				$("#container").zoomTarget();
 				break;
 		}
 }
@@ -190,28 +208,28 @@ function checkFloor() {
 	
 	switch(currentFloor) {
 		case 1:
-			map.setAttribute("style", "background: url(kart/kart_KE_1etg.jpg) scroll;");
-			loadMapToCenter();
+			map.setAttribute("style", "background: url(kart/kart_KE_1etg.jpg) ;");
+			//loadMapToCenter();
 			break;
 		case 2:
-			map.setAttribute("style", "background: url(kart/kart_KE_2etg.jpg) scroll;");
-			loadMapToCenter();
+			map.setAttribute("style", "background: url(kart/kart_KE_2etg.jpg) ;");
+			//loadMapToCenter();
 			break;
 		case 3:
-			map.setAttribute("style", "background: url(kart/kart_KE_3etg.jpg) scroll;");
-			loadMapToCenter();
+			map.setAttribute("style", "background: url(kart/kart_KE_3etg.jpg) ;");
+			//loadMapToCenter();
 			break;
 		case 4:
-			map.setAttribute("style", "background: url(kart/kart_KE_4etg.jpg) scroll;");
-			loadMapToCenter();
+			map.setAttribute("style", "background: url(kart/kart_KE_4etg.jpg) ;");
+			//loadMapToCenter();
 			break;
 		case 5:
-			map.setAttribute("style", "background: url(kart/kart_KE_5etg.jpg) scroll;");
-			loadMapToCenter();
+			map.setAttribute("style", "background: url(kart/kart_KE_5etg.jpg) ;");
+			//loadMapToCenter();
 			break;
 		default:
-			map.setAttribute("style", "background: url(kart/kart_KE_1etg.jpg) scroll;");
-			loadMapToCenter();
+			map.setAttribute("style", "background: url(kart/kart_KE_1etg.jpg) ;");
+			//loadMapToCenter();
 	}
 	
 }
