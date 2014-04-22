@@ -61,7 +61,7 @@ function Load(){
 		    		var newArray = data.split(",");
 					for (var i = 0; i<=newArray.length-9; i+=9) {
 						if((newArray[i] != undefined || newArray.length != 0) && currentEdges[0].checkId(newArray[i+1]) != -1 && currentEdges[0].checkId(newArray[i+4]) != -1){
-							currentEdges[1][currentEdges[1].length] = newArray[i]+","+newArray[i+1]+","+newArray[i+4]+","+newArray[i+7]+","+newArray[i+8];
+							currentEdges[1][currentEdges[1].length] = new dualEdge(newArray[i],newArray[i+1],newArray[i+4],newArray[i+7],newArray[i+8]);
 						}
 					}
 		  		}
@@ -88,6 +88,14 @@ function Load(){
 				break;	
 		}
 	}
+};
+
+function dualEdge(id, node1, node2, type, cost){
+	this.id = id;
+	this.node1 = node1;
+	this.node2 = node2;
+	this.type = type;
+	this.cost = cost;
 };
 
 function roomNode(roomnr, nodeid){
