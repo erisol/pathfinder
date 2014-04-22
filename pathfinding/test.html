@@ -7,6 +7,8 @@
 <script src="Node.js"></script>
 <script src="Dijkstra.js"></script>
 <script src="drawPath.js"></script>
+<script src="Load.js"></script>
+<script type="text/javascript" src="http://code.jquery.com/jquery-1.9.1.js"></script>
 <meta charset="utf-8">
 <title>Test</title>
 </head>
@@ -28,7 +30,13 @@ Array.prototype.indexofvarinobject = function(variabel, value){
 }
 //Test av nodene
 function createNodes(){
+	loader = new load();
+	arrayNodes = loader.loadNodes();
+	arrayEdges = loader.loadEdges();
+	rooms = arrayNodes[5];
+	
 	nodes = new Array();
+	
 	try{
 		for(var x = 0; x < 8; x++){
 			nodes.push(new Node(x,10+70*x,10+70*x, 1));

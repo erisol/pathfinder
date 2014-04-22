@@ -1,4 +1,14 @@
 function load(){
+	Array.prototype.checkId = function(value){
+		for(var indx = 0; indx < this.length; indx++){
+			var testArray = this[indx].id;
+			if(testArray[0] == value){
+				return indx;
+			}
+		}
+		return -1;
+	}
+	
 	var rooms = new Array();
 	var edges1 = new Array();
 	var edges2 = new Array();
@@ -10,8 +20,9 @@ function load(){
 	array3Floor = [];
 	array4Floor = [];
 	array5Floor = [];
-	var floorNodeListArray = ["","nodes/ke/1.txt", "nodes/ke/2.txt", "nodes/ke/3.txt", "nodes/ke/4.txt", "nodes/ke/5.txt"];
-	var floorEdgeListArray = ["","edges/ke/1.txt", "edges/ke/2.txt", "edges/ke/3.txt", "edges/ke/4.txt", "edges/ke/5.txt"];
+	var floorNodeListArray = ["","../nodemaker/nodes/ke/1.txt", "../nodemaker/nodes/ke/2.txt", "../nodemaker/nodes/ke/3.txt", "../nodemaker/nodes/ke/4.txt", "../nodemaker/nodes/ke/5.txt"];
+	var floorEdgeListArray = ["","../nodemaker/edges/ke/1.txt", "../nodemaker/edges/ke/2.txt", "../nodemaker/edges/ke/3.txt", "../nodemaker/edges/ke/4.txt", "../nodemaker/edges/ke/5.txt"];
+	
 	this.loadNodes = function(){
 		for(var n = 1; n < floorNodeListArray.length; n++){
 			currentNodes = getOldArray(n);
@@ -24,9 +35,11 @@ function load(){
 				success: function(data) {
 			   		var newArray = data.split(",");
 					for (var i = 0; i<=newArray.length; i+=5) {
-						if(newArray[i] != undefined){
-							currentNodes[0][currentNodes[0].length] = newArray[i]+","+newArray[i+1]+","+newArray[i+2]+","+newArray[i+3]+","+newArray[i+4];
-							rooms[rooms.length] = new roomnode(newArray[i+1], newArray[i]); 
+						if(newArray.length == 0 || newArray[i] != undefined || newArray[i+1] != undefined){
+							currentNodes[0][currentNodes[0].length] = new Node(newArray[i],newArray[i+2],newArray[i+3],newArray[i+4]);
+							if(newArray[i+1] !== "gang"){
+								rooms[rooms.length] = new roomnode(newArray[i+1], newArray[i]);
+							}
 						}
 					}           
 				}
