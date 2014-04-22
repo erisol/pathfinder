@@ -188,6 +188,12 @@ include("php/global.php");
 		setWrapper();
 		setContainer();
 		resizeClient();
+		
+		if(checkFloor == 5) {
+			createNodes()
+			drawNodeTest()
+		}
+		
 		//$(document).ready(loadMapToCenter());
 		//$(document).ready(checkFloorCounter());
         </script>

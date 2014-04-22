@@ -1,3 +1,4 @@
+function testDisplayNodes() {
 	Array.prototype.checkId = function(value){
 		for(var indx = 0; indx < this.length; indx++){
 			var testArray = this[indx].id;
@@ -15,8 +16,6 @@
 	rooms = displayNodes[5];
 	nodes = new Array();
 	
-	if (currentFloor == 5) {
-	
 		var testDisplayNodes = displayNodes[4];
 		var testDisplayEdges = displayEdges[4];
 		
@@ -25,6 +24,10 @@
 			this.testDisplayNodes[checkId(testDisplayEdges[i].node2)].addNeighbor[testDisplayEdges[i].type, testDisplayNodes[checkId(testDisplayEdges[i].node1), testDisplayEdges[i].cost]];
 		}
 		
+		//createNodes();
+		//drawNodes();
+		//NO FUNCTION? NO DEGREE
+		
 		var dijkstraPath = new dijkstra();
 		dijkstraPath.addNodes(testDisplayNodes);
 		var startNode = testDisplayNodes[0];
@@ -32,7 +35,4 @@
 		dijkstraPath.pathFind(startNode, goal);
 		var drawtool = new Draw();
 		drawtool.drawPath(startNode, goal,0);
-		
-
-			
-	}
+}
