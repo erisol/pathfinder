@@ -506,7 +506,7 @@
 					yId = indx;	
 				}
 			}
-			return yGrid[yId];
+			return parseInt(yGrid[yId]);
 		}
 		return y;
 	}
@@ -527,7 +527,8 @@
 					xId = indx;	
 				}
 			}
-			return xGrid[xId];
+			console.log(xGrid[xId]);
+			return parseInt(xGrid[xId]);
 		}
 		return x;
 	}
