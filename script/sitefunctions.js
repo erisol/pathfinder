@@ -149,20 +149,6 @@ function zoomIn() {
 	} else {
 		zoomCounter++;
 	}
-		switch(zoomCounter) {
-			case 1:
-				$("#container").zoomTarget();
-				break;
-			case 2:
-				$("#container").zoomTarget();
-				break;
-			case 3:
-				$("#container").zoomTarget();
-				break;
-			case 4:
-				$("#container").zoomTarget();
-				break;
-		}
 }
 
 function zoomOut() {
@@ -174,21 +160,6 @@ function zoomOut() {
 		} else {
 			zoomCounter--;
 		}
-				switch(zoomCounter) {
-			case 0:
-				$("#container").css("zoom", "100%");
-				break;
-			case 1:
-				$("#container").css("zoom", "125%");
-				break;
-			case 2:
-				$("#container").css("zoom", "150%");
-				break;
-			case 3:
-				$("#container").css("zoom", "175%");
-				break;
-
-		}
 	
 }
 
@@ -198,22 +169,32 @@ function checkFloor() {
 	switch(currentFloor) {
 		case 1:
 			map.setAttribute("style", "background: url(kart/kart_KE_1etg.jpg) ;");
+			removeDraw();
+			loadNodesAndEdges(1);
 			//loadMapToCenter();
 			break;
 		case 2:
 			map.setAttribute("style", "background: url(kart/kart_KE_2etg.jpg) ;");
+			removeDraw();
+			loadNodesAndEdges(2);
 			//loadMapToCenter();
 			break;
 		case 3:
 			map.setAttribute("style", "background: url(kart/kart_KE_3etg.jpg) ;");
+			removeDraw();
+			loadNodesAndEdges(3);
 			//loadMapToCenter();
 			break;
 		case 4:
 			map.setAttribute("style", "background: url(kart/kart_KE_4etg.jpg) ;");
+			removeDraw();
+			loadNodesAndEdges(4);
 			//loadMapToCenter();
 			break;
 		case 5:
 			map.setAttribute("style", "background: url(kart/kart_KE_5etg.jpg) ;");
+			removeDraw();
+			loadNodesAndEdges(5);
 			//loadMapToCenter();
 			break;
 		default:

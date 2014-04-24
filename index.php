@@ -156,38 +156,40 @@ include("php/global.php");
         
         <!-- Scripts running in container -->
               <script>
-        (function() {
-          var $section = $('#container');
-		  var $menu = $('#rightOperate');
-          $section.find('.panzoom').panzoom({
-            $zoomIn: $menu.find(".zoom-in"),
-            $zoomOut: $menu.find(".zoom-out"),
-            startTransform: 'scale(1)',
-            increment: 0.5,
-            minScale: 1,
-            contain: 'invert'
-          }).panzoom('zoom');
-        })();
-		
-        (function() {
-          var $section = $('#container');
-          var $panzoom = $section.find('.panzoom').panzoom();
-          $panzoom.parent().on('mousewheel.container', function( e ) {
-            e.preventDefault();
-            var delta = e.delta || e.originalEvent.wheelDelta;
-            var zoomOut = delta ? delta < 0 : e.originalEvent.deltaY > 0;
-            $panzoom.panzoom('zoom', zoomOut, {
-              increment: 0.5,
-              animate: false,
-              focal: e
-            });
-          });
-        })();
-      
-		$(document).ready(checkFloor());
-		setWrapper();
-		setContainer();
-		resizeClient();
+			    	// Zoom in and out
+				(function() {
+				  var $section = $('#container');
+				  var $menu = $('#rightOperate');
+				  $section.find('.panzoom').panzoom({
+					$zoomIn: $menu.find(".zoom-in"),
+					$zoomOut: $menu.find(".zoom-out"),
+					startTransform: 'scale(1)',
+					increment: 0.5,
+					minScale: 1,
+					contain: 'invert'
+				  }).panzoom('zoom');
+				})();
+				
+				(function() {
+				  var $section = $('#container');
+				  var $panzoom = $section.find('.panzoom').panzoom();
+				  $panzoom.parent().on('mousewheel.container', function( e ) {
+					e.preventDefault();
+					var delta = e.delta || e.originalEvent.wheelDelta;
+					var zoomOut = delta ? delta < 0 : e.originalEvent.deltaY > 0;
+					$panzoom.panzoom('zoom', zoomOut, {
+					  increment: 0.5,
+					  animate: false,
+					  focal: e
+					});
+				  });
+				})();
+
+			 
+				$(document).ready(checkFloor());
+				setWrapper();
+				setContainer();
+				resizeClient();				
 		//$(document).ready(loadMapToCenter());
 		//$(document).ready(checkFloorCounter());
         </script>

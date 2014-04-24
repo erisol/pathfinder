@@ -4,6 +4,8 @@ function Draw(){
 	x = 0;
 	this.drawPath = function(startnode, goal){
 		drawLine(goal.getPrevNode().getCoords().getXCoord(), goal.getPrevNode().getCoords().getYCoord(),goal.getCoords().getXCoord(), goal.getCoords().getYCoord(),x);
+		console.log(startnode);
+		console.log(goal);
 		if(startnode.id !== goal.getPrevNode().id){
 			x++;
 			this.drawPath(startnode, goal.getPrevNode());
