@@ -130,7 +130,7 @@ include("php/global.php");
             <a href="?setLanguage=english"><img src="img/english_icon.jpg" height="15" width="27" alt="Choose English language" border="0" /></a>
        </div>
        
-       <!-- Language bar ende -->
+       <!-- Language bar end -->
        
        
     </div>
