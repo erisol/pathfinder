@@ -95,7 +95,7 @@ function dualEdge(id, node1, node2, type, cost){
 	this.node1 = node1;
 	this.node2 = node2;
 	this.type = type;
-	this.cost = cost;
+	this.cost = Math.ceil(cost/10);
 };
 
 function roomNode(roomnr, nodeid){

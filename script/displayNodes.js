@@ -50,17 +50,20 @@ function loadNodesAndEdges(displayFloor) {
 	
 	var dijkstraPath = new dijkstra();
 	dijkstraPath.addNodes(testDisplayNodes);
-	var startNode = testDisplayNodes[0];
-	var goal = testDisplayNodes[testDisplayNodes.length-1];
+	testDisplayNodes[15].setOptimalCostPath(1,testDisplayNodes[14]);
+	var startNode = testDisplayNodes[15];
+	var goal = testDisplayNodes[60];
 	dijkstraPath.pathFind(startNode, goal);
 	var drawtool = new Draw();
 	drawtool.drawPath(startNode, goal);
-	//ok	
+	
 	
 }
 
 function removeDraw() {
+		removeDrawnEdge = "[id^=line]";
 		removeDrawnNode = "[id^=nodediv]";
 		$(removeDrawnNode).remove();
+		$(removeDrawnEdge).remove();
 	}
 	

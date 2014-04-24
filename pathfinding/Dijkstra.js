@@ -18,17 +18,19 @@ this.addNodes = function(newNodes){
 //Funksjon som "Restarte" alle nodene i algorithmen sin array, den vil da sette allreadyDone = 0, cost = 1000000 og prevNode lik sin egen id.
 var restartNodes = function(){
 	for(var idx = 0; idx < nodes.length; idx++){
-		//nodes[idx].reboot();
+		nodes[idx].reboot();
 	}
 };
 
 //Parametere: nodes er en array over noder som algorithmen har kommet til men ikke kalkulert enda, currentEndCost er den nåverende costen får å komme seg til endNode
 //Denne funksjonen blir bare kjørt om algorithmen har funnet en veg til endNode, den vil da kjøre igjennom en liste over noder han enda ikke har sjekket pathen til, og se om det er noen andre noder som kan ha en mulig mer optimal path, vist det finnes returneres true, ellers returneres false.
 this.checkPaths = function(nodes, currentEndCost){
-	for(var indx = 0; indx < nodes.length; indx++){
+	for(var indx = 0; indx < nodes.length; indx){
 		if(nodes[indx].node.getCost() < currentEndCost){
+			console.log("STILL SMALLER COST ON NODES");
 			return false;
 		}
+		nodes.splice(indx,1);
 	}
 	return true;
 };
@@ -36,7 +38,6 @@ this.checkPaths = function(nodes, currentEndCost){
 //Funksjon som kalkulere cost får å komme seg fra startNode til endNode, dette gjør den med å gå inn i en node å kalkulere cost får å komme til nabonoder, han vil så ta en nabonode å gjøre det samme, set vil bli gjort helt til vi er i endNode, og checkPaths() returnere true.
 this.pathFind = function(startNode, endNode){
 	cost.restart();
-	this.restartNodes();
 	var path = new Array();
 	path.push(new dijkstraNodes(startNode, 0));
 	startNode.setOptimalCostPath(0);
@@ -45,10 +46,15 @@ this.pathFind = function(startNode, endNode){
 	newNodes.priorityAdd(new dijkstraNodes(startNode, 0));
 	while(newNodes.length !== 0 && calculatedNodes < nodes.length){
 		var currentNode = newNodes.shift();
-		if(currentNode.node.id == endNode.id){	
+		//console.log("");
+		//console.log("");
+		if(currentNode.node.id == endNode.id){
+			//console.log("Is it over");
 			if(this.checkPaths(newNodes, currentNode.node.getCost())){	
+			//console.log("FINISHED cost"+ currentNode.node.getCost());
 				return;
 			}
+			//console.log("no.");
 		}
 		if(currentNode.node.getCost() < endNode.getCost() && currentNode.node.isDone() !== 1){
            	currentNode.node.setDone();
@@ -57,8 +63,11 @@ this.pathFind = function(startNode, endNode){
 			for(var idx = 0; idx < currentNeighbors.length; idx++){
 				var destNode = currentNeighbors[idx].getDestNode();
 				var edgeCost = currentNeighbors[idx].getCost();
+		//console.log("Current cost: " + currentNode.node.getCost()+"+"+edgeCost);
+		//console.log("Old Cost: " + destNode.getCost());
 				if(destNode.getCost() > currentNode.node.getCost() + edgeCost){
-					destNode.setOptimalCostPath(edgeCost+ +currentNode.node.getCost(), currentNode.node);
+			//		console.log("Changing best Node");
+					destNode.setOptimalCostPath(edgeCost+currentNode.node.getCost(), currentNode.node);
 					newNodes.priorityAdd(new dijkstraNodes(destNode, destNode.getCost()));
 					path.push(new dijkstraNodes(destNode, destNode.getCost()));
 				}

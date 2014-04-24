@@ -2,15 +2,15 @@
 function Node(id, x, y, z){
 	this.id = id;
 	var coords = new Coords(x, y, z);
-	var cost = 100000000000000000;
+	var cost = Number.MAX_VALUE;
 	var neighbors = new Array();
 	var prevNode = this;
 	var allReadyDone = 0; 
 	
 	//Reseter noden til hvordan han var orginalt, blir brukt når det skal kalkuleres nye path.
 	this.reboot = function(){
-		prevNode = id;
-		cost = 100000000000000000000;
+		prevNode = this;
+		cost = Number.MAX_VALUE;
 		allReadyDone = 0;
 	};
 	//Setter denne noden til å være ferdig kalkulert av algorithmen.
@@ -31,12 +31,11 @@ function Node(id, x, y, z){
 	};
 	//Parametere: optCost er hva den foreslåte nye costen får å komme til denne noden skal være, node er hvilken node man kommer fra får å oppnå denne costen.
 	//setter "cost" for å komme til denne noden(Denne gangen algortimen blei kjørt, vist han finner en path som var mer effektiv overskrives denne)
-	this.setOptimalCostPath = function(optCost, node){
+	this.setOptimalCostPath = function(optCost, newNode){
 		try{
 			if(this.getCost() > optCost){
-				console.log("CHANGING");
 				cost = optCost;
-				setPrevNode(node);
+				setPrevNode(newNode);
 				return true;
 			}
 			return false;
@@ -50,7 +49,7 @@ function Node(id, x, y, z){
 	};
 	//Setter hva som var den forrige noden, i følge den optimale pathen.
 	var setPrevNode = function(nodeId){
-		this.prevNode=nodeId;
+		prevNode=nodeId
 	};
 	//Henter inn hva den forrige noden var, i forhold til optimalpath
 	this.getPrevNode = function(){

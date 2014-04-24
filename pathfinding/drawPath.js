@@ -3,34 +3,35 @@
 function Draw(){
 	x = 0;
 	this.drawPath = function(startnode, goal){
-		x1 = goal.getPrevNode();
-		x1 = x1.getCoords();
-		x1 = x1.getXCoord();
+		//console.log(goal.getPrevNode().id);
+		//console.log(goal.id);
+		if(goal.getPrevNode().id != goal.id){
+		x1 = goal.getPrevNode().getCoords().getXCoord();
 		y1 = goal.getPrevNode().getCoords().getYCoord();
 		x2 = goal.getCoords().getXCoord();
 		y2 = goal.getCoords().getYCoord();
-		drawLine(x1,y1,x2,y2,x);
-		console.log(startnode);
-		console.log(goal);
+		var drawInfo = finddegrees(x1,y1,x2,y2);
+		drawLine(x1,y1,x2,y2,x,drawInfo);
 		if(startnode.id !== goal.getPrevNode().id){
 			x++;
 			this.drawPath(startnode, goal.getPrevNode());
 		}
 		x = 0;
+		}
 	}
-	var drawLine = function(x1, y1, x2, y2, id){
-		x1 = parseInt(x1)+ +parseInt(8);
-		x2 = parseInt(x2)+ +parseInt(8);
-		y1 = parseInt(y1)+ +parseInt(8);
-		y2 = parseInt(y2)+ +parseInt(8);
-		var drawinfo = finddegrees(x1,y1,x2,y2);
+	var drawLine = function(x1, y1, x2, y2, id,info){
+		x1 = parseInt(x1)+ +2;
+		x2 = parseInt(x2)+ +2;
+		y1 = parseInt(y1)+ +2;
+		y2 = parseInt(y2)+ +2;
+		var drawinfo = info;
 		var degree = Math.round(drawinfo[0]);
 		var getCanvas = document.getElementById("canvas");
 		var node = document.createElement("div");
 		var nodeId = id;
 		width = parseInt(Math.round(Math.sqrt(Math.pow((x2-x1),2)+Math.pow((y2-y1),2))));
 		node.setAttribute("id", "line"+id);
-		node.style.backgroundColor = "black";
+		node.style.backgroundColor = "green";
 		node.style.height = "2px";
 		node.style.width = width+"px";
 		node.style.top = Math.round(y1)+"px";
@@ -46,33 +47,38 @@ function Draw(){
 	}
 	
 	var finddegrees = function(x1,y1,x2,y2){
-		console.log(x1+"-"+y1+"*****"+x2+"-"+y2);
 		x1 = parseInt(x1);
 		x2 = parseInt(x2);
 		y1= -parseInt(y1);
 		y2= -parseInt(y2);
 		if(x1 < x2 && y1 < y2){
+		console.log("1");
 			return [-(Math.atan(((y2-y1)/(x2-x1))))*(180/Math.PI),0,0.5*Math.sqrt(Math.pow(x2-x1,2) + Math.pow(y2-y1,2))];
 		}
 		
 		else if(x1 < x2 && y1 > y2){
+		console.log("2");
 			return [(Math.atan(((y1-y2)/(x2-x1))))*(180/Math.PI),0,0.5*Math.sqrt(Math.pow(x2-x1,2) + Math.pow(y1-y2,2))];
 		}
 		
 		else if(x1 > x2 && y1 < y2){
+		console.log("3");
 			return [-180+(Math.atan(((y2-y1)/(x1-x2))))*(180/Math.PI),(x1-x2),0.5*Math.sqrt(Math.pow(x1-x2,2) + Math.pow(y2-y1,2))];
 		}
 		
 		else if(x1 > x2 && y1 > y2){
+		console.log("4");
 			return [180-(Math.atan(((y1-y2)/(x1-x2))))*(180/Math.PI),(x1-x2),0.5*Math.sqrt(Math.pow(x1-x2,2) + Math.pow(y2-y1,2))];
 		}
 		
 		else if(x1===x2){
 			if(y1 < y2){
+		console.log("5");
 				return [-90,0, (y2-y1)/2];	
 			}
 			
 			else if(y1 > y2){
+		console.log("6");
 				return [90,0,(y1-y2)/2];
 			}
 			
@@ -80,13 +86,16 @@ function Draw(){
 		
 		else if(y1===y2){
 			if(x1 < x2){
+		console.log("7");
 				return [0,0,0];
 			}
 			
 			else if(x1 > x2){
+		console.log("8");
 				return [0,(x1-x2),0];
 			}
 		}
+		return [0,0,0];
 	}
 }
 /*function drawPath(startnode, goal){
