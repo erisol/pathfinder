@@ -22,6 +22,16 @@
       var canvas = document.getElementById('makeGridCanvas');
       var context = canvas.getContext('2d');
 	  
+	  //Keylisteners
+	  window.addEventListener('keypress', function (e) {
+  			if (e.keyCode == 88) {
+        		createXgrid();
+    		}
+			if (e.keyCode == 89) {
+        		createYgrid();
+			}
+		}, false);
+	  
 	  // Writes the coordinates to the menu bar on the left
 	  function writeMessage(message) {
 		  var messageCoords = document.getElementById("mouseCoords");
