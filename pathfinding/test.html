@@ -16,7 +16,7 @@
 <body>
 <button type="button" onClick="createNodes()">Make nodes</button>
 <button type="button" onClick="drawNodeTest()">Draw Lines between nodes</button>
-<div id="canvas" style="float: left">
+<div id="canvas">
 <canvas id="Rcanvas" width="1000" height="600" style="border:2px solid #d3d3d3;"></canvas>
 </div>
 <script>
@@ -124,7 +124,7 @@ function drawNodeTest(){
 	}
 	ctx.moveTo(goal.getCoords().getXCoord(), goal.getCoords().getYCoord());
 	var drawTool = new Draw();
-	drawTool.drawPath(startNode, goal,0);
+	drawTool.drawPath(startNode, goal);
 }
 </script>
 

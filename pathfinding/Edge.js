@@ -3,15 +3,15 @@ function edge(type, destinationNode, cost){
 	//type=1 er trapp og cost blir 3
 	this.type = type;
 	this.destinationNode = destinationNode;
-	if(type === 1){
+	if(type === "trapp"){
 		this.cost = 3;
 	}
 	//type=2 er heis og cost blir 20
-	else if(type === 2){
+	else if(type === "heis"){
 		this.cost = 20;
 	}
 	//type=0 er ikke trap eller heis
-	else if(type === 0){
+	else if(type === "gang"){
 		this.cost = cost;
 	}
 	
@@ -44,6 +44,6 @@ function edge(type, destinationNode, cost){
 	};
 	//toString metode for testing av kanten.
 	this.toString = function(){
-		return "Destionation node: " + this.destinationNode.id + " costs: " + this.cost;	
+		return "Destionation node: " + this.destinationNode.id + " costs: " + this.getCost() + " type: " + this.getType();	
 	};
 }

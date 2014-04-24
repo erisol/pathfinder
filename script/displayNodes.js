@@ -35,10 +35,11 @@ function loadNodesAndEdges(displayFloor) {
 	
 	var testDisplayNodes = displayNodes[displayFloor-1];
 	var testDisplayEdges = displayEdges[displayFloor-1];
-		
 	for (var i = 0; i < testDisplayEdges.length-1; i++) {
-			this.testDisplayNodes[checkId(testDisplayEdges[i].node1)].addNeighbor[testDisplayEdges[i].type, testDisplayNodes[checkId(testDisplayEdges[i].node2), testDisplayEdges[i].cost]];
-			this.testDisplayNodes[checkId(testDisplayEdges[i].node2)].addNeighbor[testDisplayEdges[i].type, testDisplayNodes[checkId(testDisplayEdges[i].node1), testDisplayEdges[i].cost]];
+		var node1 = testDisplayNodes[testDisplayNodes.checkId(testDisplayEdges[i].node1)];
+		var node2 = testDisplayNodes[testDisplayNodes.checkId(testDisplayEdges[i].node2)];
+		node1.addNeighbor(testDisplayEdges[i].type, node2, testDisplayEdges[i].cost);
+		node2.addNeighbor(testDisplayEdges[i].type, node1, testDisplayEdges[i].cost);
 		
 	}
 	
@@ -47,14 +48,11 @@ function loadNodesAndEdges(displayFloor) {
 		
 	}
 	
-	
-
 	var dijkstraPath = new dijkstra();
 	dijkstraPath.addNodes(testDisplayNodes);
 	var startNode = testDisplayNodes[0];
 	var goal = testDisplayNodes[testDisplayNodes.length-1];
 	dijkstraPath.pathFind(startNode, goal);
-	console.log(goal.prevNode.id != goal.id);
 	var drawtool = new Draw();
 	drawtool.drawPath(startNode, goal);
 	//ok	

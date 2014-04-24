@@ -2,7 +2,7 @@ function Load(){
 	Array.prototype.checkId = function(value){
 		for(var indx = 0; indx < this.length; indx++){
 			var testArray = this[indx].id;
-			if(testArray[0] == value){
+			if(testArray == value){
 				return indx;
 			}
 		}
@@ -60,7 +60,7 @@ function Load(){
 		  		success: function(data) {
 		    		var newArray = data.split(",");
 					for (var i = 0; i<=newArray.length-9; i+=9) {
-						if((newArray[i] != undefined || newArray.length != 0) && currentEdges[0].checkId(newArray[i+1]) != -1 && currentEdges[0].checkId(newArray[i+4]) != -1){
+						if((newArray[i] != undefined || newArray.length != 0) && (currentEdges[0].checkId(newArray[i+4]) != -1) && (newArray[i+7] != "gang" || currentEdges[0].checkId(newArray[i+1]) != -1)){
 							currentEdges[1][currentEdges[1].length] = new dualEdge(newArray[i],newArray[i+1],newArray[i+4],newArray[i+7],newArray[i+8]);
 						}
 					}

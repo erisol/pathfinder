@@ -3,7 +3,13 @@
 function Draw(){
 	x = 0;
 	this.drawPath = function(startnode, goal){
-		drawLine(goal.getPrevNode().getCoords().getXCoord(), goal.getPrevNode().getCoords().getYCoord(),goal.getCoords().getXCoord(), goal.getCoords().getYCoord(),x);
+		x1 = goal.getPrevNode();
+		x1 = x1.getCoords();
+		x1 = x1.getXCoord();
+		y1 = goal.getPrevNode().getCoords().getYCoord();
+		x2 = goal.getCoords().getXCoord();
+		y2 = goal.getCoords().getYCoord();
+		drawLine(x1,y1,x2,y2,x);
 		console.log(startnode);
 		console.log(goal);
 		if(startnode.id !== goal.getPrevNode().id){
@@ -28,7 +34,7 @@ function Draw(){
 		node.style.height = "2px";
 		node.style.width = width+"px";
 		node.style.top = Math.round(y1)+"px";
-		//node.style.position = "absolute";
+		node.style.position = "absolute";
 		node.style.display = "visible";
 		node.style.left = parseInt(x1)+"px";
 		var x = -Math.round(width/2 - Math.sqrt(Math.pow((width/2),2) - Math.pow(((y2-y1)/2),2))+drawinfo[1]);
@@ -40,6 +46,7 @@ function Draw(){
 	}
 	
 	var finddegrees = function(x1,y1,x2,y2){
+		console.log(x1+"-"+y1+"*****"+x2+"-"+y2);
 		x1 = parseInt(x1);
 		x2 = parseInt(x2);
 		y1= -parseInt(y1);

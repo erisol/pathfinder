@@ -2,7 +2,7 @@
 function Node(id, x, y, z){
 	this.id = id;
 	var coords = new Coords(x, y, z);
-	var cost = 1000000;
+	var cost = 100000000000000000;
 	var neighbors = new Array();
 	var prevNode = this;
 	var allReadyDone = 0; 
@@ -10,7 +10,7 @@ function Node(id, x, y, z){
 	//Reseter noden til hvordan han var orginalt, blir brukt når det skal kalkuleres nye path.
 	this.reboot = function(){
 		prevNode = id;
-		cost = 1000000;
+		cost = 100000000000000000000;
 		allReadyDone = 0;
 	};
 	//Setter denne noden til å være ferdig kalkulert av algorithmen.
@@ -34,6 +34,7 @@ function Node(id, x, y, z){
 	this.setOptimalCostPath = function(optCost, node){
 		try{
 			if(this.getCost() > optCost){
+				console.log("CHANGING");
 				cost = optCost;
 				setPrevNode(node);
 				return true;
@@ -49,7 +50,7 @@ function Node(id, x, y, z){
 	};
 	//Setter hva som var den forrige noden, i følge den optimale pathen.
 	var setPrevNode = function(nodeId){
-		prevNode=nodeId;
+		this.prevNode=nodeId;
 	};
 	//Henter inn hva den forrige noden var, i forhold til optimalpath
 	this.getPrevNode = function(){
@@ -91,7 +92,7 @@ function Node(id, x, y, z){
 				neighEdges += neighbors[len].toString() + "\n";		
 			}
 		}catch(printNeighborErr){
-			console.log("(NODE)Error printing out the edges of the node: " + printneighborerr);
+			console.log("(NODE)Error printing out the edges of the node: " + printNeighborErr);
 		}
 		return neighEdges;
 	};
