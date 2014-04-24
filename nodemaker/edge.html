@@ -4,6 +4,7 @@
 <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
 <link rel="stylesheet" type="text/css" href="../style/reset.css" />
 <script type="text/javascript" src="http://code.jquery.com/jquery-1.9.1.js"></script>
+<script type="text/javascript" src="EdgeTrimmer.js"></script>
 <title>Edge Maker</title>
 </head>
 
@@ -115,6 +116,8 @@
             <ol id="theEdges"><br /></ol>
             <br /><br />
 			<input type="button" name="saveEdges" id="saveEdges" value=" Save edges to file " onclick="saveEdges()"/>
+            <br /><br />
+            <input type="button" name="Trim Edges" id="TrimEdges" value=" Trim Edges " onclick="trimEdges()"/>
 		</div>
 	</div>
 	<div id="canvasFloat" style="float:left;">
@@ -171,7 +174,12 @@
 	array3Floor = [];
 	array4Floor = [];
 	array5Floor = [];
-	
+	function trimEdges(){
+		trim = new TrimEdges();
+		trim.loadNodes();
+		trim.loadEdges();
+		trim.saveNewEdges();
+	}
 	function drawOldNode(x, y, oldId){
 		var getCanvas = document.getElementById("canvasFloat");
 		var node = document.createElement("div");
@@ -541,7 +549,7 @@
 		  		success: function(data) {
 		    		var newArray = data.split(",");
 					for (var i = 0; i<=newArray.length-9; i+=9) {
-						if((newArray[i] != undefined || newArray.length != 0) && currentEdges[0].checkId(newArray[i+1]) != -1 && currentEdges[0].checkId(newArray[i+4]) != -1){
+						if((newArray[i] != undefined || newArray.length != 0) && (currentEdges[0].checkId(newArray[i+4]) != -1) && (newArray[i+7] != "gang" || currentEdges[0].checkId(newArray[i+1]) != -1)){
 							currentEdges[1][currentEdges[1].length] = newArray[i]+","+newArray[i+1]+","+newArray[i+2]+","+newArray[i+3]+","+newArray[i+4]+","+newArray[i+5]+","+newArray[i+6]+","+newArray[i+7]+","+newArray[i+8];
 						}
 					}
@@ -581,7 +589,7 @@
 	}
 	function writeEdgesToFile(){
 		tempFloor = oldFloor;
-		for(var i = 1;  i< floorNodeListArray.length; i++){
+		for(var i = 1;  i< floorEdgeListArray.length; i++){
 			oldFloor = i;
 			save = getOldArray();
 			var file = String(floorEdgeListArray[i]);

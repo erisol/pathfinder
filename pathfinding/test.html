@@ -123,8 +123,8 @@ function drawNodeTest(){
   		ctx.fillText(nodes[nrNodes].id + "  Cost: " + nodes[nrNodes].getCost(),nodes[nrNodes].getCoords().getXCoord()+nodeSize, nodes[nrNodes].getCoords().getYCoord()+nodeSize);
 	}
 	ctx.moveTo(goal.getCoords().getXCoord(), goal.getCoords().getYCoord());
-	var drawtool = new draw();
-	drawtool.drawPath(startNode, goal,0);
+	var drawTool = new Draw();
+	drawTool.drawPath(startNode, goal,0);
 }
 </script>
 
