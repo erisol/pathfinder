@@ -54,6 +54,7 @@ function loadNodesAndEdges(displayFloor) {
 	var startNode = testDisplayNodes[0];
 	var goal = testDisplayNodes[testDisplayNodes.length-1];
 	dijkstraPath.pathFind(startNode, goal);
+	console.log(goal.prevNode.id != goal.id);
 	var drawtool = new Draw();
 	drawtool.drawPath(startNode, goal);
 	//ok	
