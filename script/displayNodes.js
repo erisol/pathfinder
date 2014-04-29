@@ -1,4 +1,5 @@
 function LoadNodesAndEdges() {
+	activePath = false;
 	var display = new Load();
 	var displayNodes = display.loadNodes();
 	var edges = display.loadEdges();
@@ -49,17 +50,18 @@ function LoadNodesAndEdges() {
 		}
 	}
 	function drawCurrentFloorNodes(displayFloor){
-	for (var k = 0; k < displayNodes[displayFloor-1].length; k++) {
-		drawNodes(displayNodes[displayFloor-1][k].getCoords().getXCoord(), displayNodes[displayFloor-1][k].getCoords().getYCoord(), displayNodes[displayFloor-1][k].id);
-	}
+		for (var k = 0; k < displayNodes[displayFloor-1].length; k++) {
+			drawNodes(displayNodes[displayFloor-1][k].getCoords().getXCoord(), displayNodes[displayFloor-1][k].getCoords().getYCoord(), displayNodes[displayFloor-1][k].id);
+		}
 	}
 	
 	this.convertAndPathFind = function(roomNr1,roomNr2,curFloor){
-		
-		console.log(curFloor);start = getNode(findPosition(roomNr1));
+		activePath = true;
+		start = getNode(findPosition(roomNr1));
 		goal = getNode(findPosition(roomNr2));
 		dijkstraPath.pathFind(start, goal);
 		drawtool.drawPath(start, goal,curFloor);
+		return findPosition(roomNr1)[0];
 	}
 	var findPosition = function(roomNr){
 		for(var indx = 0; indx < rooms.length; indx++){
@@ -83,8 +85,13 @@ function LoadNodesAndEdges() {
 			return displayNodes[4][node[1]];
 		}
 	}
+	this.changeFloorDisplay = function(curFloor){
+		if(activePath && curFloor != 0){
+			removeDraw();
+			drawtool.drawPath(start, goal,curFloor);	
+		}
+	}
 }
-
 function removeDraw() {
 		removeDrawnEdge = "[id^=line]";
 		removeDrawnNode = "[id^=nodediv]";
@@ -92,5 +99,5 @@ function removeDraw() {
 		$(removeDrawnVisualNode).remove();
 		$(removeDrawnNode).remove();
 		$(removeDrawnEdge).remove();
-	}
+}
 	

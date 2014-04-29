@@ -27,9 +27,9 @@ function Draw(){
 		var node = document.createElement("div");
 		var nodeId = String("dNode"+oldId);
 		node.setAttribute("id", nodeId);
-		node.style.height = "2px";
-		node.style.width = "2px";
-		node.style.backgroundColor = "green";
+		node.style.height = "3px";
+		node.style.width = "3px";
+		node.style.backgroundColor = "#FF7400";
 		node.style.cssFloat ="left";
 		node.style.left = (parseInt(x))+"px";
 		node.style.top = parseInt(y)+"px";
@@ -50,8 +50,8 @@ function Draw(){
 		var nodeId = id;
 		width = parseInt(Math.round(Math.sqrt(Math.pow((x2-x1),2)+Math.pow((y2-y1),2))));
 		node.setAttribute("id", "line"+id);
-		node.style.backgroundColor = "green";
-		node.style.height = "2px";
+		node.style.backgroundColor = "#FF7400";
+		node.style.height = "3px";
 		node.style.width = width+"px";
 		node.style.top = Math.round(y1)+"px";
 		node.style.position = "absolute";

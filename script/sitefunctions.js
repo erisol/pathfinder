@@ -170,40 +170,35 @@ function fillIn(){
 
 function checkFloor() {
 	var map = document.getElementById("canvas");
-	
-	switch(currentFloor) {
+	switch(parseInt(currentFloor)) {
 		case 1:
 			map.setAttribute("style", "background: url(kart/kart_KE_1etg.jpg) ;");
-			changeFloorDisplay();
-			removeDraw();
-
+			display.changeFloorDisplay(1);
+	console.log(currentFloor);
 			break;
 		case 2:
 			map.setAttribute("style", "background: url(kart/kart_KE_2etg.jpg) ;");
-			changeFloorDisplay();
-			removeDraw();
-
+			display.changeFloorDisplay(2);
+	console.log(currentFloor);
 			break;
 		case 3:
 			map.setAttribute("style", "background: url(kart/kart_KE_3etg.jpg) ;");
-			changeFloorDisplay();
-			removeDraw();
-
+			display.changeFloorDisplay(3);
+	console.log(currentFloor);
 			break;
 		case 4:
 			map.setAttribute("style", "background: url(kart/kart_KE_4etg.jpg) ;");
-			changeFloorDisplay();
-			removeDraw();
-
+			display.changeFloorDisplay(4);
+	console.log(currentFloor);
 			break;
 		case 5:
 			map.setAttribute("style", "background: url(kart/kart_KE_5etg.jpg) ;");
-			changeFloorDisplay();
-			removeDraw();
-
+			display.changeFloorDisplay(5);
+	console.log(currentFloor);
 			break;
 		default:
 			map.setAttribute("style", "background: url(kart/kart_KE_1etg.jpg) ;");
+	console.log(currentFloor);
 			changeFloorDisplay();
 
 	}
@@ -214,6 +209,7 @@ function findPath(){
 	removeDraw();
 	var fromRoom = document.getElementById("fromRoom").value;
 	var toRoom = document.getElementById("toRoom").value;
-	display.convertAndPathFind(fromRoom,toRoom,currentFloor);
+	currentFloor = display.convertAndPathFind(fromRoom,toRoom,currentFloor);
+	checkFloor();
 }
 	
