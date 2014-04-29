@@ -2,20 +2,22 @@
 //Denne funksjonen er rekursiv og kaller seg sjølv med samme startnode kver gang men endrer goal noden til den noden sin prevNode.
 function Draw(){
 	x = 0;
-	this.drawPath = function(startnode, goal){
+	this.drawPath = function(startnode, goal,curFloor){
 		if(goal.getPrevNode().id != goal.id){
-		x1 = goal.getPrevNode().getCoords().getXCoord();
-		y1 = goal.getPrevNode().getCoords().getYCoord();
-		x2 = goal.getCoords().getXCoord();
-		y2 = goal.getCoords().getYCoord();
-		var drawInfo = finddegrees(x1,y1,x2,y2);
-		drawLine(x1,y1,x2,y2,x,drawInfo);
-		drawNodes(x2,y2,x);
-		if(startnode.id !== goal.getPrevNode().id){
-			x++;
-			this.drawPath(startnode, goal.getPrevNode());
-		}
-		x = 0;
+			if(goal.getCoords().getZCoord() == curFloor && goal.getPrevNode().getCoords().getZCoord() == curFloor){
+				x1 = goal.getPrevNode().getCoords().getXCoord();
+				y1 = goal.getPrevNode().getCoords().getYCoord();
+				x2 = goal.getCoords().getXCoord();
+				y2 = goal.getCoords().getYCoord();
+				var drawInfo = finddegrees(x1,y1,x2,y2);
+				drawLine(x1,y1,x2,y2,x,drawInfo);
+				drawNodes(x2,y2,x);
+			}
+			if(startnode.id !== goal.getPrevNode().id){
+				x++;
+				this.drawPath(startnode, goal.getPrevNode(),curFloor);
+			}
+			x = 0;
 		}
 	}
 	var drawNodes = function(x, y, oldId){

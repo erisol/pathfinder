@@ -18,7 +18,6 @@ this.addNodes = function(newNodes){
 //Funksjon som "Restarte" alle nodene i algorithmen sin array, den vil da sette allreadyDone = 0, cost = 1000000 og prevNode lik sin egen id.
 var restartNodes = function(){
 	for(var idx = 0; idx < nodes.length; idx++){
-		console.log(nodes[idx]);
 		nodes[idx].reboot();
 	}
 };
@@ -46,12 +45,9 @@ this.pathFind = function(startNode, endNode){
 	var newNodes = new Array();
 	newNodes.priorityAdd(new dijkstraNodes(startNode, 0));
 	while(newNodes.length !== 0 && calculatedNodes < nodes.length){
-			console.log("RUNNING");
 		var currentNode = newNodes.shift();
 		if(currentNode.node.id == endNode.id){
-			console.log("END");
-			if(this.checkPaths(newNodes, currentNode.node.getCost())){	
-			console.log("FOUND IT");
+			if(this.checkPaths(newNodes, currentNode.node.getCost())){
 				return;
 			}
 		}

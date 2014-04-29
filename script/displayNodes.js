@@ -54,11 +54,12 @@ function LoadNodesAndEdges() {
 	}
 	}
 	
-	this.convertAndPathFind = function(roomNr1,roomNr2){
-		start = getNode(findPosition(roomNr1));
+	this.convertAndPathFind = function(roomNr1,roomNr2,curFloor){
+		
+		console.log(curFloor);start = getNode(findPosition(roomNr1));
 		goal = getNode(findPosition(roomNr2));
 		dijkstraPath.pathFind(start, goal);
-		drawtool.drawPath(start, goal);
+		drawtool.drawPath(start, goal,curFloor);
 	}
 	var findPosition = function(roomNr){
 		for(var indx = 0; indx < rooms.length; indx++){

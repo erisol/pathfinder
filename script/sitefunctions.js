@@ -214,7 +214,6 @@ function findPath(){
 	removeDraw();
 	var fromRoom = document.getElementById("fromRoom").value;
 	var toRoom = document.getElementById("toRoom").value;
-	console.log(fromRoom);console.log(toRoom);
-	display.convertAndPathFind(fromRoom,toRoom);
+	display.convertAndPathFind(fromRoom,toRoom,currentFloor);
 }
 	
