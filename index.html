@@ -1,57 +1,64 @@
-<?php
-// Include global variables
-include("/php/global.php");
-?>
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
 <html xmlns="http://www.w3.org/1999/xhtml">
 <head>
-<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+<title>Vis Vei UiS</title>
+<style type="text/css">
+body {
+	margin: 0;
+	padding: 0;
+}
 
-<!-- Stylesheets -->
-<!-- Reset CSS -->
-<link rel="stylesheet" type="text/css" href="style/reset.css" />
+h1,h2,h3 {
+	margin: 0;
+	padding: 0;
+}
 
-<!-- Website template CSS -->
-<link rel="stylesheet" type="text/css" href="style/template.css" />
-<!-- /Stylesheets -->
-
-
-<!-- Import necessary libraries -->
-
-<!-- External -->
-<!-- JQuery -->
-<script type="text/javascript" src="http://code.jquery.com/jquery-1.9.1.js"></script>
-
-<!-- KineticJS -->
-<script type="text/javascript" src="http://d3lp1msu2r81bx.cloudfront.net/kjs/js/lib/kinetic-v4.5.5.min.js"></script>
-<!-- /External -->
-
-<!-- Internal -->
-
-<!-- /Internal -->
-
-<title>$siteTitle</title>
+#topbar {
+	height: 79px;
+	border-bottom: 1px solid #000;
+	background-color: #356AA0;
+	vertical-align: bottom;
+}
+#topbar img {
+	}
+#canvas {
+	text-align: center;
+}
+</style>
 </head>
-
 <body>
+<script>
+var newWidth  = document.documentElement.clientWidth;
+var newHeight = document.documentElement.clientHeight;
+document.getElementById("topbar").setAttribute("style",newWidth);
+</script>
 
-	<div id="topBar">
-    
-    	<div id="topMenu">
-            Jeg skal fra: 
-				<select name="fra">
-					<option value="#">ARRAY OVER ROM</option>
-				</select>
-			 og skal til: 
-<select name="til">
-<option value="#">ARRAY OVER ROM</option>
-</select> 
-Handicapped <input name="" type="checkbox" value="Handicapped?" />
-<button>Vis Vei!</button></div>
-        
-    </div>
-    
-    
 
-</body>
+<div id="topbar">
+	<img src="img/siteLogo.png" />
+</div>
+
+
+<div id="canvas">
+	<img id="kart" src="img/alphakart.jpg" width="1280" height="720" usemap="#bygninger" />
+  <map name="bygninger">
+<area  shape="rect" coords="148,308,458,489" alt="" title="KE" target="_self" href="index.php"     />
+<area  shape="rect" coords="473,326,581,415" alt="" title="bibliotek" target="_self" href="#"     />
+<area  shape="rect" coords="149,521,295,600" alt="" title="Sis trening" target="_self" href="#"     />
+<area  shape="rect" coords="671,484,812,609" alt="" title="AR" target="_self" href="#"     />
+<area  shape="rect" coords="622,398,720,467" alt="" title="HOTELL" target="_self" href="#"     />
+<area  shape="rect" coords="561,487,637,547" alt="" title="bokhandel" target="_self" href="#"     />
+<area  shape="rect" coords="994,3,1173,115" alt="" title="huldra garborg" target="_self" href="#"     />
+<area  shape="rect" coords="871,344,1062,518" alt="" title="ka1" target="_self" href="#"     />
+<area  shape="rect" coords="848,567,1088,708" alt="" title="ka2" target="_self" href="#"     />
+</map>
+</div>
+<script>
+var canvas = document.getElementById("canvas");
+	canvas.setAttribute('width',newWidth);
+	canvas.setAttribute('height',newHeight);
+	document.body.appendChild(canvas);
+</script>
+  </body>
 </html>
