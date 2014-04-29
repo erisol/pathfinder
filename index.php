@@ -86,7 +86,7 @@ include("php/global.php");
                 echo "</select>\n";
                 echo $disability;
                 echo "\n<input class=\"topMenuForm\" name=\"handicapped\" type=\"checkbox\" /> &emsp; \n";
-                echo "<button class=\"topMenuForm\" onclick=\"findPath()\" value=\"". $showWayButton ."\" />\n";
+                echo "<input type=\"button\" class=\"topMenuForm\" onclick=\"findPath()\" value=\"". $showWayButton ."\" />\n";
 				?>
        </div>
        
@@ -95,7 +95,9 @@ include("php/global.php");
         <div id="operateMenu">
         	<div id="leftOperate">
 			<?php
-				echo "<strong>".$youAre."</strong>". $building ." ";
+				echo "<strong>".$youAre."</strong>". $building ."<br>\n";
+				echo "<span id=\"floorDisplay\"></span>";
+				
 			?>
             </div>
             <div id="rightOperate">
@@ -186,7 +188,13 @@ include("php/global.php");
 				$(document).ready(checkFloor());
 				setWrapper();
 				setContainer();
-				resizeClient();				
+				resizeClient();
+						
+				function changeFloorDisplay() {
+					var theFloors = <?php echo json_encode($floor); ?>;
+					$("#floorDisplay").empty();
+					$("#floorDisplay").html(theFloors[currentFloor-1]);
+				}	
 		//$(document).ready(loadMapToCenter());
 		//$(document).ready(checkFloorCounter());
         </script>
