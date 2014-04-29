@@ -3,8 +3,6 @@
 function Draw(){
 	x = 0;
 	this.drawPath = function(startnode, goal){
-		//console.log(goal.getPrevNode().id);
-		//console.log(goal.id);
 		if(goal.getPrevNode().id != goal.id){
 		x1 = goal.getPrevNode().getCoords().getXCoord();
 		y1 = goal.getPrevNode().getCoords().getYCoord();
@@ -12,6 +10,7 @@ function Draw(){
 		y2 = goal.getCoords().getYCoord();
 		var drawInfo = finddegrees(x1,y1,x2,y2);
 		drawLine(x1,y1,x2,y2,x,drawInfo);
+		drawNodes(x2,y2,x);
 		if(startnode.id !== goal.getPrevNode().id){
 			x++;
 			this.drawPath(startnode, goal.getPrevNode());
@@ -19,6 +18,24 @@ function Draw(){
 		x = 0;
 		}
 	}
+	var drawNodes = function(x, y, oldId){
+		x = parseInt(x)+ +1;
+		y = parseInt(y)+ +2;		
+		var getCanvas = document.getElementById("canvas");
+		var node = document.createElement("div");
+		var nodeId = String("dNode"+oldId);
+		node.setAttribute("id", nodeId);
+		node.style.height = "2px";
+		node.style.width = "2px";
+		node.style.backgroundColor = "green";
+		node.style.cssFloat ="left";
+		node.style.left = (parseInt(x))+"px";
+		node.style.top = parseInt(y)+"px";
+		node.style.position = "absolute";
+		node.style.display = "visible";
+		getCanvas.appendChild(node);
+	}
+	
 	var drawLine = function(x1, y1, x2, y2, id,info){
 		x1 = parseInt(x1)+ +2;
 		x2 = parseInt(x2)+ +2;
@@ -52,33 +69,27 @@ function Draw(){
 		y1= -parseInt(y1);
 		y2= -parseInt(y2);
 		if(x1 < x2 && y1 < y2){
-		console.log("1");
 			return [-(Math.atan(((y2-y1)/(x2-x1))))*(180/Math.PI),0,0.5*Math.sqrt(Math.pow(x2-x1,2) + Math.pow(y2-y1,2))];
 		}
 		
 		else if(x1 < x2 && y1 > y2){
-		console.log("2");
 			return [(Math.atan(((y1-y2)/(x2-x1))))*(180/Math.PI),0,0.5*Math.sqrt(Math.pow(x2-x1,2) + Math.pow(y1-y2,2))];
 		}
 		
 		else if(x1 > x2 && y1 < y2){
-		console.log("3");
 			return [-180+(Math.atan(((y2-y1)/(x1-x2))))*(180/Math.PI),(x1-x2),0.5*Math.sqrt(Math.pow(x1-x2,2) + Math.pow(y2-y1,2))];
 		}
 		
 		else if(x1 > x2 && y1 > y2){
-		console.log("4");
 			return [180-(Math.atan(((y1-y2)/(x1-x2))))*(180/Math.PI),(x1-x2),0.5*Math.sqrt(Math.pow(x1-x2,2) + Math.pow(y2-y1,2))];
 		}
 		
 		else if(x1===x2){
 			if(y1 < y2){
-		console.log("5");
 				return [-90,0, (y2-y1)/2];	
 			}
 			
 			else if(y1 > y2){
-		console.log("6");
 				return [90,0,(y1-y2)/2];
 			}
 			
@@ -86,24 +97,13 @@ function Draw(){
 		
 		else if(y1===y2){
 			if(x1 < x2){
-		console.log("7");
 				return [0,0,0];
 			}
 			
 			else if(x1 > x2){
-		console.log("8");
 				return [0,(x1-x2),0];
 			}
 		}
 		return [0,0,0];
 	}
 }
-/*function drawPath(startnode, goal){
-	var c=document.getElementById("drawtestcanvas");
-	var ctx=c.getContext("2d");
-	ctx.lineTo(goal.getPrevNode().getCoords().getXCoord(), goal.getPrevNode().getCoords().getYCoord());
-	if(startnode.id !== goal.getPrevNode().id){
-		drawPath(startnode, goal.getPrevNode());
-	}
-	ctx.stroke();
-}*/

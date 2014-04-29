@@ -10,18 +10,14 @@ function Load(){
 	}
 	
 	var rooms = new Array();
-	var edges1 = new Array();
-	var edges2 = new Array();
-	var edges3 = new Array();
-	var edges4 = new Array();
-	var edges5 = new Array();
-	array1Floor = [];
-	array2Floor = [];
-	array3Floor = [];
-	array4Floor = [];
-	array5Floor = [];
+	var edges = new Array();
+	array1Floor = new Array();
+	array2Floor = new Array();
+	array3Floor = new Array();
+	array4Floor = new Array();
+	array5Floor = new Array();
 	var floorNodeListArray = ["","../test1/nodemaker/nodes/ke/1.txt", "../test1/nodemaker/nodes/ke/2.txt", "../test1/nodemaker/nodes/ke/3.txt", "../test1/nodemaker/nodes/ke/4.txt", "../test1/nodemaker/nodes/ke/5.txt"];
-	var floorEdgeListArray = ["","../test1/nodemaker/edges/ke/1.txt", "../test1/nodemaker/edges/ke/2.txt", "../test1/nodemaker/edges/ke/3.txt", "../test1/nodemaker/edges/ke/4.txt", "../test1/nodemaker/edges/ke/5.txt"];
+	var floorEdgeListArray = ["","../test1/nodemaker/edges/final/ke/1.txt", "../test1/nodemaker/edges/final/ke/2.txt", "../test1/nodemaker/edges/final/ke/3.txt", "../test1/nodemaker/edges/final/ke/4.txt", "../test1/nodemaker/edges/final/ke/5.txt"];
 	
 	this.loadNodes = function(){
 		for(var n = 1; n < floorNodeListArray.length; n++){
@@ -36,9 +32,9 @@ function Load(){
 			   		var newArray = data.split(",");
 					for (var i = 0; i<=newArray.length; i+=5) {
 						if(newArray.length == 0 || newArray[i] != undefined || newArray[i+1] != undefined){
-							currentNodes[0][currentNodes[0].length] = new Node(newArray[i],newArray[i+2],newArray[i+3],newArray[i+4]);
+							currentNodes[currentNodes.length] = new Node(newArray[i],newArray[i+2],newArray[i+3],newArray[i+4]);
 							if(newArray[i+1] !== "gang"){
-								rooms[rooms.length] = new roomNode(newArray[i+1], newArray[i]);
+								rooms[rooms.length] = new roomNode(newArray[i+1], newArray[i], newArray[i+4],i/5);
 							}
 						}
 					}           
@@ -59,46 +55,113 @@ function Load(){
 				cache: false,
 		  		success: function(data) {
 		    		var newArray = data.split(",");
-					for (var i = 0; i<=newArray.length-9; i+=9) {
-						if((newArray[i] != undefined || newArray.length != 0) && (currentEdges[0].checkId(newArray[i+4]) != -1) && (newArray[i+7] != "gang" || currentEdges[0].checkId(newArray[i+1]) != -1)){
-							currentEdges[1][currentEdges[1].length] = new dualEdge(newArray[i],newArray[i+1],newArray[i+4],newArray[i+7],newArray[i+8]);
+					for (var i = 0; i<=newArray.length-7; i+=7) {
+						if((newArray[i] != undefined || newArray.length != 0)){
+							edges[edges.length] = new dualEdge(newArray[i],newArray[i+2],newArray[i+1],newArray[i+4],newArray[i+3],newArray[i+5],newArray[i+6]);
 						}
 					}
 		  		}
 			});
 		}
-		return [edges1,edges2,edges3,edges4,edges5];
+		return edges;
 	}	
 	var getOldArray = function(floor){
 		switch (floor) {
 			case 1:
-				return [array1Floor,edges1];
+				return array1Floor;
 				break;
 			case 2:
-				return [array2Floor,edges2];
+				return array2Floor;
 				break;
 			case 3:
-				return [array3Floor,edges3];
+				return array3Floor;
 				break;
 			case 4:
-				return [array4Floor,edges4];
+				return array4Floor;
 				break;
 			case 5:
-				return [array5Floor,edges5];
+				return array5Floor;
 				break;	
 		}
 	}
+	
+	this.getRooms = function(){
+		var loaded = this.loadRooms();
+		var rooms = new Array();
+		var info = new Array();
+		var loaded = loaded.split("||");
+		for(var idx = 0; idx < loaded.length; idx++){
+			var rest = loaded[idx].split(",");
+			info[info.length] = rooms.length;
+			for(var indx = 0; indx < rest.length; indx++){
+				rooms[rooms.length] = rest[indx];
+			}
+		}
+		return [rooms, info];
+	}
+	
+	this.loadRooms = function() {
+		var rooms;
+		jQuery.ajax({
+			async: false,
+			url: "rooms.txt",
+			dataType: 'text',
+			type: "GET",
+			cache: false,
+	  		success: function(data) {
+				rooms = data;
+			}
+		});
+		return rooms;
+	}
+	this.addRooms = function(){
+		var current = 0;
+		var optgroupFrom;
+		var optgroupTo;
+		var listOfRoomInfo = this.getRooms();
+		var fromRoom = document.getElementById("fromRoom");
+		var toRoom = document.getElementById("toRoom");
+		for(var indx = 0; indx < listOfRoomInfo[0].length; indx++){
+			if(indx == listOfRoomInfo[1][current]){
+				var groupFrom = document.createElement('optgroup');
+				var groupTo = document.createElement('optgroup');
+				groupFrom.label = listOfRoomInfo[0][indx];
+				groupFrom.id = "from"+listOfRoomInfo[0][indx];
+				groupTo.label = listOfRoomInfo[0][indx];
+				groupTo.id = "to"+listOfRoomInfo[0][indx];
+				fromRoom.appendChild(groupFrom);
+				toRoom.appendChild(groupTo);
+				current++;
+				optgroupFrom = document.getElementById("from"+listOfRoomInfo[0][indx]);
+				optgroupTo = document.getElementById("to"+listOfRoomInfo[0][indx]);
+			}else{
+				var newroomFrom = document.createElement('option');
+				var newroomTo = document.createElement('option');
+				newroomFrom.value = listOfRoomInfo[0][indx];
+				newroomFrom.innerHTML = listOfRoomInfo[0][indx];
+				newroomTo.value = listOfRoomInfo[0][indx];
+				newroomTo.innerHTML = listOfRoomInfo[0][indx];
+				optgroupTo.appendChild(newroomFrom);
+				optgroupFrom.appendChild(newroomTo);
+			}
+		}
+	}
+
 };
 
-function dualEdge(id, node1, node2, type, cost){
+function dualEdge(id, node1, floor1, node2, floor2, type, cost){
 	this.id = id;
 	this.node1 = node1;
+	this.floor1 = floor1;
 	this.node2 = node2;
+	this.floor2 = floor2;
 	this.type = type;
 	this.cost = Math.ceil(cost/10);
 };
 
-function roomNode(roomnr, nodeid){
-	this.roomNumber = roomnr;
-	this.nodeID = nodeid;
+function roomNode(roomNr, nodeId, fArray,pos){
+	this.roomNumber = roomNr;
+	this.nodeId = nodeId;
+	this.floorArray = fArray;
+	this.pos = pos;
 };

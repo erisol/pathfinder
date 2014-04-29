@@ -36,6 +36,7 @@ function Node(id, x, y, z){
 			if(this.getCost() > optCost){
 				cost = optCost;
 				setPrevNode(newNode);
+				console.log("CHANGE PATH");
 				return true;
 			}
 			return false;

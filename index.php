@@ -43,7 +43,6 @@ include("php/global.php");
 
 <!-- Internal -->
 
-<script type="text/javascript" src="script/sitefunctions.js"></script>
 <script type="text/javascript" src="pathfinding/Cords.js"></script>
 <script type="text/javascript" src="pathfinding/Edge.js"></script>
 <script type="text/javascript" src="pathfinding/Cost.js"></script>
@@ -52,13 +51,14 @@ include("php/global.php");
 <script type="text/javascript" src="pathfinding/drawPath.js"></script>
 <script type="text/javascript" src="pathfinding/Load.js"></script>
 <script type="text/javascript" src="script/displayNodes.js"></script>
+<script type="text/javascript" src="script/sitefunctions.js"></script>
 <!-- /Internal -->
 
 <title><?php echo $siteTitle; ?></title>
 
 </head>
 
-<body>
+<body onload=fillIn()>
 
 <!-- Top bar begin -->
 
@@ -76,20 +76,17 @@ include("php/global.php");
     
     	<!-- Menu top bar begin -->
     	<div id="topMenu">
+
         	<?php
-            	echo "<form name=\"navigate\" method=\"POST\">";
                 echo $goingFrom;
-                echo "<select class=\"topMenuForm\" name=\"from\">\n";
-                echo 	"<option value=\"#\">Array comes here</option>\n";
+                echo "<select class=\"topMenuForm\" id=\"fromRoom\" name=\"from\">\n";
                 echo "</select>\n";
                 echo $goingTo;
-                echo "\n<select class=\"topMenuForm\" name=\"to\">\n";
-                echo 	"<option value=\"#\">Array comes here</option>\n";
+                echo "\n<select class=\"topMenuForm\" id=\"toRoom\" name=\"to\">\n";
                 echo "</select>\n";
                 echo $disability;
                 echo "\n<input class=\"topMenuForm\" name=\"handicapped\" type=\"checkbox\" /> &emsp; \n";
-                echo "<input class=\"topMenuForm\" type=\"submit\" value=\"". $showWayButton ."\" />\n";
-				echo "</form>";
+                echo "<button class=\"topMenuForm\" onclick=\"findPath()\" value=\"". $showWayButton ."\" />\n";
 				?>
        </div>
        

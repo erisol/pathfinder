@@ -7,7 +7,7 @@ var zoomCounter = 0;
 
 var maxWidth;
 var maxHeight;
-
+var display = new LoadNodesAndEdges();
 
 // Force resize of client window
 function resizeClient() {
@@ -163,6 +163,11 @@ function zoomOut() {
 	
 }
 
+function fillIn(){
+	var selectAdd = new Load();
+	selectAdd.addRooms();
+}
+
 function checkFloor() {
 	var map = document.getElementById("canvas");
 	
@@ -170,31 +175,31 @@ function checkFloor() {
 		case 1:
 			map.setAttribute("style", "background: url(kart/kart_KE_1etg.jpg) ;");
 			removeDraw();
-			loadNodesAndEdges(1);
+			//loadNodesAndEdges(1);
 			//loadMapToCenter();
 			break;
 		case 2:
 			map.setAttribute("style", "background: url(kart/kart_KE_2etg.jpg) ;");
 			removeDraw();
-			loadNodesAndEdges(2);
+			//loadNodesAndEdges(2);
 			//loadMapToCenter();
 			break;
 		case 3:
 			map.setAttribute("style", "background: url(kart/kart_KE_3etg.jpg) ;");
 			removeDraw();
-			loadNodesAndEdges(3);
+			//loadNodesAndEdges(3);
 			//loadMapToCenter();
 			break;
 		case 4:
 			map.setAttribute("style", "background: url(kart/kart_KE_4etg.jpg) ;");
 			removeDraw();
-			loadNodesAndEdges(4);
+			//loadNodesAndEdges(4);
 			//loadMapToCenter();
 			break;
 		case 5:
 			map.setAttribute("style", "background: url(kart/kart_KE_5etg.jpg) ;");
 			removeDraw();
-			loadNodesAndEdges(5);
+			//loadNodesAndEdges(5);
 			//loadMapToCenter();
 			break;
 		default:
@@ -202,5 +207,13 @@ function checkFloor() {
 			//loadMapToCenter();
 	}
 	
+}
+
+function findPath(){
+	removeDraw();
+	var fromRoom = document.getElementById("fromRoom").value;
+	var toRoom = document.getElementById("toRoom").value;
+	console.log(fromRoom);console.log(toRoom);
+	display.convertAndPathFind(fromRoom,toRoom);
 }
 	

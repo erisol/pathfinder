@@ -1,5 +1,12 @@
-function loadNodesAndEdges(displayFloor) {
-	
+function LoadNodesAndEdges() {
+	var display = new Load();
+	var displayNodes = display.loadNodes();
+	var edges = display.loadEdges();
+	addAllNeighbors(display.loadEdges());
+	rooms = displayNodes[5];
+	var dijkstraPath = new dijkstra();
+	addTheNodes(displayNodes);
+	var drawtool = new Draw();
 	Array.prototype.checkId = function(value){
 		for(var indx = 0; indx < this.length; indx++){
 			var testArray = this[indx].id;
@@ -8,6 +15,12 @@ function loadNodesAndEdges(displayFloor) {
 			}
 		}
 		return -1;
+	}
+	
+	function addTheNodes(nodelist){
+		for(var indx = 0; indx<displayNodes.length-1;indx++){
+			dijkstraPath.addNodes(displayNodes[indx]);
+		}
 	}
 	
 	function drawNodes(x, y, oldId){
@@ -26,43 +39,56 @@ function loadNodesAndEdges(displayFloor) {
 		getCanvas.appendChild(node);
 	}
 	
-	var display = new Load();
-	
-	var displayNodes = display.loadNodes();
-	var displayEdges = display.loadEdges();
-	rooms = displayNodes[5];
-	nodes = new Array();
-	
-	var testDisplayNodes = displayNodes[displayFloor-1];
-	var testDisplayEdges = displayEdges[displayFloor-1];
-	for (var i = 0; i < testDisplayEdges.length-1; i++) {
-		var node1 = testDisplayNodes[testDisplayNodes.checkId(testDisplayEdges[i].node1)];
-		var node2 = testDisplayNodes[testDisplayNodes.checkId(testDisplayEdges[i].node2)];
-		node1.addNeighbor(testDisplayEdges[i].type, node2, testDisplayEdges[i].cost);
-		node2.addNeighbor(testDisplayEdges[i].type, node1, testDisplayEdges[i].cost);
-		
+
+	function addAllNeighbors(neighbors){
+		for (var i = 0; i < edges.length-1; i++) {
+			var node1 = displayNodes[edges[i].floor1-1][edges[i].node1];
+			var node2 = displayNodes[edges[i].floor2-1][edges[i].node2];
+			node1.addNeighbor(edges[i].type, node2, edges[i].cost);
+			node2.addNeighbor(edges[i].type, node1, edges[i].cost);
+		}
 	}
-	
+	function drawCurrentFloorNodes(displayFloor){
 	for (var k = 0; k < displayNodes[displayFloor-1].length; k++) {
 		drawNodes(displayNodes[displayFloor-1][k].getCoords().getXCoord(), displayNodes[displayFloor-1][k].getCoords().getYCoord(), displayNodes[displayFloor-1][k].id);
-		
+	}
 	}
 	
-	var dijkstraPath = new dijkstra();
-	dijkstraPath.addNodes(testDisplayNodes);
-	testDisplayNodes[15].setOptimalCostPath(1,testDisplayNodes[14]);
-	var startNode = testDisplayNodes[15];
-	var goal = testDisplayNodes[60];
-	dijkstraPath.pathFind(startNode, goal);
-	var drawtool = new Draw();
-	drawtool.drawPath(startNode, goal);
+	this.convertAndPathFind = function(roomNr1,roomNr2){
+		start = getNode(findPosition(roomNr1));
+		goal = getNode(findPosition(roomNr2));
+		dijkstraPath.pathFind(start, goal);
+		drawtool.drawPath(start, goal);
+	}
+	var findPosition = function(roomNr){
+		for(var indx = 0; indx < rooms.length; indx++){
+			if(rooms[indx].roomNumber == roomNr){
+				return [rooms[indx].floorArray,rooms[indx].pos];
+			}
+		}
+		return -1;
+	}
 	
-	
+	var getNode = function(node){
+		if(node[0] == 1){
+			return displayNodes[0][node[1]];
+		}else if(node[0] == 2){
+			return displayNodes[1][node[1]];
+		}else if(node[0] == 3){
+			return displayNodes[2][node[1]];
+		}else if(node[0] == 4){
+			return displayNodes[3][node[1]];
+		}else if(node[0] == 5){
+			return displayNodes[4][node[1]];
+		}
+	}
 }
 
 function removeDraw() {
 		removeDrawnEdge = "[id^=line]";
 		removeDrawnNode = "[id^=nodediv]";
+		removeDrawnVisualNode = "[id^=dNode]";
+		$(removeDrawnVisualNode).remove();
 		$(removeDrawnNode).remove();
 		$(removeDrawnEdge).remove();
 	}

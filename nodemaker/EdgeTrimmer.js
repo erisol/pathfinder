@@ -72,7 +72,6 @@ function TrimEdges(){
 				cache: false,
 		  		success: function(data) {
 		    		var newArray = data.split(",");
-		console.log(newArray.length/9);
 					for (var i = 0; i<=newArray.length-9; i+=9) {
 						if((newArray[i] != undefined || newArray.length != 0) && currenttempedges[0].checkId(newArray[i+1]) != -1 && currenttempedges[0].checkId(newArray[i+4]) != -1){
 							currenttempedges[1][currenttempedges[1].length] = newArray[i]+","+findNodeId(newArray[i+1])+","+findNodeId(newArray[i+4])+","+newArray[i+7]+","+newArray[i+8];
@@ -87,11 +86,12 @@ function TrimEdges(){
 		arrayNr = -1; pos = -1;
 		for(var n = 1; n < floorEdgeListArray.length; n++){
 			currenttempedges = getOldArray(n);
-			tempid = currenttempedges[0].checkId(id);	
+			tempid = currenttempedges[0].checkId(id);
+			console.log(tempid);
 			if(tempid != -1){
 				arrayNr = n;
-				pos = id;
-				break;
+				pos = tempid;
+				return [arrayNr, pos];
 			}
 		}
 	return [arrayNr, pos];	
