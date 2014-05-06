@@ -11,7 +11,7 @@ function Draw(){
 				y2 = goal.getCoords().getYCoord();
 				var drawInfo = finddegrees(x1,y1,x2,y2);
 				drawLine(x1,y1,x2,y2,x,drawInfo);
-				drawNodes(x2,y2,x);
+				//drawNodes(x2,y2,x);
 			}
 			if(startnode.id !== goal.getPrevNode().id){
 				x++;
