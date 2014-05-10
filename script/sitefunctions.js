@@ -174,35 +174,32 @@ function checkFloor() {
 		case 1:
 			map.setAttribute("style", "background: url(kart/kart_KE_1etg.jpg) ;");
 			display.changeFloorDisplay(1);
-	console.log(currentFloor);
 			break;
 		case 2:
 			map.setAttribute("style", "background: url(kart/kart_KE_2etg.jpg) ;");
 			display.changeFloorDisplay(2);
-	console.log(currentFloor);
 			break;
 		case 3:
 			map.setAttribute("style", "background: url(kart/kart_KE_3etg.jpg) ;");
 			display.changeFloorDisplay(3);
-	console.log(currentFloor);
 			break;
 		case 4:
 			map.setAttribute("style", "background: url(kart/kart_KE_4etg.jpg) ;");
 			display.changeFloorDisplay(4);
-	console.log(currentFloor);
 			break;
 		case 5:
 			map.setAttribute("style", "background: url(kart/kart_KE_5etg.jpg) ;");
 			display.changeFloorDisplay(5);
-	console.log(currentFloor);
 			break;
 		default:
 			map.setAttribute("style", "background: url(kart/kart_KE_1etg.jpg) ;");
-	console.log(currentFloor);
-			changeFloorDisplay();
+			display.changeFloorDisplay(1);
 
 	}
 	
+}
+function handicap(){
+	display.changeHandicap();	
 }
 
 function findPath(){

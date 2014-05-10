@@ -85,7 +85,7 @@ include("php/global.php");
                 echo "\n<select class=\"topMenuForm\" id=\"toRoom\" name=\"to\">\n";
                 echo "</select>\n";
                 echo $disability;
-                echo "\n<input class=\"topMenuForm\" name=\"handicapped\" type=\"checkbox\" /> &emsp; \n";
+                echo "\n<input class=\"topMenuForm\" name=\"handicapped\" type=\"checkbox\" onchange=\"handicap()\" /> &emsp; \n";
                 echo "<input type=\"button\" class=\"topMenuForm\" onclick=\"findPath()\" value=\"". $showWayButton ."\" />\n";
 				?>
        </div>

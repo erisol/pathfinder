@@ -11,7 +11,7 @@ function Draw(){
 				y2 = goal.getCoords().getYCoord();
 				var drawInfo = finddegrees(x1,y1,x2,y2);
 				drawLine(x1,y1,x2,y2,x,drawInfo);
-				//drawNodes(x2,y2,x);
+				drawNodes(x2,y2,x);
 			}
 			if(startnode.id !== goal.getPrevNode().id){
 				x++;
@@ -27,8 +27,8 @@ function Draw(){
 		var node = document.createElement("div");
 		var nodeId = String("dNode"+oldId);
 		node.setAttribute("id", nodeId);
-		node.style.height = "3px";
-		node.style.width = "3px";
+		node.style.height = "2px";
+		node.style.width = "2px";
 		node.style.backgroundColor = "#FF7400";
 		node.style.cssFloat ="left";
 		node.style.left = (parseInt(x))+"px";

@@ -26,8 +26,6 @@ var restartNodes = function(){
 this.pathFind = function(startNode, endNode){
 	cost.restart();
 	restartNodes();
-	var path = new Array();
-	path.push(new dijkstraNodes(startNode, 0));
 	startNode.setOptimalCostPath(0);
 	var calculatedNodes = 0;
 	var newNodes = new Array();
@@ -37,7 +35,7 @@ this.pathFind = function(startNode, endNode){
 		if(currentNode.node.id == endNode.id){
 				return;
 		}
-		if(currentNode.node.getCost() < endNode.getCost() && currentNode.node.isDone() !== 1){
+		if(currentNode.node.isDone() !== 1){
            	currentNode.node.setDone();
 			calculatedNodes++;
 			var currentNeighbors = currentNode.node.getNeighbors();
@@ -47,7 +45,6 @@ this.pathFind = function(startNode, endNode){
 				if(destNode.getCost() > currentNode.node.getCost() + edgeCost){
 					destNode.setOptimalCostPath(edgeCost+currentNode.node.getCost(), currentNode.node);
 					newNodes.priorityAdd(new dijkstraNodes(destNode, destNode.getCost()));
-					path.push(new dijkstraNodes(destNode, destNode.getCost()));
 				}
 			}
 		}

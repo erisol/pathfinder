@@ -91,6 +91,12 @@ function LoadNodesAndEdges() {
 			drawtool.drawPath(start, goal,curFloor);	
 		}
 	}
+	this.changeHandicap = function(){
+			var dijkstraNodes = dijkstraPath.getNodes();
+			for(var s = 0; s < dijkstraNodes.length; s++){
+				dijkstraNodes[s].handicap();
+			}
+	}
 }
 function removeDraw() {
 		removeDrawnEdge = "[id^=line]";
