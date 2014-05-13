@@ -133,6 +133,13 @@
 	var firstload = true;
 	var xGrid = [];
 	var yGrid = [];
+	var displayedNodes = [];
+	var placing = false;
+	var oldsaved = true;
+	var isChangingFloor = false;
+	currentFloor = 1;
+	var nextId = 0;
+	
 	
 	function clearGrids(){
 	xGrid.length = 0;
@@ -199,9 +206,6 @@
     	writeMessage(message);
     }, false);
 	
-	currentFloor = 1;
-	var nextId = 0;
-	
 	function getCurrentArray(){
 		switch(currentFloor){
 			case 1: 
@@ -255,8 +259,7 @@
 			break;
 		}
 	}
-	var isChangingFloor = false;
-	// nextId + "," + roomid + "," + xvalue +","+ yvalue +","+ fvalue;
+	
 	function readArrayInfoAndAdd(currentArray, fArray){
 		isChangingFloor = true;
 		if(!firstload){
@@ -403,43 +406,6 @@
 		currentFloor = tempfloor;
 	}
 	
-	function createExistingYgrid(topval) {
-		var getCanvas = document.getElementById("canvasFloat");
-		var newYgrid = document.createElement("div");
-		var gridId = String("canvasGrid"+nextGrid);
-		newYgrid.setAttribute("id", gridId);
-		newYgrid.style.height = "1091px";
-		newYgrid.style.width = "1px";
-		newYgrid.style.cssFloat ="left";
-		newYgrid.style.backgroundColor = "#FF0000";
-		newYgrid.style.position = "absolute";
-		newYgrid.style.left = "300px";
-		newYgrid.style.top = topval;
-		getCanvas.appendChild(newYgrid);
-		addYGrid();
-		nextGrid++;
-	}
-	
-	function createExistingYgrid(leftVal) {
-		leftVal = parseInt(leftVal) + 303;
-		var getCanvas = document.getElementById("canvasFloat");
-		var newYgrid = document.createElement("div");
-		var gridId = String("canvasGrid"+nextGrid);
-		newYgrid.setAttribute("id", gridId);
-		newYgrid.style.height = "1091px";
-		newYgrid.style.width = "1px";
-		newYgrid.style.cssFloat ="left";
-		newYgrid.style.backgroundColor = "#FF0000";
-		newYgrid.style.position = "absolute";
-		newYgrid.style.left = leftVal+"px";
-		newYgrid.style.top = "0px";
-		getCanvas.appendChild(newYgrid);
-		addYGrid();
-		nextGrid++;
-	}
-	  
-	var placing = false;
-	var oldsaved = true;
 	function drawNode(){
 		if(!placing){
 			if(oldsaved){
@@ -527,7 +493,6 @@
 					xId = indx;	
 				}
 			}
-			console.log(xGrid[xId]);
 			return parseInt(xGrid[xId]);
 		}
 		return x;
@@ -643,8 +608,7 @@
 			break;
 		}
 	}
-		
-	var displayedNodes = [];
+	
 	function arraynodedisplay(nodeId){
 		var selectedFloor = parseInt(document.getElementById("fVal").value);
 		switch(selectedFloor){
