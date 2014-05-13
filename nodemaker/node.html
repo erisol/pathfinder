@@ -1,86 +1,90 @@
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
 <html xmlns="http://www.w3.org/1999/xhtml">
-<head>
-<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
-<link rel="stylesheet" type="text/css" href="../style/reset.css" />
-<script type="text/javascript" src="http://code.jquery.com/jquery-1.9.1.js"></script>
-<title>Create nodes</title>
+    <head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    <link rel="stylesheet" type="text/css" href="../style/reset.css" />
+    <script type="text/javascript" src="http://code.jquery.com/jquery-1.9.1.js"></script>
+    <title>Create nodes</title>
 </head>
 <body>
-<div style="width: 2482px; height: 1092px;">
-        <div style="float:left; width: 300px; height: 1092px;">
-    	<div style="float:left;position:fixed;z-index:10; overflow:auto; width: 300px; height: 100%;border-right: 3px solid #000; text-align: center; background-color: white">
-        <br /><br />
-        <strong>Coordinates:
-        <span id="mouseCoords"></span>
-        </strong><br /><br />
-        <br /><br />
-        <table width="295" border="0" cellspacing="0" cellpadding="0">
-        	<tr>
-  		 		<td></td>
-  				<td><input name="createNode" type="button" value=" Make New Node " onclick="drawNode()" /></td>
-  			</tr>
-            <tr>
-            <td>Snap To</td></tr>
-            <tr>
-  		 		<td>X</td>
-            <td><input type="checkbox" id="Xsnap" value="X"></td></tr>
-  		 	<tr>	<td>Y</td>
-			<td><input type="checkbox" id="Ysnap" value="Y"></td></tr>
-        </table>
-        <br /><br />
-        Node information:
-        </p>
-        <form name="storeCoords">
-        <table width="295" border="0" cellspacing="0" cellpadding="0">
-  <tr>
-    <td>X:</td>
-    <td><input name="xVal" type="text" maxlength="4" value="" /></td>
-  </tr>
-  <tr>
-    <td>Y:</td>
-    <td><input name="yVal" type="text" maxlength="4" value="" /></td>
-  </tr>
-  <tr>
-    <td>Floor:</td>
-    <td><select id="fVal" name="fval" style="Width:153px" onchange="checkSelectedFloor()">
-    <option value="1" selected>1</option>
-    <option value="2">2</option>
-    <option value="3">3</option>
-    <option value="4">4</option>
-    <option value="5">5</option></td>
-  </tr>
-  <tr>
-    <td>Room:</td>
-    <td> <input id="roomnr" name="roomnr" type="text" maxlength="6" value="" /></td>
-    <!--
-    <select id="roomnr" name="roomnr" style="width: 153px">
-    <option value="gang">Gang</option>
- 	-->
-</select>
-    </td>
-  </tr>
-  <tr>
-    <td></td>
-    <td><input name="newNode" type="button" value=" Add node " onclick="addNode()" /></td>
-  </tr>
-</table>
-	</form>
-    <br /><br />
-    
-    Nodes added:
-    <ol id="theNodes"><br /></ol>
-    <br /><br />
-     <input type="button" name="SaveNodes" id="SaveNodes" value=" Save nodes to file " onclick="saveNodes();"/>
-    </div>
+    <div style="width: 2482px; height: 1092px;">
+    	<div style="float:left; width: 300px; height: 1092px;">
+            <div style="float:left;position:fixed;z-index:10; overflow:auto; width: 300px; height: 100%;border-right: 3px solid #000; text-align: center; background-color: white">
+            	<br /><br />
+            	<strong>Coordinates:
+                <span id="mouseCoords"></span>
+                </strong><br /><br />
+                <br /><br />
+                <table width="295" border="0" cellspacing="0" cellpadding="0">
+                    <tr>
+                        <td></td>
+                        <td><input name="createNode" type="button" value=" Make New Node " onclick="drawNode()" /></td>
+                    </tr>
+                    <tr>
+                      	<td>Snap To</td></tr>
+                    <tr>
+                        <td>X</td>
+                        <td><input type="checkbox" id="Xsnap" value="X"></td>
+                    </tr>
+                    <tr>	
+                    	<td>Y</td>
+                        <td><input type="checkbox" id="Ysnap" value="Y"></td>
+                    </tr>
+                </table>
+                <br /><br />
+                Node information:
+                <form name="storeCoords">
+                    <table width="295" border="0" cellspacing="0" cellpadding="0">
+                        <tr>
+                            <td>X:</td>
+                            <td><input name="xVal" type="text" maxlength="4" value="" /></td>
+                        </tr>
+                        <tr>
+                            <td>Y:</td>
+                            <td><input name="yVal" type="text" maxlength="4" value="" /></td>
+                        </tr>
+                        <tr>
+                            <td>Floor:</td>
+                            <td>
+                                <select id="fVal" name="fval" style="Width:153px" onchange="checkSelectedFloor()">
+                                    <option value="1" selected>1</option>
+                                    <option value="2">2</option>
+                                    <option value="3">3</option>
+                                    <option value="4">4</option>
+                                    <option value="5">5</option>
+                                </select>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td>Room:</td>
+                            <td> <input id="roomnr" name="roomnr" type="text" maxlength="6" value="" /></td>
+                            <!--
+                            <select id="roomnr" name="roomnr" style="width: 153px">
+                            <option value="gang">Gang</option>
+                            -->
+                            </td>
+                        </tr>
+                        <tr>
+                            <td></td>
+                            <td><input name="newNode" type="button" value=" Add node " onclick="addNode()" /></td>
+                        </tr>
+                    </table>
+                </form>
+                <br /><br />
+                Nodes added:
+                <ol id="theNodes"><br /></ol>
+                <br /><br />
+        		<input type="button" name="SaveNodes" id="SaveNodes" value=" Save nodes to file " onclick="saveNodes();"/>
+        	</div>
         </div>
-
         <div id="canvasFloat" style="float:left;">
-        <canvas id="makeNodeCanvas" width="2182" height="1092">
-	</div>
-</div>
-<script type="text/javascript" src="nodefunctions.js"></script>
-<script> 
+        	<canvas id="makeNodeCanvas" width="2182" height="1092">
+        </div>
+    </div>
+    
+	<script type="text/javascript" src="nodefunctions.js"></script>
+
+	<script> 
  		$(document).ready(function(){
 			loadNodes();
 			checkSelectedFloor();
@@ -113,5 +117,6 @@
     		}
 		}, false);
 	</script>
+    
 </body>
 </html>
