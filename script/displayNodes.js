@@ -99,9 +99,11 @@ function LoadNodesAndEdges() {
 	}
 }
 function removeDraw() {
+		removeChangeFloorImage = "[id^=switchFloor]";
 		removeDrawnEdge = "[id^=line]";
 		removeDrawnNode = "[id^=nodediv]";
 		removeDrawnVisualNode = "[id^=dNode]";
+		$(removeChangeFloorImage).remove();
 		$(removeDrawnVisualNode).remove();
 		$(removeDrawnNode).remove();
 		$(removeDrawnEdge).remove();

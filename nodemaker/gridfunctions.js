@@ -20,7 +20,7 @@
         };
       }
       var canvas = document.getElementById('makeGridCanvas');
-      var context = canvas.getContext('2d');
+	
 	  
 	  //Keylisteners
 	  window.addEventListener('keypress', function (e) {
@@ -63,7 +63,7 @@
 	  }
 	  
 	  	  // When X grids are loaded, they will be added to the canvas
-	  	  function createExistingXgrid(topVal) {
+	 function createExistingXgrid(topVal) {
 		  var getCanvas = document.getElementById("canvasFloat");
 		  var newXgrid = document.createElement("div");
 		  var gridId = String("canvasGrid"+nextGrid);

@@ -12,7 +12,31 @@ function Draw(){
 				var drawInfo = finddegrees(x1,y1,x2,y2);
 				drawLine(x1,y1,x2,y2,x,drawInfo);
 				drawNodes(x2,y2,x);
-			}
+			}else if(goal.getCoords().getZCoord() != goal.getPrevNode().getCoords().getZCoord() && (goal.getCoords().getZCoord() == curFloor || goal.getPrevNode().getCoords().getZCoord() == curFloor)){
+				if(goal.getPrevNode().getCoords().getZCoord() < goal.getCoords().getZCoord() && goal.getPrevNode().getCoords().getZCoord() == curFloor){
+					var getCanvas = document.getElementById("canvas");
+					var img = document.createElement('img');
+    				img.setAttribute("src", "img/floorUp_icon.png");
+					img.setAttribute("id", "switchFloor");
+					img.setAttribute('width', '20px');
+					img.style.position = "absolute";
+					img.style.display = "visible";
+					img.style.left = goal.getCoords().getXCoord()-10 + "px";
+					img.style.top = goal.getCoords().getYCoord()-10 + "px";
+					getCanvas.appendChild(img);
+				}else if(goal.getPrevNode().getCoords().getZCoord() > goal.getCoords().getZCoord() && goal.getPrevNode().getCoords().getZCoord() == curFloor){
+					var getCanvas = document.getElementById("canvas");
+					var img = document.createElement('img');
+    				img.setAttribute("src", "img/floorDown_icon.png");
+					img.setAttribute("id", "switchFloor");
+					img.setAttribute('width', '20px');
+					img.style.position = "absolute";
+					img.style.display = "visible";
+					img.style.left = goal.getCoords().getXCoord()-10 + "px";
+					img.style.top = goal.getCoords().getYCoord()-10 + "px";
+					getCanvas.appendChild(img);
+				}
+			} 
 			if(startnode.id !== goal.getPrevNode().id){
 				x++;
 				this.drawPath(startnode, goal.getPrevNode(),curFloor);
