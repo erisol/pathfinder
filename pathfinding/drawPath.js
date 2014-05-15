@@ -5,6 +5,33 @@ function Draw(){
 	this.drawPath = function(startnode, goal,curFloor){
 		if(goal.getPrevNode().id != goal.id){
 			if(goal.getCoords().getZCoord() == curFloor && goal.getPrevNode().getCoords().getZCoord() == curFloor){
+				if(x===0 || goal.getPrevNode().id == startnode.id){		
+					var getCanvas = document.getElementById("canvas");
+					var node = document.createElement("div");
+					var nodeId = String("switchFloorStart");
+					node.setAttribute("id", nodeId);
+					node.style.height = "9px";
+					node.style.width = "9px";
+					node.style.cssFloat ="left";
+					node.style.zIndex="2";
+					
+					if(x===0){
+						node.style.backgroundColor  = "green";
+						node.style.left = goal.getCoords().getXCoord()-3+"px";
+						node.style.top = goal.getCoords().getYCoord()-3+"px";
+					}
+					
+					else if(goal.getPrevNode().id == startnode.id){
+						node.style.backgroundColor  = "#43BFC7";
+						node.style.left = goal.getPrevNode().getCoords().getXCoord()-3+"px";
+						node.style.top = goal.getPrevNode().getCoords().getYCoord()-3+"px";
+					}
+					
+					node.style.position = "absolute";
+					node.style.display = "visible";
+					getCanvas.appendChild(node);
+				}
+				
 				x1 = goal.getPrevNode().getCoords().getXCoord();
 				y1 = goal.getPrevNode().getCoords().getYCoord();
 				x2 = goal.getCoords().getXCoord();
@@ -12,7 +39,9 @@ function Draw(){
 				var drawInfo = finddegrees(x1,y1,x2,y2);
 				drawLine(x1,y1,x2,y2,x,drawInfo);
 				drawNodes(x2,y2,x);
-			}else if(goal.getCoords().getZCoord() != goal.getPrevNode().getCoords().getZCoord() && (goal.getCoords().getZCoord() == curFloor || goal.getPrevNode().getCoords().getZCoord() == curFloor)){
+			}
+			
+			else if(goal.getCoords().getZCoord() != goal.getPrevNode().getCoords().getZCoord() && (goal.getCoords().getZCoord() == curFloor || goal.getPrevNode().getCoords().getZCoord() == curFloor)){
 				if(goal.getPrevNode().getCoords().getZCoord() < goal.getCoords().getZCoord() && goal.getPrevNode().getCoords().getZCoord() == curFloor){
 					var getCanvas = document.getElementById("canvas");
 					var img = document.createElement('img');
@@ -21,10 +50,12 @@ function Draw(){
 					img.setAttribute('width', '20px');
 					img.style.position = "absolute";
 					img.style.display = "visible";
-					img.style.left = goal.getCoords().getXCoord()-10 + "px";
-					img.style.top = goal.getCoords().getYCoord()-10 + "px";
+					img.style.left = goal.getPrevNode().getCoords().getXCoord()-10 + "px";
+					img.style.top = goal.getPrevNode().getCoords().getYCoord()-10 + "px";
 					getCanvas.appendChild(img);
-				}else if(goal.getPrevNode().getCoords().getZCoord() > goal.getCoords().getZCoord() && goal.getPrevNode().getCoords().getZCoord() == curFloor){
+				}
+				
+				else if(goal.getPrevNode().getCoords().getZCoord() > goal.getCoords().getZCoord() && goal.getPrevNode().getCoords().getZCoord() == curFloor){
 					var getCanvas = document.getElementById("canvas");
 					var img = document.createElement('img');
     				img.setAttribute("src", "img/floorDown_icon.png");
@@ -32,15 +63,17 @@ function Draw(){
 					img.setAttribute('width', '20px');
 					img.style.position = "absolute";
 					img.style.display = "visible";
-					img.style.left = goal.getCoords().getXCoord()-10 + "px";
-					img.style.top = goal.getCoords().getYCoord()-10 + "px";
+					img.style.left = goal.getPrevNode().getCoords().getXCoord()-10 + "px";
+					img.style.top = goal.getprevNode().getCoords().getYCoord()-10 + "px";
 					getCanvas.appendChild(img);
 				}
 			} 
+			
 			if(startnode.id !== goal.getPrevNode().id){
 				x++;
 				this.drawPath(startnode, goal.getPrevNode(),curFloor);
 			}
+			
 			x = 0;
 		}
 	}
